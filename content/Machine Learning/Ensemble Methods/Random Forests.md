@@ -1,0 +1,1 @@
+Random Forests is a type of [[Bagging]] technique.

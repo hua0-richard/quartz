@@ -1,0 +1,1 @@
+Top down "Greedy" algorithm used to partition data by repeatedly splitting into two subsets.
