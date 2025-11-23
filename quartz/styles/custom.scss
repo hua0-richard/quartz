@@ -47,43 +47,7 @@ p {
     gap: 2rem; // Increased from 1.5rem
 }
 
-// Top-Right Fixed Sheen with Micro-Movement
-@keyframes subtle-shimmer {
-    0% {
-        background-position: 100% 0%;
-    }
 
-    50% {
-        background-position: 95% 5%;
-    }
-
-    // Very slight shift down-left
-    100% {
-        background-position: 100% 0%;
-    }
-}
-
-// Interactive Prism Title
-.page-header h1,
-.page-title a {
-    // Large Radial Gradient: Rainbow spotlight follows cursor
-    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), // Uses CSS variables for position (defaults to center)
-            #FF5F6D 0%,
-            #FFC371 15%,
-            #2CB67D 30%,
-            #4361EE 50%,
-            #4361EE 100%);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: inline-block;
-    font-weight: 800;
-    cursor: pointer;
-
-    // Smooth transition when mouse moves
-    transition: all 0.15s ease-out;
-}
 
 .explorer-container {
     gap: 0.5rem; // Space between explorer items
@@ -97,4 +61,35 @@ code {
 pre {
     padding: 1rem; // More padding inside code blocks
     margin: 1.5rem 0; // More space around code blocks
+}
+
+// Interactive Prism Headers (All Headers)
+// The .prism-header class is added by the inline script
+.prism-header {
+    // Default state: Normal text color, no gradient
+    background: none;
+    -webkit-text-fill-color: currentcolor; // Reset to use the text color
+    text-fill-color: currentcolor;
+    -webkit-background-clip: border-box; // Reset background clip
+    background-clip: border-box;
+    display: inline-block;
+    font-weight: 800;
+    cursor: default;
+    transition: color 0.2s ease, -webkit-text-fill-color 0.2s ease; // Smooth transition back
+
+    // Active state: When hovered (added by script)
+    &.prism-active {
+        // Large Radial Gradient: Rainbow spotlight follows cursor
+        background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), // Uses CSS variables for position
+                #FF5F6D 0%,
+                #FFC371 10%, // Tighter yellow
+                #2CB67D 20%, // Tighter green
+                #4361EE 35%, // Fade to blue sooner
+                #4361EE 100%);
+        background-size: 100% 100%; // Match element size for precise tracking
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-fill-color: transparent;
+    }
 }
