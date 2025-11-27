@@ -1,7 +1,7 @@
 Repeatedly sample from the dataset with replacement. The Bootstrap method can handle more complex scenarios than the Jackknife method. It also provides more flexibility in constructing confidence intervals.
 
 ### Steps
-1. We take a random sample of size $n$ from the original data set with replacement. 
+1. We take a random sample of size $n$ from the original data set with replacement ($n$ is usually also the size of the original dataset).
 2. From this sample, calculate the value of the estimator. 
 
 ### Standard Error of the Estimator

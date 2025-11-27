@@ -21,3 +21,4 @@ The Jackknife method will produce the following expressions for [[Standard Error
 The **estimate** of the Standard Error of $\hat{\alpha}$ is mean squared error of all each estimate less the average value of the estimates multiplied by $n - 1$. 
 
 $$\hat{\text{SE}} = \sqrt{\frac{n-1}{n}\sum^{n}_{i=1}(\hat{\alpha_i} - \bar{\hat{\alpha}})^2}$$
+Note that we can show that Jackknife estimators are unbiased.

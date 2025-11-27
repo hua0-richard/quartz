@@ -4,13 +4,11 @@ Splits data based on binary rules. The model predicts based on which region data
 
 To build the tree, use a method called [[Recursive Binary Splitting]]
 
+At a high level, we would split the predictor space $(X_1, X_2, ..., X_n)$ into $J$ non-overlapping regions $R_1, R_2, .. R_J$. 
 ### Regression
 
-The goal is to find a good split of the predictor space. We would like to minimize 
-
-$$\text{RSS}=\sum^J_{j=i}\sum_{i\in R_j}(y_i - \hat{y}_{R_j})^2$$
-For regions $R_i$ for $i \in 1,2, ..., J$
-
-In other words, across all regions, we would like to have the smallest residuals. Also. $\hat{y}_{R_j}$ is the mean response for observations in the $j^{\text{th}}$ region.
-
+In a Regression problem, we would average the points of region $R_i$ for $i \in 1,2, ..., J$. 
 ### Classification
+
+In a classification problem, we would take the majority vote of the points in region $R_i$.
+
