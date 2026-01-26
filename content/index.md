@@ -6,7 +6,7 @@ This is my personal site built with Quartz.
 
 ## About
 
-I'm a computer science grad from the University of Waterloo now pursuing a Master's in Data Science at the University of British Columbia. I love building well-crafted products and the systems underneath them—design/UX, systems design and scalability, and developer tooling. I'm also just starting to explore C++, graphics/CUDA, and Linux/OS internals.
+I'm a computer science grad from the University of Waterloo now pursuing a Master's in Data Science at the University of British Columbia. I love building well-crafted products and the systems underneath them—design/UX, systems design and scalability, and developer tooling. I'm also just starting to explore C++, graphics/CUDA, and Linux/OS internals. In early 2025 I spent a term on exchange at Chalmers University of Technology in Gothenburg, Sweden.
 
 <div class="about-list">
   <div class="about-item">
@@ -16,6 +16,16 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
     <div>
       <div class="about-title">University of Waterloo</div>
       <div class="about-years">2020–2025 · B.CS in Computer Science</div>
+    </div>
+  </div>
+
+  <div class="about-item">
+    <div class="logo-box">
+      <img src="https://media.licdn.com/dms/image/v2/C4E0BAQFdK9pXmsNksw/company-logo_200_200/company-logo_200_200/0/1675779390326/chalmers_university_of_technology_logo?e=1770854400&v=beta&t=2U02--NABFsw4h7ps8zIGf1dbAlypI67Elp3JqHW-1o" alt="Chalmers University of Technology wordmark">
+    </div>
+    <div>
+      <div class="about-title">Chalmers University of Technology</div>
+      <div class="about-years">Jan–May 2025 · Exchange term in Computer Science</div>
     </div>
   </div>
 
