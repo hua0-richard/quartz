@@ -36,4 +36,4 @@ $$
 \hat{\lambda} = \frac{n}{\sum_{i=1}^n x_i} = \frac{1}{\bar{x}}
 $$
 
-See also: [[Concepts/Core/Math/Statistics/Distributions/Exponential Distribution]]
+See also: Exponential Distribution

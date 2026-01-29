@@ -4,7 +4,7 @@ Refer to the [[Lp Norms]]
 
 $R(B) = \|\beta\|^2 = \sum_j \beta^2_{j}$
 
-[[Concepts/Core/Machine Learning/Regression/Ordinary Least Squares|Ordinary Least Squares]] with Penalty
+Ordinary Least Squares with Penalty
 
 $$L(\beta) = \frac{1}{n} ||\textbf{y} - \textbf{X}\beta||^2 + \lambda R(\beta)$$
 

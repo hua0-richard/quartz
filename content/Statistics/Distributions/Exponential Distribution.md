@@ -20,4 +20,4 @@ $$
 \operatorname{Var}(X) = \frac{1}{\lambda^2}
 $$
 
-See also: [[Concepts/Core/Math/Statistics/Maximum Likelihood Estimation/Exponential Likelihood]]
+See also: Exponential Likelihood

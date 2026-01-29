@@ -3,7 +3,7 @@ After fitting a model, we would like to know if the model could have actually ge
 >[!tip] Assume the fitted model is correct. Simulated data from the fitted model should *look* similar (likelihood terms) to the observed data.
 
 - Treat the fitted model as cannon
-- Simulate many datasets from it via [[Parametric Bootstrap]]
+- Simulate many datasets from it via Parametric Bootstrap
 - Compare the observed data
 
 Refer to [[Poisson Regression]] and the cigarette butt data.
@@ -100,7 +100,7 @@ boxplot(simlike, ylim=range(c(llikelihoodValues,range(simlike)) ))
 points(llikelihoodValues, pch=16, col=2)
 ```
 
-![[images/Plot_Model_Checking.png]]
+Plot_Model_Checking.png
 
 - Each Box Plot is the distribution of likelihood contributions from bootstrap.
 - The **Red Dots** are observed likelihood contributions

@@ -1,6 +1,6 @@
 Random Forests are a type of [[Bagging]] technique.
 
-Random Forests builds a number of trees on a [[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap|bootstrapped]] sample. At each split in the tree, only a subset *random sample* of m predictors are considered.
+Random Forests builds a number of trees on a bootstrapped sample. At each split in the tree, only a subset *random sample* of m predictors are considered.
 
 By default for [[Classification]] we use $m = \sqrt{p}$ and for [[Regression]] we use $m = p/3$ where $m$ is the number of predictors.
 

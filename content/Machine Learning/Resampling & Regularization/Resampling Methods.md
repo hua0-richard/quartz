@@ -4,4 +4,4 @@ This approach is useful when do don't have multiple sets of data.
 
 ### Examples
 [[Jackknife]]
-[[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap]]
+Bootstrap

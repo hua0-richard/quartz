@@ -1,6 +1,6 @@
 Boosting is another [[Ensemble Methods|ensemble method]].
 
-Boosting will combine the outcome of many trees to tackle [[Concepts/Core/Machine Learning/Regression/Bias|Bias]].
+Boosting will combine the outcome of many trees to tackle Bias.
 
 In Boosting, trees are grown sequentially. The predictions of Trees are added together. In the case of boosting, smaller trees are preferred.
 

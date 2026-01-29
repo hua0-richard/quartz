@@ -16,7 +16,7 @@ For each $i$ we remove the $o_i$ and compute $\hat{\alpha}$.
 
 At the end of this process we will have $n$ estimates for $\alpha$
 
-The Jackknife method will produce the following expressions for [[Standard Error]] and [[Concepts/Core/Machine Learning/Regression/Bias|Bias]]
+The Jackknife method will produce the following expressions for [[Standard Error]] and Bias
 
 The **estimate** of the Standard Error of $\hat{\alpha}$ is mean squared error of all each estimate less the average value of the estimates multiplied by $n - 1$. 
 

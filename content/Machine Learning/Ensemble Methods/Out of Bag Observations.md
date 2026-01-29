@@ -1,6 +1,6 @@
 Observations that are not included in the bootstrap sample during bagging are referred to as Out of Bag Observations.
 
-We use Out of Bag Observations in a similar way as a [[Concepts/Core/Machine Learning/Resampling & Regularization/Validation Set|Validation Set]] in [[Cross Validation]].
+We use Out of Bag Observations in a similar way as a Validation Set in [[Cross Validation]].
 
 To predict a response for some variable, say $x_i$ we would choose all the trees whose bootstrap sample does not contain $x_i$. 
 ### Regression

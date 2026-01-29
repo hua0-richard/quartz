@@ -16,7 +16,7 @@ Here we are simulating an ARMA(1,1,1) process with $\phi_1 = 0.5$ and $\theta_2 
 arima11 <- arima.sim(1000, model=list(order=c(1, 1, 1),ar=c(.5), ma=c(.7)))
 ts.plot(arima11)
 ```
-![[images/Pasted image 20260126195708.png]]
+Pasted image 20260126195708.png
 Differencing is used to remove trends and transform a non-stationary series into a stationary one.
 
 We use ARIMA(p, 1, q) as an example.

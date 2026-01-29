@@ -25,7 +25,7 @@ The *Rings* are the values produce by the Loss Function for each of $\beta_1$ an
 
 The centre of the *Rings* is where the loss function is minimized. With the penalty term in mind, we wish to find the pair with the shortest (straight line) distance to the centre. We can see in $L1$ that this results in one of the terms, in this case $\beta_2$ being "snapped" to zero. In the $L2$ case we can see this as the a combination of both coefficients. 
 
-![[images/ridge_lasso_2d.png]]
+ridge_lasso_2d.png
 
 Note that, in general, as $\lambda$ increases, the constraint region (circle, diamonds) will become smaller.
 

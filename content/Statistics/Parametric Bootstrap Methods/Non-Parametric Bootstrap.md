@@ -1,4 +1,4 @@
-Refer to [[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap|Bootstrap]]
+Refer to Bootstrap
 
 We perform the non-parametric bootstrap
 

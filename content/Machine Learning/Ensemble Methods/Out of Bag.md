@@ -1,4 +1,4 @@
-Observations not included in the [[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap|bootstrap]] sample during [[Bagging|bagging]] are called **Out of Bag** observations.
+Observations not included in the bootstrap sample during [[Bagging|bagging]] are called **Out of Bag** observations.
 
 We can use the Out off Bag observations in a similar way to how [[Validation Set |validation]] sets are used during [[Cross Validation |cross validation]].
 
@@ -11,7 +11,7 @@ How many data points will not be selected at each point during bagging?
 3. $$\frac{n - 1}{n}\times .. \times \frac{n-1}{n} = \frac{(n-1)^n}{n^n} = (\frac{n - 1}{n})^n = (\frac{n}{n}-\frac{1}{n})^n = (1- \frac{1}{n})^n$$
 4. $\lim_{n \to \infty}(1-\frac{1}{n})^n = \frac{1}{e} \approx \frac{1}{3}$ 
 
-We can see here that approximately $\frac{1}{3}$ of the values *will not* be selected for very large values of $n$ in [[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap|bootstrapping]]. 
+We can see here that approximately $\frac{1}{3}$ of the values *will not* be selected for very large values of $n$ in bootstrapping. 
 
 In Regression, average the predicted value across all models in ensemble.
 In Classification, we take the majority vote.

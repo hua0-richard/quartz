@@ -1,4 +1,4 @@
-We use [[Concepts/Core/Machine Learning/Resampling & Regularization/Bootstrap|Bootstrap]] to construct [[Confidence Intervals]] for parameters in intractable models.
+We use Bootstrap to construct [[Confidence Intervals]] for parameters in intractable models.
 
 In a typical problem we would estimate $\theta$ of a population using a sample from which we derive $\hat{\theta}$.
 
