@@ -1,4 +1,4 @@
-1. Split Data into [[Train Set|Training]] and [[Test Set|Test]] sets
+1. Split Data into [[Concepts/Core/Machine Learning/Regression/Train Set|Training]] and [[Concepts/Core/Machine Learning/Regression/Test Set|Test]] sets
 2. Use [[K-fold Cross Validation|Cross Validation]] on the **Training Data**
 	- Compare Models (logistic regression, KNN)
 	- Tune Hyperparameters ($k$, $\lambda$)

@@ -16,6 +16,6 @@ For error, we would use the MSE.
 
 We take the majority vote class.
 
-For error, we would use the misclassification rate.
+For error, we would use the mis-classification rate.
 
 

@@ -1,5 +1,5 @@
 [[Bagging]]
-[[Boosting]]
+[[Concepts/Core/Machine Learning/Ensemble Methods/Boosting]]
 
 Techniques which combine the predictions of multiple models to improve overall predictive performance.
 

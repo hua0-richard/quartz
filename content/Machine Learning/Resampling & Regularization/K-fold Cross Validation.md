@@ -6,7 +6,7 @@
 ### Steps
 Divide dataset into *equal* $k$ subsets. We call these subsets folds.
 
-We choose a fold to use as the [[Validation Set |validation set]] and use the remaining folds as the [[Train Set|training set]]. The loss is measured on the validation set and is recorded as $\text{Perf}_1$.
+We choose a fold to use as the [[Validation Set |validation set]] and use the remaining folds as the [[Concepts/Core/Machine Learning/Regression/Train Set|training set]]. The loss is measured on the validation set and is recorded as $\text{Perf}_1$.
 
 We choose the next fold and record the loss as $\text{Perf}_2$.
 
