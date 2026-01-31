@@ -6,7 +6,7 @@ This is my personal site built with Quartz.
 
 ## About
 
-I'm a computer science grad from the University of Waterloo now pursuing a Master's in Data Science at the University of British Columbia. I love building well-crafted products and the systems underneath them—design/UX, systems design and scalability, and developer tooling. I'm also just starting to explore C++, graphics/CUDA, and Linux/OS internals. In early 2025 I spent a term on exchange at Chalmers University of Technology in Gothenburg, Sweden.
+I'm a computer science grad from the University of Waterloo now pursuing a Master's in Data Science at the University of British Columbia. I love building well-crafted products and the systems underneath them—design/UX, systems design and scalability, and developer tooling. I have hands-on experience in C++ for systems and performance work and I'm diving deeper into graphics/CUDA and Linux/OS internals. In early 2025 I spent a term on exchange at Chalmers University of Technology in Gothenburg, Sweden.
 
 <div class="about-list">
   <div class="about-item">
