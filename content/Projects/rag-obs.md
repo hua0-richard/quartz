@@ -8,7 +8,10 @@ tags:
   - obsidian
 ---
 
-[Live demo](https://melodious-liger-7621b6.netlify.app) · [GitHub repo](https://github.com/hua0-richard/rag-obs)
+<div class="project-links">
+  <a class="project-link project-link-primary" href="https://melodious-liger-7621b6.netlify.app" target="_blank" rel="noreferrer">Live demo</a>
+  <a class="project-link" href="https://github.com/hua0-richard/rag-obs" target="_blank" rel="noreferrer">GitHub</a>
+</div>
 
 ## Overview
 
