@@ -23,32 +23,32 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Inter",
+        header: "Lora",
         body: "Inter",
         code: "JetBrains Mono",
       },
       colors: {
         lightMode: {
-          light: "#FAFAFA",
-          lightgray: "#EAEAEA",
-          gray: "#C0C0C0",
-          darkgray: "#555555",
-          dark: "#222222",
-          secondary: "#4361EE", // True Soft Blue (Vibrant but soft, no purple)
-          tertiary: "#4CC9F0", // Cyan/Sky Blue
-          highlight: "rgba(67, 97, 238, 0.08)",
-          textHighlight: "#E6E6E6",
+          light: "#FAFAF8",              // warm off-white background
+          lightgray: "#F0EDE6",          // warm surface — mirrors dark mode's primary accent
+          gray: "#B8B4AE",               // accent dim
+          darkgray: "#6B6865",           // muted — body text
+          dark: "#1C1917",               // near-black headings
+          secondary: "#3A3835",          // warm dark — links, active states
+          tertiary: "#1C1917",           // hover — darkens to heading level
+          highlight: "rgba(28, 25, 23, 0.05)",
+          textHighlight: "#F0EDE6",      // warm cream selection
         },
         darkMode: {
-          light: "#121212",
-          lightgray: "#242424",
-          gray: "#404040",
-          darkgray: "#A0A0A0",
-          dark: "#E0E0E0",
-          secondary: "#4895EF", // Bright Blue for dark mode
-          tertiary: "#4CC9F0",
-          highlight: "rgba(72, 149, 239, 0.15)",
-          textHighlight: "#333333",
+          light: "#0F0F0E",              // page background
+          lightgray: "#1A1A18",          // surface — borders, subtle backgrounds
+          gray: "#6B6865",               // muted — borders, tertiary text
+          darkgray: "#B8B4AE",           // accent dim — body text
+          dark: "#F0EDE6",               // primary accent — headings
+          secondary: "#D4D0C9",          // link / underline accent
+          tertiary: "#B8B4AE",           // hover — accent dim
+          highlight: "rgba(240, 237, 230, 0.08)",  // accent soft — pill backgrounds
+          textHighlight: "#222220",      // surface elevated — text selection bg
         },
       }
     },

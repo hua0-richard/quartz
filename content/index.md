@@ -29,7 +29,7 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
 
   <div class="about-item">
     <div class="logo-box">
-      <img src="https://media.licdn.com/dms/image/v2/C4E0BAQFdK9pXmsNksw/company-logo_200_200/company-logo_200_200/0/1675779390326/chalmers_university_of_technology_logo?e=1770854400&v=beta&t=2U02--NABFsw4h7ps8zIGf1dbAlypI67Elp3JqHW-1o" alt="Chalmers University of Technology wordmark">
+      <img src="https://cdn.worldvectorlogo.com/logos/chalmers-university-of-technology.svg" alt="Chalmers University of Technology seal">
     </div>
     <div class="about-content">
       <div class="about-title">Chalmers University of Technology</div>
@@ -67,44 +67,6 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
 ## Projects
 
 I like building products that are polished at the UI layer but still force real engineering decisions underneath. These two writeups cover a retrieval-heavy ML app and a payments-heavy full-stack system, and both link through to the live demos and source code.
-
-<div class="project-grid">
-  <article class="project-card">
-    <div class="project-card-header">
-      <p class="project-card-eyebrow">Featured project</p>
-      <h3>RAG for Obsidian</h3>
-    </div>
-    <p>A retrieval-augmented study workflow for querying Obsidian vaults, citing source notes, and generating flashcards from uploaded markdown.</p>
-    <ul class="project-feature-list">
-      <li>Source-grounded answers with note-level citations</li>
-      <li>Hybrid BM25 plus vector retrieval over pgvector</li>
-      <li>Flashcard generation with optional study-focus prompts</li>
-    </ul>
-    <div class="project-links">
-      <a class="project-link project-link-primary" href="./Projects/rag-obs">Read the post</a>
-      <a class="project-link" href="https://github.com/hua0-richard/rag-obs" target="_blank" rel="noreferrer">GitHub</a>
-      <a class="project-link" href="https://melodious-liger-7621b6.netlify.app" target="_blank" rel="noreferrer">Live demo</a>
-    </div>
-  </article>
-
-  <article class="project-card">
-    <div class="project-card-header">
-      <p class="project-card-eyebrow">Featured project</p>
-      <h3>GPU Store</h3>
-    </div>
-    <p>A full-stack compute storefront with Stripe Checkout, Redis-backed webhook safety, and the kind of backend concerns that show up in real payment flows.</p>
-    <ul class="project-feature-list">
-      <li>JWT auth with refresh rotation and multi-session support</li>
-      <li>Stripe Checkout plus verified webhook processing</li>
-      <li>Redis locks for idempotent payment event handling</li>
-    </ul>
-    <div class="project-links">
-      <a class="project-link project-link-primary" href="./Projects/gpu-store">Read the post</a>
-      <a class="project-link" href="https://github.com/hua0-richard/gpu-store" target="_blank" rel="noreferrer">GitHub</a>
-      <a class="project-link" href="https://gpu-store-web-b1y2.vercel.app" target="_blank" rel="noreferrer">Live demo</a>
-    </div>
-  </article>
-</div>
 
 <style>
 .about-list {
@@ -222,6 +184,7 @@ I like building products that are polished at the UI layer but still force real 
 :root[saved-theme="dark"] .about-years {
   color: var(--gray);
 }
+
 
 :root[saved-theme="dark"] .about-courses-label {
   color: color-mix(in srgb, var(--gray) 80%, var(--light) 20%);

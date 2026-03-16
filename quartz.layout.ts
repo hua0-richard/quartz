@@ -5,7 +5,14 @@ import * as Component from "./quartz/components"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [Component.PrismHeaders()],
+  afterBody: [
+    Component.PrismHeaders(),
+    Component.ConditionalRender({
+      component: Component.ProjectGrid(),
+      condition: (page) =>
+        page.fileData.slug === "index" || page.fileData.slug === "Projects/index",
+    }),
+  ],
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/jackyzha0/quartz",

@@ -1,6 +1,13 @@
 ---
 title: RAG for Obsidian
-description: A retrieval-augmented study workflow for Obsidian vaults with citations and flashcard generation.
+description: A retrieval-augmented study workflow for querying Obsidian vaults, citing source notes, and generating flashcards from uploaded markdown.
+eyebrow: Retrieval + Study Tools
+github: https://github.com/hua0-richard/rag-obs
+demo: https://melodious-liger-7621b6.netlify.app
+features:
+  - Source-grounded answers with note-level citations
+  - Hybrid BM25 plus vector retrieval over pgvector
+  - Flashcard generation with optional study-focus prompts
 tags:
   - projects
   - rag

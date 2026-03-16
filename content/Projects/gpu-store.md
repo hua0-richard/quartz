@@ -1,6 +1,13 @@
 ---
 title: GPU Store
-description: A full-stack compute storefront with Stripe payments, JWT auth, and Redis-backed webhook safety.
+description: A full-stack compute storefront with Stripe Checkout, Redis-backed webhook safety, and the kind of backend concerns that show up in real payment flows.
+eyebrow: Payments + Distributed Systems
+github: https://github.com/hua0-richard/gpu-store
+demo: https://gpu-store-web-b1y2.vercel.app
+features:
+  - JWT auth with refresh rotation and multi-session support
+  - Stripe Checkout with verified, webhook-driven payment updates
+  - Redis locks to handle concurrent payment events safely
 tags:
   - projects
   - full-stack
