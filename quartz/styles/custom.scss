@@ -93,3 +93,124 @@ pre {
         text-fill-color: transparent;
     }
 }
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.25rem 0 1rem;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.1rem;
+    border-radius: 18px;
+    border: 1px solid color-mix(in srgb, var(--gray) 16%, transparent);
+    background: linear-gradient(160deg,
+            color-mix(in srgb, var(--light) 95%, var(--tertiary) 5%),
+            color-mix(in srgb, var(--light) 92%, var(--secondary) 8%));
+    box-shadow: 0 14px 32px -24px color-mix(in srgb, var(--darkgray) 38%, transparent);
+}
+
+.project-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.project-card-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--secondary) 80%, var(--darkgray) 20%);
+}
+
+.project-card h3,
+.project-card h4 {
+    margin: 0;
+    font-size: 1.15rem;
+    line-height: 1.2;
+}
+
+.project-card p {
+    margin: 0;
+}
+
+.project-feature-list {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: var(--darkgray);
+}
+
+.project-feature-list li {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: auto;
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--gray) 22%, transparent);
+    background: color-mix(in srgb, var(--light) 88%, transparent);
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.project-link:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--secondary) 35%, var(--gray) 65%);
+    background: color-mix(in srgb, var(--secondary) 10%, var(--light) 90%);
+}
+
+.project-link-primary {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--light);
+}
+
+.project-link-primary:hover {
+    background: color-mix(in srgb, var(--secondary) 88%, black 12%);
+    border-color: color-mix(in srgb, var(--secondary) 88%, black 12%);
+}
+
+:root[saved-theme="dark"] .project-card {
+    border-color: color-mix(in srgb, var(--light) 12%, transparent);
+    background: linear-gradient(160deg,
+            color-mix(in srgb, var(--dark) 90%, var(--secondary) 10%),
+            color-mix(in srgb, var(--darkgray) 76%, var(--tertiary) 24%));
+    box-shadow: 0 14px 32px -24px color-mix(in srgb, black 75%, transparent);
+}
+
+:root[saved-theme="dark"] .project-card-eyebrow {
+    color: color-mix(in srgb, var(--tertiary) 70%, var(--gray) 30%);
+}
+
+:root[saved-theme="dark"] .project-link {
+    border-color: color-mix(in srgb, var(--light) 14%, transparent);
+    background: color-mix(in srgb, var(--dark) 82%, var(--darkgray) 18%);
+    color: var(--dark);
+}
+
+:root[saved-theme="dark"] .project-link:hover {
+    background: color-mix(in srgb, var(--secondary) 16%, var(--dark) 84%);
+}
