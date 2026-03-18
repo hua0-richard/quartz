@@ -22,7 +22,6 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
           <li>Algorithms</li>
           <li>Operating Systems</li>
           <li>Artificial Intelligence</li>
-          <li>Databases</li>
         </ul>
       </div>
     </div>
@@ -87,6 +86,13 @@ I like building products that are polished at the UI layer but still force real 
   background: var(--light);
   border: 1px solid color-mix(in srgb, var(--gray) 14%, transparent);
   box-shadow: 0 6px 18px -16px color-mix(in srgb, var(--darkgray) 45%, transparent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.about-item:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--gray) 30%, transparent);
+  box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--darkgray) 35%, transparent);
 }
 
 .logo-box {

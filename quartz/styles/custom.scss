@@ -363,10 +363,12 @@ footer {
   border-radius: 6px;
   border: 1px solid var(--lightgray);
   background: var(--light);
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
     border-color: var(--gray);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px -8px color-mix(in srgb, var(--darkgray) 25%, transparent);
   }
 }
 
