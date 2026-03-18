@@ -256,17 +256,6 @@ async function setupExplorer(currentSlug: FullSlug) {
       window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
     }
 
-    // Fix scroll wheel not working on sticky sidebar — wheel events go to the
-    // page body instead of the inner scrollable list, so redirect them manually.
-    const explorerContent = explorer.querySelector(".explorer-content") as HTMLElement
-    if (explorerContent) {
-      const handleWheel = (e: WheelEvent) => {
-        e.preventDefault()
-        ;(explorerUl as HTMLElement).scrollBy(0, e.deltaY)
-      }
-      explorerContent.addEventListener("wheel", handleWheel, { passive: false })
-      window.addCleanup(() => explorerContent.removeEventListener("wheel", handleWheel))
-    }
   }
 }
 
@@ -277,9 +266,38 @@ document.addEventListener("prenav", async () => {
   sessionStorage.setItem("explorerScrollTop", explorer.scrollTop.toString())
 })
 
+// Prevent wheel events on a sticky sidebar from scrolling the main page.
+// Walks up from the event target to find the nearest scrollable child and
+// redirects scroll there; if none exists, the default is still suppressed.
+function makeSidebarWheelHandler(sidebar: HTMLElement) {
+  return (e: WheelEvent) => {
+    e.preventDefault()
+    let el = e.target as HTMLElement | null
+    while (el && el !== sidebar) {
+      const style = getComputedStyle(el)
+      if (
+        el.scrollHeight > el.clientHeight &&
+        style.overflowY !== "hidden" &&
+        style.overflowY !== "visible"
+      ) {
+        el.scrollBy(0, e.deltaY)
+        return
+      }
+      el = el.parentElement
+    }
+  }
+}
+
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   const currentSlug = e.detail.url
   await setupExplorer(currentSlug)
+
+  const leftSidebar = document.querySelector(".sidebar.left") as HTMLElement | null
+  if (leftSidebar) {
+    const handler = makeSidebarWheelHandler(leftSidebar)
+    leftSidebar.addEventListener("wheel", handler, { passive: false })
+    window.addCleanup(() => leftSidebar.removeEventListener("wheel", handler))
+  }
 
   // if mobile hamburger is visible, collapse by default
   for (const explorer of document.getElementsByClassName("explorer")) {

@@ -21,6 +21,7 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
         <ul class="about-courses-list">
           <li>Algorithms</li>
           <li>Operating Systems</li>
+          <li>Artificial Intelligence</li>
           <li>Databases</li>
         </ul>
       </div>
@@ -37,9 +38,9 @@ I'm a computer science grad from the University of Waterloo now pursuing a Maste
       <div class="about-courses">
         <div class="about-courses-label">Selected courses</div>
         <ul class="about-courses-list">
-          <li>Distributed Systems</li>
-          <li>Computer Graphics</li>
-          <li>Parallel Computing</li>
+          <li>Applied Machine Learning</li>
+          <li>Game Engine Architecture</li>
+          <li>Agile Software Development</li>
         </ul>
       </div>
     </div>

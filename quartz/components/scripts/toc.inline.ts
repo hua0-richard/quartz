@@ -37,6 +37,28 @@ function setupToc() {
 document.addEventListener("nav", () => {
   setupToc()
 
+  const rightSidebar = document.querySelector(".sidebar.right") as HTMLElement | null
+  if (rightSidebar) {
+    const handler = (e: WheelEvent) => {
+      e.preventDefault()
+      let el = e.target as HTMLElement | null
+      while (el && el !== rightSidebar) {
+        const style = getComputedStyle(el)
+        if (
+          el.scrollHeight > el.clientHeight &&
+          style.overflowY !== "hidden" &&
+          style.overflowY !== "visible"
+        ) {
+          el.scrollBy(0, e.deltaY)
+          return
+        }
+        el = el.parentElement
+      }
+    }
+    rightSidebar.addEventListener("wheel", handler, { passive: false })
+    window.addCleanup(() => rightSidebar.removeEventListener("wheel", handler))
+  }
+
   // update toc entry highlighting
   observer.disconnect()
   const headers = document.querySelectorAll("h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]")
