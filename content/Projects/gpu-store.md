@@ -16,7 +16,7 @@ tags:
 ---
 
 <div class="project-links">
-  <a class="project-link project-link-primary" href="https://gpu-store-web-b1y2.vercel.app" target="_blank" rel="noreferrer">Live demo</a>
+  <a class="project-link project-link-primary" href="https://gpu-store-web-b1y2.vercel.app" target="_blank" rel="noreferrer">Try now</a>
   <a class="project-link" href="https://github.com/hua0-richard/gpu-store" target="_blank" rel="noreferrer">GitHub</a>
 </div>
 
