@@ -255,6 +255,18 @@ async function setupExplorer(currentSlug: FullSlug) {
       icon.addEventListener("click", toggleFolder)
       window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
     }
+
+    // Fix scroll wheel not working on sticky sidebar — wheel events go to the
+    // page body instead of the inner scrollable list, so redirect them manually.
+    const explorerContent = explorer.querySelector(".explorer-content") as HTMLElement
+    if (explorerContent) {
+      const handleWheel = (e: WheelEvent) => {
+        e.preventDefault()
+        ;(explorerUl as HTMLElement).scrollBy(0, e.deltaY)
+      }
+      explorerContent.addEventListener("wheel", handleWheel, { passive: false })
+      window.addCleanup(() => explorerContent.removeEventListener("wheel", handleWheel))
+    }
   }
 }
 
