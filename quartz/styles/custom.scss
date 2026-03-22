@@ -380,9 +380,18 @@ footer {
 
 // Mobile
 @media (max-width: #{map-get($breakpoints, mobile) - 1px}) {
-  .center { padding: 0 1rem; }
-  .sidebar.right, .sidebar.left {
-    width: 100%; padding: 0.75rem 1rem;
+  .center { padding: 0; }
+  .sidebar.left {
+    width: 100%;
+    padding: 0.75rem 0;
+    align-items: center;
+    & > * + * { margin-top: 0; }
+    & > .explorer { align-self: center; margin-bottom: 0; }
+    & .darkmode { display: flex; align-items: center; }
+  }
+  .sidebar.right {
+    width: 100%;
+    padding: 0.75rem 0;
     & > * + * { margin-top: 1rem; }
   }
 
@@ -394,17 +403,14 @@ footer {
   }
 
   .landing-hero {
-    padding: 60px 0 40px;
-    .landing-name { font-size: 2rem; }
-    .landing-subtitle { font-size: 0.95rem; }
-    .project-cards { margin-top: 2.5rem; gap: 1rem; }
-    .project-card {
-      padding: 1.25rem;
-      h3 { font-size: 1.05rem; }
-      p { font-size: 0.85rem; }
-      .tags span { font-size: 0.7rem; }
-    }
+    padding: 32px 0 20px;
+    .landing-name { font-size: 1.75rem; }
+    .landing-subtitle { font-size: 0.9rem; }
   }
+
+  .landing-education,
+  .landing-projects,
+  .landing-explorations { padding: 1.25rem 0; }
 
   .backlinks { padding: 1rem; h3 { font-size: 0.7rem; } }
 

@@ -594,10 +594,28 @@ Landing.css = `
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-hero { padding: 60px 0 40px; }
+  .landing-hero { padding: 40px 0 24px; }
   .landing-name { font-size: 2rem; }
   .landing-subtitle { font-size: 0.95rem; }
-  .lp-card { padding: 1.25rem; }
+
+  .landing-education,
+  .landing-projects,
+  .landing-explorations { padding: 1.5rem 0; }
+
+  .landing-edu-list { gap: 0.75rem; }
+  .edu-item { padding: 1rem; }
+  .lp-card { padding: 1rem; }
+
+  .landing-project-grid { gap: 0.75rem; }
+}
+
+@media (max-width: 520px) {
+  .landing-hero { padding: 32px 0 20px; }
+  .landing-name { font-size: 1.75rem; }
+  .landing-subtitle { font-size: 0.9rem; }
+  .landing-bio { font-size: 0.82rem; }
+  .landing-links a { font-size: 0.82rem; }
+  .landing-section-heading { font-size: 0.72rem; }
 }
 
 /* ── Reduced motion ────────────────────────────────────────── */
