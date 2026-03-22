@@ -1,14 +1,9 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
-/**
- * Quartz 4 Configuration
- *
- * See https://quartz.jzhao.xyz/configuration for more information.
- */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
+    pageTitle: "Richard Hua",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -16,41 +11,41 @@ const config: QuartzConfig = {
       provider: "plausible",
     },
     locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
+    baseUrl: "richardhua.dev",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Lora",
+        header: "Source Serif 4",
         body: "Inter",
         code: "JetBrains Mono",
       },
       colors: {
         lightMode: {
-          light: "#FAFAF8",              // warm off-white background
-          lightgray: "#F0EDE6",          // warm surface — mirrors dark mode's primary accent
-          gray: "#B8B4AE",               // accent dim
-          darkgray: "#6B6865",           // muted — body text
-          dark: "#1C1917",               // near-black headings
-          secondary: "#3A3835",          // warm dark — links, active states
-          tertiary: "#1C1917",           // hover — darkens to heading level
-          highlight: "rgba(28, 25, 23, 0.05)",
-          textHighlight: "#F0EDE6",      // warm cream selection
+          light: "#FAFAF8",
+          lightgray: "#EDEAE3",
+          gray: "#B0ACA6",
+          darkgray: "#5C5955",
+          dark: "#1A1816",
+          secondary: "#3A3835",
+          tertiary: "#1A1816",
+          highlight: "rgba(26, 24, 22, 0.05)",
+          textHighlight: "#EDEAE3",
         },
         darkMode: {
-          light: "#0F0F0E",              // page background
-          lightgray: "#1A1A18",          // surface — borders, subtle backgrounds
-          gray: "#6B6865",               // muted — borders, tertiary text
-          darkgray: "#B8B4AE",           // accent dim — body text
-          dark: "#F0EDE6",               // primary accent — headings
-          secondary: "#D4D0C9",          // link / underline accent
-          tertiary: "#B8B4AE",           // hover — accent dim
-          highlight: "rgba(240, 237, 230, 0.08)",  // accent soft — pill backgrounds
-          textHighlight: "#222220",      // surface elevated — text selection bg
+          light: "#0e0f0c",
+          lightgray: "#1d1e19",
+          gray: "#7a7870",
+          darkgray: "#e8e6df",
+          dark: "#e8e6df",
+          secondary: "#d4d2cb",
+          tertiary: "#a8a69f",
+          highlight: "rgba(255, 255, 255, 0.05)",
+          textHighlight: "rgba(255, 255, 255, 0.1)",
         },
-      }
+      },
     },
   },
   plugins: {
@@ -88,7 +83,6 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Comment out CustomOgImages to speed up build time
       Plugin.CustomOgImages(),
     ],
   },

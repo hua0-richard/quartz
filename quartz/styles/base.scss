@@ -26,8 +26,8 @@ body {
   border-radius: 5px;
 }
 ::selection {
-  background: color-mix(in srgb, var(--tertiary) 60%, rgba(255, 255, 255, 0));
-  color: var(--darkgray);
+  background: color-mix(in srgb, var(--secondary) 20%, transparent);
+  color: var(--dark);
 }
 
 p,
@@ -77,7 +77,7 @@ strong {
 a {
   font-weight: $semiBoldWeight;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease-out;
   color: var(--secondary);
 
   &:hover {
@@ -94,7 +94,7 @@ a {
     &.broken {
       color: var(--secondary);
       opacity: 0.5;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s ease-out;
       &:hover {
         opacity: 0.8;
       }
@@ -219,6 +219,11 @@ a {
       display: flex;
       height: 100vh;
       position: sticky;
+      pointer-events: none;
+
+      & > * {
+        pointer-events: auto;
+      }
     }
 
     & .sidebar.left {
@@ -251,10 +256,24 @@ a {
         width: 100%;
         flex-direction: row;
         padding: 0;
+        pointer-events: auto;
+        overflow: visible;
+
         & > * {
           flex: 1;
-          max-height: 24rem;
+          pointer-events: auto;
+          overflow: visible;
+          max-height: none;
         }
+
+        // Kill all scroll-trapping wrappers inside right sidebar
+        div:has(> .overflow),
+        ul.overflow,
+        ol.overflow {
+          max-height: none;
+          overflow: visible;
+        }
+
         & > .toc {
           display: none;
         }
@@ -343,7 +362,7 @@ blockquote {
   margin: 1rem 0;
   border-left: 3px solid var(--secondary);
   padding-left: 1rem;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.25s ease-out;
 }
 
 h1,
@@ -373,7 +392,7 @@ h6 {
   &[id] > a[href^="#"] {
     margin: 0 0.5rem;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.25s ease-out;
     transform: translateY(-0.1rem);
     font-family: var(--codeFont);
     user-select: none;
@@ -629,6 +648,6 @@ iframe.pdf {
   width: 0;
   height: 3px;
   background: var(--secondary);
-  transition: width 0.2s ease;
+  transition: width 0.25s ease-out;
   z-index: 9999;
 }

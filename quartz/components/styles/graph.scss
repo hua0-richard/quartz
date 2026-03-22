@@ -1,26 +1,58 @@
 @use "../../styles/variables.scss" as *;
 
 .graph {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
   & > h3 {
-    font-size: 1rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray);
+    padding: 1rem 1.5rem 0;
     margin: 0;
   }
 
   & > .graph-outer {
-    border-radius: 5px;
-    border: 1px solid var(--lightgray);
+    border: none;
+    border-radius: 0;
     box-sizing: border-box;
-    height: 250px;
-    margin: 0.5em 0;
     position: relative;
     overflow: hidden;
+    background: transparent;
+
+    // Responsive heights
+    height: 250px;
+
+    @media all and ($tablet) {
+      height: 220px;
+    }
+
+    @media all and ($mobile) {
+      height: 160px;
+      width: 100%;
+    }
+
+    @media all and not ($desktop) {
+      pointer-events: none;
+
+      & > .global-graph-icon {
+        pointer-events: auto;
+      }
+    }
 
     & > .global-graph-icon {
       cursor: pointer;
       background: none;
       border: none;
       color: var(--dark);
-      opacity: 0.5;
+      opacity: 0.3;
       width: 24px;
       height: 24px;
       position: absolute;
@@ -30,10 +62,9 @@
       right: 0;
       border-radius: 4px;
       background-color: transparent;
-      transition: background-color 0.5s ease;
-      cursor: pointer;
+      transition: opacity 0.3s var(--ease);
       &:hover {
-        background-color: var(--lightgray);
+        opacity: 0.7;
       }
     }
   }
@@ -45,7 +76,9 @@
     top: 0;
     width: 100vw;
     height: 100%;
-    backdrop-filter: blur(4px);
+    background: var(--light);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: none;
     overflow: hidden;
 
@@ -54,9 +87,9 @@
     }
 
     & > .global-graph-container {
-      border: 1px solid var(--lightgray);
+      border: 1px solid var(--border);
       background-color: var(--light);
-      border-radius: 5px;
+      border-radius: 8px;
       box-sizing: border-box;
       position: fixed;
       top: 50%;
@@ -69,5 +102,24 @@
         width: 90%;
       }
     }
+  }
+}
+
+// Tablet
+@media (min-width: #{map-get($breakpoints, mobile)}) and (max-width: #{map-get($breakpoints, desktop) - 1px}) {
+  .graph {
+    max-width: 600px;
+    margin: 2rem auto 0;
+  }
+}
+
+// Mobile
+@media (max-width: #{map-get($breakpoints, mobile) - 1px}) {
+  .graph {
+    margin: 1.5rem -1rem 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    & > h3 { padding: 0.65rem 1rem 0; font-size: 0.68rem; }
   }
 }

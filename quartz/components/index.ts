@@ -25,6 +25,8 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import ProjectGrid from "./ProjectGrid"
+import Landing from "./Landing"
+import Animations from "./Animations"
 
 export {
   ArticleTitle,
@@ -53,4 +55,6 @@ export {
   Flex,
   ConditionalRender,
   ProjectGrid,
+  Landing,
+  Animations,
 }

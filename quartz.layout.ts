@@ -6,17 +6,11 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [
-    Component.PrismHeaders(),
-    Component.ConditionalRender({
-      component: Component.ProjectGrid(),
-      condition: (page) =>
-        page.fileData.slug === "index" || page.fileData.slug === "Projects/index",
-    }),
+    Component.Animations(),
   ],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/jackyzha0/quartz",
-      "Discord Community": "https://discord.gg/cRFFHYye7t",
+      GitHub: "https://github.com/hua0-richard",
     },
   }),
 }
@@ -28,9 +22,19 @@ export const defaultContentPageLayout: PageLayout = {
       component: Component.Breadcrumbs(),
       condition: (page) => page.fileData.slug !== "index",
     }),
-    Component.ArticleTitle(),
-    Component.ContentMeta(),
-    Component.TagList(),
+    Component.ConditionalRender({
+      component: Component.ArticleTitle(),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
+    Component.ConditionalRender({
+      component: Component.ContentMeta(),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
+    Component.ConditionalRender({
+      component: Component.TagList(),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
+    Component.Landing(),
   ],
   left: [
     Component.PageTitle(),
@@ -42,16 +46,41 @@ export const defaultContentPageLayout: PageLayout = {
           grow: true,
         },
         { Component: Component.Darkmode() },
-        { Component: Component.ReaderMode() },
       ],
     }),
     Component.Explorer(),
   ],
   right: [
-    Component.Graph(),
+    Component.Graph({
+      localGraph: {
+        drag: true,
+        zoom: true,
+        depth: 2,
+        scale: 1.2,
+        repelForce: 0.6,
+        centerForce: 0.25,
+        linkDistance: 40,
+        fontSize: 0.55,
+        opacityScale: 1.5,
+        removeTags: [],
+        showTags: true,
+      },
+      globalGraph: {
+        drag: true,
+        zoom: true,
+        depth: -1,
+        scale: 0.85,
+        repelForce: 0.4,
+        centerForce: 0.25,
+        linkDistance: 35,
+        fontSize: 0.5,
+        opacityScale: 1.5,
+        removeTags: [],
+        showTags: true,
+      },
+    }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
-    Component.RecentNotes(),
   ],
 }
 
