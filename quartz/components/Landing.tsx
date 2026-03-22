@@ -41,7 +41,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
             GitHub
           </a>
           <span class="dot">&middot;</span>
-          <a href="https://linkedin.com/in/richard-hua" target="_blank" rel="noreferrer">
+          <a href="https://www.linkedin.com/in/richard0hua/" target="_blank" rel="noreferrer">
             LinkedIn
           </a>
         </div>
