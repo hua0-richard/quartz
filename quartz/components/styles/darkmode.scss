@@ -1,22 +1,35 @@
 .darkmode {
   cursor: pointer;
-  padding: 0;
   position: relative;
-  background: none;
-  border: none;
-  width: 20px;
-  height: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 2.1rem;
+  height: 2.1rem;
   margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: inherit;
   flex-shrink: 0;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+
+  &:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+  }
 
   & svg {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: calc(50% - 10px);
-    fill: var(--darkgray);
-    transition: opacity 0.1s ease;
+    width: 15px;
+    height: 15px;
+    stroke: var(--gray);
+    fill: none;
+    transition: stroke 0.3s var(--ease);
+  }
+
+  &:hover svg {
+    stroke: var(--dark);
   }
 }
 

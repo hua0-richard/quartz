@@ -1,8 +1,11 @@
 @use "../../styles/variables.scss" as *;
 
+// ═══════════════════════════════════════════
+// MOBILE PAGE SHIFT
+// ═══════════════════════════════════════════
+
 @media all and ($mobile) {
   .page > #quartz-body {
-    // Shift page position when toggling Explorer on mobile.
     & > :not(.sidebar.left:has(.explorer)) {
       transition: transform 300ms ease-in-out;
     }
@@ -11,7 +14,6 @@
       transition: transform 300ms ease-in-out;
     }
 
-    // Sticky top bar (stays in place when scrolling down on mobile).
     .sidebar.left:has(.explorer) {
       box-sizing: border-box;
       position: sticky;
@@ -26,15 +28,20 @@
   }
 }
 
+// ═══════════════════════════════════════════
+// EXPLORER CONTAINER
+// ═══════════════════════════════════════════
+
 .explorer {
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
-
   min-height: 1.2rem;
   flex: 0 1 auto;
+
   &.collapsed {
     flex: 0 1 1.2rem;
+
     & .fold {
       transform: rotateZ(-90deg);
     }
@@ -42,8 +49,8 @@
 
   & .fold {
     margin-left: 0.5rem;
-    transition: transform 0.3s ease;
-    opacity: 0.8;
+    transition: transform 0.3s var(--ease);
+    opacity: 0.4;
   }
 
   @media all and ($mobile) {
@@ -82,7 +89,7 @@
 
   svg {
     pointer-events: all;
-    transition: transform 0.35s ease;
+    transition: transform 0.35s var(--ease);
 
     & > polyline {
       pointer-events: none;
@@ -90,7 +97,30 @@
   }
 }
 
-button.mobile-explorer,
+// ═══════════════════════════════════════════
+// TOGGLE BUTTONS
+// ═══════════════════════════════════════════
+
+button.mobile-explorer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  color: var(--dark);
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+
+  &:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+  }
+}
+
 button.desktop-explorer {
   background-color: transparent;
   border: none;
@@ -100,19 +130,37 @@ button.desktop-explorer {
   color: var(--dark);
   display: flex;
   align-items: center;
+  transition: color 0.3s var(--ease);
+
+  &:hover {
+    color: var(--secondary);
+
+    & .fold {
+      opacity: 0.7;
+    }
+  }
 
   & h2 {
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray);
     display: inline-block;
     margin: 0;
   }
 }
 
+// ═══════════════════════════════════════════
+// EXPLORER CONTENT & TREE
+// ═══════════════════════════════════════════
+
 .explorer-content {
   list-style: none;
   overflow: hidden;
   overflow-y: auto;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 
   & ul {
     list-style: none;
@@ -121,24 +169,51 @@ button.desktop-explorer {
     overscroll-behavior: contain;
 
     & li > a {
-      color: var(--dark);
-      opacity: 0.75;
+      color: var(--darkgray);
+      font-size: 0.85rem;
+      line-height: 1.4;
       pointer-events: all;
+      text-decoration: none;
+      display: block;
+      padding: 0.2rem 0.5rem;
+      margin: 0 -0.5rem;
+      border-radius: 6px;
+      transition: color 0.2s var(--ease), background 0.2s var(--ease);
+
+      &:hover {
+        color: var(--secondary);
+        background: var(--surface);
+      }
 
       &.active {
-        opacity: 1;
-        color: var(--tertiary);
+        color: var(--secondary);
+        font-weight: 500;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 2px;
+          height: 50%;
+          background: var(--secondary);
+          border-radius: 1px;
+          opacity: 0.5;
+        }
       }
     }
   }
 
+  // ── Folder collapse animation ──
   .folder-outer {
     visibility: collapse;
     display: grid;
     grid-template-rows: 0fr;
     transition-property: grid-template-rows, visibility;
     transition-duration: 0.3s;
-    transition-timing-function: ease-in-out;
+    transition-timing-function: var(--ease);
   }
 
   .folder-outer.open {
@@ -148,11 +223,16 @@ button.desktop-explorer {
 
   .folder-outer > ul {
     overflow: hidden;
-    margin-left: 6px;
-    padding-left: 0.8rem;
-    border-left: 1px solid var(--lightgray);
+    margin-left: 0;
+    padding-left: 1rem;
+    border-left: 1px solid var(--border);
+    margin-top: 0.1rem;
   }
 }
+
+// ═══════════════════════════════════════════
+// FOLDER ITEMS
+// ═══════════════════════════════════════════
 
 .folder-container {
   flex-direction: row;
@@ -161,16 +241,18 @@ button.desktop-explorer {
   user-select: none;
 
   & div > a {
-    color: var(--secondary);
-    font-family: var(--headerFont);
-    font-size: 0.95rem;
-    font-weight: $semiBoldWeight;
-    line-height: 1.5rem;
+    color: var(--dark);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
     display: inline-block;
-  }
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
 
-  & div > a:hover {
-    color: var(--tertiary);
+    &:hover {
+      color: var(--secondary);
+    }
   }
 
   & div > button {
@@ -179,29 +261,41 @@ button.desktop-explorer {
     border: none;
     text-align: left;
     cursor: pointer;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0.2rem 0.5rem;
+    margin: 0 -0.5rem;
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    font-family: var(--headerFont);
+    font-family: var(--font-sans);
+    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+
+    &:hover {
+      color: var(--secondary);
+      background: var(--surface);
+    }
 
     & span {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       display: inline-block;
-      color: var(--secondary);
-      font-weight: $semiBoldWeight;
+      color: var(--dark);
+      font-weight: 500;
       margin: 0;
-      line-height: 1.5rem;
+      line-height: 1.4;
       pointer-events: none;
+      transition: color 0.2s var(--ease);
+    }
+
+    &:hover span {
+      color: var(--secondary);
     }
   }
 }
 
 .folder-icon {
-  margin-right: 5px;
-  color: var(--secondary);
+  margin-right: 4px;
+  color: var(--gray);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s var(--ease), color 0.2s var(--ease);
   backface-visibility: visible;
   flex-shrink: 0;
 }
@@ -210,9 +304,13 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   transform: rotate(-90deg);
 }
 
-.folder-icon:hover {
-  color: var(--tertiary);
+.folder-container:hover > .folder-icon {
+  color: var(--secondary);
 }
+
+// ═══════════════════════════════════════════
+// MOBILE EXPLORER
+// ═══════════════════════════════════════════
 
 .explorer {
   @media all and ($mobile) {
@@ -249,7 +347,7 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
         transform 200ms ease,
         visibility 200ms ease;
       overflow: hidden;
-      padding: 4rem 0 2rem 0;
+      padding: 4rem 1.25rem 2rem 1.25rem;
       height: 100dvh;
       max-height: 100dvh;
       visibility: hidden;
@@ -257,11 +355,17 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 
     .mobile-explorer {
       margin: 0;
-      padding: 5px;
       z-index: 101;
 
       .lucide-menu {
-        stroke: var(--darkgray);
+        width: 16px;
+        height: 16px;
+        stroke: var(--gray);
+        transition: stroke 0.3s var(--ease);
+      }
+
+      &:hover .lucide-menu {
+        stroke: var(--dark);
       }
     }
   }

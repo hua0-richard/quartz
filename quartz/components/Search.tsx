@@ -19,7 +19,7 @@ export default ((userOpts?: Partial<SearchOptions>) => {
     const searchPlaceholder = i18n(cfg.locale).components.search.searchBarPlaceholder
     return (
       <div class={classNames(displayClass, "search")}>
-        <button class="search-button">
+        <button class="search-button" aria-label="Search">
           <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
             <title>Search</title>
             <g class="search-path" fill="none">
@@ -28,18 +28,30 @@ export default ((userOpts?: Partial<SearchOptions>) => {
             </g>
           </svg>
           <p>{i18n(cfg.locale).components.search.title}</p>
+          <kbd class="search-shortcut">⌘K</kbd>
         </button>
         <div class="search-container">
           <div class="search-space">
-            <input
-              autocomplete="off"
-              class="search-bar"
-              name="search"
-              type="text"
-              aria-label={searchPlaceholder}
-              placeholder={searchPlaceholder}
-            />
-            <div class="search-layout" data-preview={opts.enablePreview}></div>
+            <div class="search-panel">
+              <div class="search-input-wrapper">
+                <svg class="search-input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
+                  <g fill="none">
+                    <path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4" />
+                    <circle cx="8" cy="8" r="7" />
+                  </g>
+                </svg>
+                <input
+                  autocomplete="off"
+                  class="search-bar"
+                  name="search"
+                  type="text"
+                  aria-label={searchPlaceholder}
+                  placeholder={searchPlaceholder}
+                />
+                <kbd class="search-dismiss">esc</kbd>
+              </div>
+              <div class="search-layout" data-preview={opts.enablePreview}></div>
+            </div>
           </div>
         </div>
       </div>

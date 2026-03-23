@@ -25,7 +25,9 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
     <div class="landing">
       {/* ── Hero ── */}
       <section class="landing-hero">
-        <h1 class="landing-name">Richard Hua</h1>
+        <div class="landing-name" role="heading" aria-level={1} aria-label="Richard Hua">
+          <pre class="ascii-name" aria-hidden="true"></pre>
+        </div>
         <p class="landing-subtitle">
           Full-stack engineer building AI-powered products — RAG systems, LLM
           pipelines, and the interfaces on top of them.
@@ -193,15 +195,32 @@ Landing.css = `
 }
 
 .landing-name {
-  font-family: var(--font-serif);
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 0 0 1.25rem;
-  line-height: 1.15;
-  color: var(--dark);
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
+}
+
+.ascii-name {
+  font-family: var(--font-mono) !important;
+  font-size: clamp(0.18rem, 0.5vw, 0.3rem) !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.05em !important;
+  color: var(--darkgray) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: pre !important;
+  overflow: hidden !important;
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: color 0.5s var(--ease) !important;
+}
+
+.landing-name:hover .ascii-name {
+  color: var(--dark) !important;
 }
 
 .landing-subtitle {
@@ -599,7 +618,7 @@ Landing.css = `
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .landing-hero { padding: 8px 0 24px; }
-  .landing-name { font-size: 2rem; }
+  .ascii-name { font-size: clamp(0.14rem, 0.9vw, 0.28rem) !important; }
   .landing-subtitle { font-size: 0.95rem; }
 
   .landing-education,
@@ -615,7 +634,7 @@ Landing.css = `
 
 @media (max-width: 520px) {
   .landing-hero { padding: 32px 0 20px; }
-  .landing-name { font-size: 1.75rem; }
+  .ascii-name { font-size: clamp(0.12rem, 1.1vw, 0.22rem) !important; }
   .landing-subtitle { font-size: 0.9rem; }
   .landing-bio { font-size: 0.82rem; }
   .landing-links a { font-size: 0.82rem; }
@@ -639,19 +658,113 @@ Landing.css = `
 `
 
 Landing.afterDOMLoaded = `
-  document.addEventListener("nav", () => {
-    const cards = document.querySelectorAll('.reveal-card');
-    if (!cards.length) return;
+  function generateAsciiName(container) {
+    var text = 'Richard Hua';
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    // Restart CSS animations on SPA navigation
-    cards.forEach(el => {
-      el.style.animation = 'none';
-    });
-    // Force reflow so the browser registers the reset
-    void document.body.offsetHeight;
-    cards.forEach(el => {
-      el.style.animation = '';
-    });
+    var fontSize = 300;
+    var fontStr = '600 ' + fontSize + 'px "JetBrains Mono", "Fira Code", Consolas, monospace';
+    ctx.font = fontStr;
+    var metrics = ctx.measureText(text);
+
+    canvas.width = Math.ceil(metrics.width) + 60;
+    canvas.height = Math.ceil(fontSize * 1.3);
+
+    ctx.fillStyle = '#000';
+    ctx.font = fontStr;
+    ctx.textBaseline = 'top';
+    ctx.fillText(text, 30, fontSize * 0.12);
+
+    var cols = 175;
+    var cellW = canvas.width / cols;
+    var cellH = cellW * 1.8;
+    var rows = Math.floor(canvas.height / cellH);
+    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    var data = imageData.data;
+
+    // Build brightness grid by averaging cell pixels
+    var grid = [];
+    for (var y = 0; y < rows; y++) {
+      grid[y] = [];
+      for (var x = 0; x < cols; x++) {
+        var sum = 0, count = 0;
+        var sx = Math.floor(x * cellW);
+        var sy = Math.floor(y * cellH);
+        var ex = Math.min(Math.floor((x + 1) * cellW), canvas.width);
+        var ey = Math.min(Math.floor((y + 1) * cellH), canvas.height);
+        for (var py = sy; py < ey; py++) {
+          for (var px = sx; px < ex; px++) {
+            var idx = (py * canvas.width + px) * 4;
+            sum += data[idx + 3];
+            count++;
+          }
+        }
+        grid[y][x] = count > 0 ? sum / count : 0;
+      }
+    }
+
+    // Floyd-Steinberg dithering with 8 density levels
+    var levels = [0, 36, 73, 109, 146, 182, 219, 255];
+    var chars = [' ', '.', ':', ';', '+', '*', '#', '@'];
+
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var oldVal = Math.max(0, Math.min(255, grid[y][x]));
+        var nearestLevel = levels[0];
+        var nearestIdx = 0;
+        for (var i = 0; i < levels.length; i++) {
+          if (Math.abs(levels[i] - oldVal) < Math.abs(nearestLevel - oldVal)) {
+            nearestLevel = levels[i];
+            nearestIdx = i;
+          }
+        }
+        var error = oldVal - nearestLevel;
+        grid[y][x] = nearestIdx;
+
+        if (x + 1 < cols) grid[y][x + 1] += error * 7 / 16;
+        if (y + 1 < rows) {
+          if (x > 0) grid[y + 1][x - 1] += error * 3 / 16;
+          grid[y + 1][x] += error * 5 / 16;
+          if (x + 1 < cols) grid[y + 1][x + 1] += error * 1 / 16;
+        }
+      }
+    }
+
+    // Build ASCII string
+    var lines = [];
+    for (var y = 0; y < rows; y++) {
+      var line = '';
+      for (var x = 0; x < cols; x++) {
+        line += chars[grid[y][x]];
+      }
+      lines.push(line);
+    }
+
+    // Trim empty lines
+    while (lines.length && lines[0].trim() === '') lines.shift();
+    while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
+
+    container.textContent = lines.join('\\n');
+  }
+
+  document.addEventListener("nav", function() {
+    // Restart reveal-card animations on SPA navigation
+    var cards = document.querySelectorAll('.reveal-card');
+    if (cards.length) {
+      cards.forEach(function(el) { el.style.animation = 'none'; });
+      void document.body.offsetHeight;
+      cards.forEach(function(el) { el.style.animation = ''; });
+    }
+
+    // Generate dithered ASCII name
+    var asciiEl = document.querySelector('.ascii-name');
+    if (asciiEl) {
+      document.fonts.ready.then(function() {
+        generateAsciiName(asciiEl);
+      });
+    }
   });
 `
 

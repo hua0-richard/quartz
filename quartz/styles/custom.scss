@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════
 
 :root {
-  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
   --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono:  'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   --ease:       cubic-bezier(0.0, 0, 0.2, 1);
@@ -105,7 +105,7 @@ code, pre, .codeblock {
 }
 
 // Section labels (sidebar headings)
-.graph > h3, .backlinks > h3, .toc > h3, .explorer > h3 {
+.graph > h3, .backlinks > h3, .toc > h3 {
   font-family: var(--font-sans);
   font-size: 0.7rem;
   font-weight: 500;
@@ -213,39 +213,6 @@ a.tag-link {
   }
 }
 
-.explorer {
-  .folder-button {
-    transition: color 0.3s var(--ease), background 0.3s var(--ease);
-    border-radius: 4px;
-    padding: 0.25rem 0.4rem;
-    margin: -0.25rem -0.4rem;
-    &:hover { color: var(--secondary); background: var(--surface); }
-    svg { transition: transform 0.3s var(--ease); }
-  }
-  .folder-outer > ul > li > a {
-    transition: color 0.3s var(--ease);
-    display: block;
-    border-radius: 4px;
-    padding: 0.15rem 0;
-    &:hover { color: var(--secondary); }
-  }
-  .folder-outer > ul > li > a.active {
-    color: var(--secondary);
-    position: relative;
-    &::before {
-      content: '';
-      position: absolute;
-      left: -8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 2px;
-      height: 50%;
-      background: var(--secondary);
-      border-radius: 1px;
-      opacity: 0.5;
-    }
-  }
-}
 
 .toc #toc-content a {
   transition: color 0.3s var(--ease);
@@ -265,33 +232,15 @@ a.tag-link {
 }
 
 .search {
-  #search-icon {
-    transition: opacity 0.3s var(--ease);
-    &:hover { opacity: 0.6; }
-  }
-  #search-container {
-    &.active { animation: fadeIn 0.25s var(--ease); }
-    #search-bar {
-      background: var(--surface) !important;
-      border: 1px solid var(--border) !important;
-      border-radius: 8px !important;
-      transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease) !important;
-      &:focus {
-        border-color: var(--border-hover) !important;
-        box-shadow: 0 0 0 3px var(--highlight) !important;
-      }
-    }
-    #results-container .result-card {
-      transition: background 0.3s var(--ease);
-      border-radius: 6px;
-      &:hover { background: var(--surface); }
-    }
+  .search-button {
+    transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+    &:hover { border-color: var(--border-hover); }
   }
 }
 
-.darkmode #darkmode-toggle {
-  transition: opacity 0.3s var(--ease);
-  &:hover { opacity: 0.6; }
+.darkmode {
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  &:hover { border-color: var(--border-hover); }
 }
 
 .section-li {
@@ -406,7 +355,6 @@ footer {
 
   .landing-hero {
     padding: 32px 0 20px;
-    .landing-name { font-size: 1.75rem; }
     .landing-subtitle { font-size: 0.9rem; }
   }
 
@@ -435,7 +383,7 @@ footer {
     &.expanded > h3::after { transform: rotate(90deg); }
   }
 
-  .search #search-container #search-bar {
+  .search .search-bar {
     font-size: 16px !important;
   }
 }
