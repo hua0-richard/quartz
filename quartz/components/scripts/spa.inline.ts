@@ -43,17 +43,29 @@ function notifyNav(url: FullSlug) {
 const cleanupFns: Set<(...args: any[]) => void> = new Set()
 window.addCleanup = (fn) => cleanupFns.add(fn)
 
-function startLoading() {
-  const loadingBar = document.createElement("div")
-  loadingBar.className = "navigation-progress"
-  loadingBar.style.width = "0"
-  if (!document.body.contains(loadingBar)) {
-    document.body.appendChild(loadingBar)
-  }
+let loadingBar: HTMLDivElement | null = null
 
-  setTimeout(() => {
-    loadingBar.style.width = "80%"
-  }, 100)
+function startLoading() {
+  // Remove any existing bar
+  loadingBar?.remove()
+
+  loadingBar = document.createElement("div")
+  loadingBar.className = "navigation-progress"
+  document.body.appendChild(loadingBar)
+
+  // Force layout then start the animation
+  loadingBar.offsetWidth
+  loadingBar.style.width = "80%"
+}
+
+function stopLoading() {
+  if (!loadingBar) return
+  const bar = loadingBar
+  bar.classList.add("done")
+  bar.addEventListener("transitionend", () => bar.remove(), { once: true })
+  // Fallback removal in case transitionend doesn't fire
+  setTimeout(() => bar.remove(), 800)
+  loadingBar = null
 }
 
 let isNavigating = false
@@ -126,6 +138,7 @@ async function _navigate(url: URL, isBack: boolean = false) {
     history.pushState({}, "", url)
   }
 
+  stopLoading()
   notifyNav(getFullSlug(window))
   delete announcer.dataset.persist
 }

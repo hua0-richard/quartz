@@ -189,7 +189,7 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 80px 0 48px;
+  padding: 16px 0 48px;
 }
 
 .landing-name {
@@ -521,6 +521,7 @@ Landing.css = `
   height: 7px;
   border-radius: 50%;
   background: #4a9a7e;
+  box-shadow: 0 0 4px rgba(74, 154, 126, 0.6), 0 0 10px rgba(74, 154, 126, 0.3);
   flex-shrink: 0;
   position: relative;
 }
@@ -587,14 +588,17 @@ Landing.css = `
 .explore-pill.reveal-card:nth-child(1) { animation-delay: 0.35s; }
 .explore-pill.reveal-card:nth-child(2) { animation-delay: 0.47s; }
 
-/* ── Hide default article content on homepage ──────────────── */
+/* ── Homepage overrides ─────────────────────────────────────── */
+.page[data-slug="index"] .page-header {
+  margin-top: 0;
+}
 .page[data-slug="index"] .center > article > *:not(.landing) {
   display: none;
 }
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-hero { padding: 40px 0 24px; }
+  .landing-hero { padding: 8px 0 24px; }
   .landing-name { font-size: 2rem; }
   .landing-subtitle { font-size: 0.95rem; }
 

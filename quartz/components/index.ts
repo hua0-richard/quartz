@@ -27,6 +27,7 @@ import ConditionalRender from "./ConditionalRender"
 import ProjectGrid from "./ProjectGrid"
 import Landing from "./Landing"
 import Animations from "./Animations"
+import DitheredTitle from "./DitheredTitle"
 
 export {
   ArticleTitle,
@@ -57,4 +58,5 @@ export {
   ProjectGrid,
   Landing,
   Animations,
+  DitheredTitle,
 }

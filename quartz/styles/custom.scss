@@ -123,19 +123,19 @@ code, pre, .codeblock {
 article {
   animation: pageIn 0.5s var(--ease);
 
-  h1 { margin: 0 0 1.5rem; }
-  h2 { margin: 3rem 0 1rem; }
-  h3 { margin: 2rem 0 0.75rem; }
-  h4 { margin: 1.5rem 0 0.5rem; }
+  h1 { margin: 0 0 2rem; }
+  h2 { margin: 3.5rem 0 1.25rem; }
+  h3 { margin: 2.5rem 0 1rem; }
+  h4 { margin: 2rem 0 0.75rem; }
 
-  p { margin: 0 0 1.25rem; }
+  p { margin: 0 0 1.5rem; }
   p:last-child { margin-bottom: 0; }
 
-  ul, ol { margin: 0 0 1.25rem; padding-left: 1.5rem; }
-  li + li { margin-top: 0.35rem; }
+  ul, ol { margin: 0 0 1.5rem; padding-left: 1.5rem; }
+  li + li { margin-top: 0.5rem; }
 
-  pre { margin: 1.5rem 0; }
-  img { margin: 1.5rem 0; border-radius: 6px; }
+  pre { margin: 2rem 0; }
+  img { margin: 2rem 0; border-radius: 6px; }
 
   hr {
     border: none;
@@ -145,8 +145,8 @@ article {
 }
 
 @keyframes pageIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .sidebar.left > * + *,
@@ -250,7 +250,9 @@ a.tag-link {
 .toc #toc-content a {
   transition: color 0.3s var(--ease);
   display: block;
-  padding: 0.3rem 0;
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
   &:hover { color: var(--secondary); }
 }
 .toc #toc-content a.in-view { color: var(--secondary); }
@@ -337,7 +339,7 @@ footer {
 
 // Desktop
 @media (min-width: #{map-get($breakpoints, desktop)}) {
-  .center { max-width: 720px; padding: 0 2rem; }
+  .center { max-width: 680px; padding: 0 2rem; }
 
   .sidebar.right {
     padding-top: 2rem;
@@ -380,7 +382,7 @@ footer {
 
 // Mobile
 @media (max-width: #{map-get($breakpoints, mobile) - 1px}) {
-  .center { padding: 0; }
+  .center { padding: 0 1rem; }
   .sidebar.left {
     width: 100%;
     padding: 0.75rem 0;
