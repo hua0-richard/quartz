@@ -8,8 +8,12 @@ html {
   scroll-behavior: smooth;
   text-size-adjust: none;
   overflow-x: hidden;
-  width: 100vw;
+  width: 100%;
   overscroll-behavior: none;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 body {
@@ -276,6 +280,14 @@ a {
 
         & > .toc {
           display: none;
+        }
+      }
+      @media all and ($mobile) {
+        flex-direction: column;
+
+        & > * {
+          flex: unset;
+          width: 100%;
         }
       }
     }
