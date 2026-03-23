@@ -26,7 +26,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
       {/* ── Hero ── */}
       <section class="landing-hero">
         <div class="landing-name" role="heading" aria-level={1} aria-label="Richard Hua">
-          <pre class="ascii-name" aria-hidden="true"></pre>
+          <canvas class="dot-name" aria-hidden="true"></canvas>
         </div>
         <p class="landing-subtitle">
           Full-stack engineer building AI-powered products — RAG systems, LLM
@@ -202,25 +202,20 @@ Landing.css = `
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
 }
 
-.ascii-name {
-  font-family: var(--font-mono) !important;
-  font-size: clamp(0.18rem, 0.5vw, 0.3rem) !important;
-  line-height: 1.25 !important;
-  letter-spacing: 0.05em !important;
-  color: var(--darkgray) !important;
+.dot-name {
+  display: block;
+  width: 100%;
   margin: 0 !important;
   padding: 0 !important;
-  white-space: pre !important;
-  overflow: hidden !important;
   background: none !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  transition: color 0.5s var(--ease) !important;
+  transition: filter 0.5s var(--ease), opacity 0.5s var(--ease);
 }
 
-.landing-name:hover .ascii-name {
-  color: var(--dark) !important;
+.landing-name:hover .dot-name {
+  filter: brightness(1.4);
 }
 
 .landing-subtitle {
@@ -618,7 +613,6 @@ Landing.css = `
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .landing-hero { padding: 8px 0 24px; }
-  .ascii-name { font-size: clamp(0.14rem, 0.9vw, 0.28rem) !important; }
   .landing-subtitle { font-size: 0.95rem; }
 
   .landing-education,
@@ -634,7 +628,6 @@ Landing.css = `
 
 @media (max-width: 520px) {
   .landing-hero { padding: 32px 0 20px; }
-  .ascii-name { font-size: clamp(0.12rem, 1.1vw, 0.22rem) !important; }
   .landing-subtitle { font-size: 0.9rem; }
   .landing-bio { font-size: 0.82rem; }
   .landing-links a { font-size: 0.82rem; }
@@ -658,111 +651,72 @@ Landing.css = `
 `
 
 Landing.afterDOMLoaded = `
-  function generateAsciiName(container) {
-    var text = 'Richard Hua';
-    var canvas = document.createElement('canvas');
+  function generateDotName(canvas) {
+    var text = 'RICHARD HUA';
+    var containerW = canvas.parentElement ? canvas.parentElement.clientWidth : 680;
+    var dpr = window.devicePixelRatio || 1;
+
+    // Render text to an offscreen canvas to sample its shape
+    var offscreen = document.createElement('canvas');
+    var fontSize = Math.round(containerW * 0.08);
+    var offW = containerW;
+    var offH = fontSize * 1.4;
+    offscreen.width = offW;
+    offscreen.height = offH;
+    var offCtx = offscreen.getContext('2d');
+    if (!offCtx) return;
+
+    offCtx.font = '700 ' + fontSize + 'px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif';
+    offCtx.fillStyle = '#000';
+    offCtx.textBaseline = 'top';
+    offCtx.fillText(text, 0, fontSize * 0.15);
+
+    var imageData = offCtx.getImageData(0, 0, offW, offH);
+    var pixels = imageData.data;
+
+    // Determine dot grid spacing
+    var step = 1.5;
+    var dotR = 0.55;
+    var gridCols = Math.floor(offW / step);
+    var gridRows = Math.floor(offH / step);
+
+    // Size the visible canvas
+    var canvasW = gridCols * step;
+    var canvasH = gridRows * step;
+    canvas.width = Math.round(canvasW * dpr);
+    canvas.height = Math.round(canvasH * dpr);
+    canvas.style.width = canvasW + 'px';
+    canvas.style.height = canvasH + 'px';
+
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
+    ctx.scale(dpr, dpr);
 
-    var fontSize = 300;
-    var fontStr = '600 ' + fontSize + 'px "JetBrains Mono", "Fira Code", Consolas, monospace';
-    ctx.font = fontStr;
-    var metrics = ctx.measureText(text);
+    var style = getComputedStyle(document.documentElement);
+    var color = style.getPropertyValue('--darkgray').trim() || '#888';
+    ctx.fillStyle = color;
 
-    canvas.width = Math.ceil(metrics.width) + 60;
-    canvas.height = Math.ceil(fontSize * 1.3);
-
-    ctx.fillStyle = '#000';
-    ctx.font = fontStr;
-    ctx.textBaseline = 'top';
-    ctx.fillText(text, 30, fontSize * 0.12);
-
-    // Measure actual monospace character width including letter-spacing
-    var measure = document.createElement('span');
-    measure.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font:' + window.getComputedStyle(container).font + ';letter-spacing:' + window.getComputedStyle(container).letterSpacing;
-    measure.textContent = 'XXXXXXXXXXXXXXXXXXXX';
-    document.body.appendChild(measure);
-    var charW = measure.offsetWidth / 20;
-    document.body.removeChild(measure);
-    var containerW = container.parentElement ? container.parentElement.clientWidth : 680;
-    var cols = Math.max(60, Math.min(175, Math.floor(containerW / charW)));
-    var cellW = canvas.width / cols;
-    var cellH = cellW * 1.8;
-    var rows = Math.floor(canvas.height / cellH);
-    var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    var data = imageData.data;
-
-    // Build brightness grid by averaging cell pixels
-    var grid = [];
-    for (var y = 0; y < rows; y++) {
-      grid[y] = [];
-      for (var x = 0; x < cols; x++) {
-        var sum = 0, count = 0;
-        var sx = Math.floor(x * cellW);
-        var sy = Math.floor(y * cellH);
-        var ex = Math.min(Math.floor((x + 1) * cellW), canvas.width);
-        var ey = Math.min(Math.floor((y + 1) * cellH), canvas.height);
-        for (var py = sy; py < ey; py++) {
-          for (var px = sx; px < ex; px++) {
-            var idx = (py * canvas.width + px) * 4;
-            sum += data[idx + 3];
-            count++;
-          }
-        }
-        grid[y][x] = count > 0 ? sum / count : 0;
-      }
-    }
-
-    // Floyd-Steinberg dithering with 8 density levels
-    var levels = [0, 36, 73, 109, 146, 182, 219, 255];
-    var chars = [' ', '.', ':', ';', '+', '*', '#', '@'];
-
-    for (var y = 0; y < rows; y++) {
-      for (var x = 0; x < cols; x++) {
-        var oldVal = Math.max(0, Math.min(255, grid[y][x]));
-        var nearestLevel = levels[0];
-        var nearestIdx = 0;
-        for (var i = 0; i < levels.length; i++) {
-          if (Math.abs(levels[i] - oldVal) < Math.abs(nearestLevel - oldVal)) {
-            nearestLevel = levels[i];
-            nearestIdx = i;
-          }
-        }
-        var error = oldVal - nearestLevel;
-        grid[y][x] = nearestIdx;
-
-        if (x + 1 < cols) grid[y][x + 1] += error * 7 / 16;
-        if (y + 1 < rows) {
-          if (x > 0) grid[y + 1][x - 1] += error * 3 / 16;
-          grid[y + 1][x] += error * 5 / 16;
-          if (x + 1 < cols) grid[y + 1][x + 1] += error * 1 / 16;
+    // Sample offscreen pixels and draw a dot where the font is filled
+    for (var gy = 0; gy < gridRows; gy++) {
+      for (var gx = 0; gx < gridCols; gx++) {
+        var px = gx * step;
+        var py = gy * step;
+        var idx = (Math.round(py) * offW + Math.round(px)) * 4;
+        if (pixels[idx + 3] > 200) {
+          ctx.beginPath();
+          ctx.arc(px + step / 2, py + step / 2, dotR, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
     }
-
-    // Build ASCII string
-    var lines = [];
-    for (var y = 0; y < rows; y++) {
-      var line = '';
-      for (var x = 0; x < cols; x++) {
-        line += chars[grid[y][x]];
-      }
-      lines.push(line);
-    }
-
-    // Trim empty lines
-    while (lines.length && lines[0].trim() === '') lines.shift();
-    while (lines.length && lines[lines.length - 1].trim() === '') lines.pop();
-
-    container.textContent = lines.join('\\n');
   }
 
-  var _asciiResizeTimer;
-  function _handleAsciiResize() {
-    clearTimeout(_asciiResizeTimer);
-    _asciiResizeTimer = setTimeout(function() {
-      var el = document.querySelector('.ascii-name');
-      if (el) generateAsciiName(el);
+  var _dotResizeTimer;
+  function _handleDotResize() {
+    clearTimeout(_dotResizeTimer);
+    _dotResizeTimer = setTimeout(function() {
+      var el = document.querySelector('.dot-name');
+      if (el) generateDotName(el);
     }, 150);
   }
 
@@ -775,17 +729,23 @@ Landing.afterDOMLoaded = `
       cards.forEach(function(el) { el.style.animation = ''; });
     }
 
-    // Generate dithered ASCII name
-    var asciiEl = document.querySelector('.ascii-name');
-    if (asciiEl) {
+    // Generate dot-dithered name
+    var dotEl = document.querySelector('.dot-name');
+    if (dotEl) {
       document.fonts.ready.then(function() {
-        generateAsciiName(asciiEl);
+        generateDotName(dotEl);
       });
     }
 
-    // Regenerate on resize so columns adapt to viewport
-    window.removeEventListener('resize', _handleAsciiResize);
-    window.addEventListener('resize', _handleAsciiResize);
+    // Regenerate on resize so dot grid adapts to viewport
+    window.removeEventListener('resize', _handleDotResize);
+    window.addEventListener('resize', _handleDotResize);
+  });
+
+  // Redraw when theme changes so dot color matches
+  document.addEventListener("themechange", function() {
+    var dotEl = document.querySelector('.dot-name');
+    if (dotEl) generateDotName(dotEl);
   });
 `
 
