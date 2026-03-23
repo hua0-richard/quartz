@@ -674,7 +674,7 @@ Landing.afterDOMLoaded = `
     var imageData = offCtx.getImageData(0, 0, offW, offH);
     var pixels = imageData.data;
 
-    // Determine dot grid spacing
+    // Determine dot grid spacing — increase density on smaller screens
     var step = 1.5;
     var dotR = 0.55;
     var gridCols = Math.floor(offW / step);
@@ -694,21 +694,25 @@ Landing.afterDOMLoaded = `
 
     var style = getComputedStyle(document.documentElement);
     var color = style.getPropertyValue('--darkgray').trim() || '#888';
-    ctx.fillStyle = color;
 
     // Sample offscreen pixels and draw a dot where the font is filled
+    // Use source alpha to anti-alias edge dots
     for (var gy = 0; gy < gridRows; gy++) {
       for (var gx = 0; gx < gridCols; gx++) {
         var px = gx * step;
         var py = gy * step;
         var idx = (Math.round(py) * offW + Math.round(px)) * 4;
-        if (pixels[idx + 3] > 200) {
+        var alpha = pixels[idx + 3];
+        if (alpha > 40) {
+          ctx.globalAlpha = alpha / 255;
+          ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(px + step / 2, py + step / 2, dotR, 0, Math.PI * 2);
           ctx.fill();
         }
       }
     }
+    ctx.globalAlpha = 1;
   }
 
   var _dotResizeTimer;
