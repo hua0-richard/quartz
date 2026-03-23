@@ -211,11 +211,6 @@ Landing.css = `
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  transition: filter 0.5s var(--ease), opacity 0.5s var(--ease);
-}
-
-.landing-name:hover .dot-name {
-  filter: brightness(1.4);
 }
 
 .landing-subtitle {
@@ -651,12 +646,11 @@ Landing.css = `
 `
 
 Landing.afterDOMLoaded = `
-  function generateDotName(canvas) {
-    var text = 'RICHARD HUA';
-    var containerW = canvas.parentElement ? canvas.parentElement.clientWidth : 680;
-    var dpr = window.devicePixelRatio || 1;
+  // Shared pixel data so hover redraws are instant
+  var _dotData = null;
 
-    // Render text to an offscreen canvas to sample its shape
+  function _sampleText(containerW) {
+    var text = 'RICHARD HUA';
     var offscreen = document.createElement('canvas');
     var fontSize = Math.round(containerW * 0.08);
     var offW = containerW;
@@ -664,50 +658,129 @@ Landing.afterDOMLoaded = `
     offscreen.width = offW;
     offscreen.height = offH;
     var offCtx = offscreen.getContext('2d');
-    if (!offCtx) return;
-
+    if (!offCtx) return null;
     offCtx.font = '700 ' + fontSize + 'px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif';
     offCtx.fillStyle = '#000';
     offCtx.textBaseline = 'top';
     offCtx.fillText(text, 0, fontSize * 0.15);
-
-    var imageData = offCtx.getImageData(0, 0, offW, offH);
-    var pixels = imageData.data;
-
-    // Determine dot grid spacing — increase density on smaller screens
+    var pixels = offCtx.getImageData(0, 0, offW, offH).data;
     var step = 1.5;
     var dotR = 0.55;
     var gridCols = Math.floor(offW / step);
     var gridRows = Math.floor(offH / step);
+    return { pixels: pixels, offW: offW, offH: offH, step: step, dotR: dotR, gridCols: gridCols, gridRows: gridRows };
+  }
 
-    // Size the visible canvas
-    var canvasW = gridCols * step;
-    var canvasH = gridRows * step;
+  function _setupCanvas(canvas, d) {
+    var dpr = window.devicePixelRatio || 1;
+    var canvasW = d.gridCols * d.step;
+    var canvasH = d.gridRows * d.step;
     canvas.width = Math.round(canvasW * dpr);
     canvas.height = Math.round(canvasH * dpr);
     canvas.style.width = canvasW + 'px';
     canvas.style.height = canvasH + 'px';
-
     var ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return null;
     ctx.scale(dpr, dpr);
+    return ctx;
+  }
 
+  // ── Animated hover state ──
+  // t goes 0 → 1 on enter (ramps up over ~800ms), 1 → 0 on leave (fades over ~600ms)
+  var _hoverT = 0;
+  var _hoverTarget = 0;    // 0 = idle, 1 = hovering
+  var _hoverRafId = null;
+  var _hoverLastTime = 0;
+  var RAMP_UP = 800;   // ms to reach full intensity
+  var RAMP_DOWN = 600;  // ms to fade back to normal
+
+  function _easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+  function _easeIn(t) { return t * t; }
+
+  function drawFrame(canvas, t) {
+    var containerW = canvas.parentElement ? canvas.parentElement.clientWidth : 680;
+    var d;
+    if (_dotData && _dotData.containerW === containerW) {
+      d = _dotData;
+    } else {
+      d = _sampleText(containerW);
+      if (!d) return;
+      d.containerW = containerW;
+      _dotData = d;
+    }
+    var ctx = _setupCanvas(canvas, d);
+    if (!ctx) return;
+
+    var isDark = document.documentElement.getAttribute('saved-theme') === 'dark';
     var style = getComputedStyle(document.documentElement);
-    var color = style.getPropertyValue('--darkgray').trim() || '#888';
+    var baseColor = style.getPropertyValue('--darkgray').trim() || '#888';
 
-    // Sample offscreen pixels and draw a dot where the font is filled
-    // Use source alpha to anti-alias edge dots
-    for (var gy = 0; gy < gridRows; gy++) {
-      for (var gx = 0; gx < gridCols; gx++) {
-        var px = gx * step;
-        var py = gy * step;
-        var idx = (Math.round(py) * offW + Math.round(px)) * 4;
-        var alpha = pixels[idx + 3];
+    // Parse base color to RGB (cached on d to avoid creating canvas each frame)
+    if (d._baseColor !== baseColor) {
+      var tmp = document.createElement('canvas'); tmp.width = 1; tmp.height = 1;
+      var tmpCtx = tmp.getContext('2d');
+      tmpCtx.fillStyle = baseColor;
+      tmpCtx.fillRect(0, 0, 1, 1);
+      var bc = tmpCtx.getImageData(0, 0, 1, 1).data;
+      d._baseColor = baseColor;
+      d._baseR = bc[0]; d._baseG = bc[1]; d._baseB = bc[2];
+    }
+    var baseR = d._baseR, baseG = d._baseG, baseB = d._baseB;
+
+    // Interpolate brightness: base → brighter
+    var brightMul = 1 + t * (isDark ? 0.6 : 0.35);
+    var mainR = Math.min(255, Math.round(baseR * brightMul));
+    var mainG = Math.min(255, Math.round(baseG * brightMul));
+    var mainB = Math.min(255, Math.round(baseB * brightMul));
+    var mainColor = 'rgb(' + mainR + ',' + mainG + ',' + mainB + ')';
+
+    // Fringe parameters scaled by t
+    var fringeAlpha = t * 0.35;
+    var fringeOffset = t * 1.5;
+
+    var channels = [
+      { color: '#ff4040', dx: -fringeOffset },
+      { color: '#40ff40', dx:  0 },
+      { color: '#4060ff', dx:  fringeOffset },
+    ];
+
+    // Draw fringe channels (only when t > 0)
+    if (t > 0.01) {
+      ctx.globalCompositeOperation = 'lighter';
+      for (var c = 0; c < channels.length; c++) {
+        var ch = channels[c];
+        for (var gy = 0; gy < d.gridRows; gy++) {
+          for (var gx = 0; gx < d.gridCols; gx++) {
+            var px = gx * d.step;
+            var py = gy * d.step;
+            var idx = (Math.round(py) * d.offW + Math.round(px)) * 4;
+            var alpha = d.pixels[idx + 3];
+            if (alpha > 40) {
+              ctx.globalAlpha = (alpha / 255) * fringeAlpha;
+              ctx.fillStyle = ch.color;
+              ctx.beginPath();
+              ctx.arc(px + d.step / 2 + ch.dx, py + d.step / 2, d.dotR, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+        }
+      }
+    }
+
+    // Main dots on top
+    ctx.globalCompositeOperation = 'source-over';
+    var mainDotAlpha = 1 - t * 0.15;  // slightly more transparent at peak so fringe peeks through
+    for (var gy = 0; gy < d.gridRows; gy++) {
+      for (var gx = 0; gx < d.gridCols; gx++) {
+        var px = gx * d.step;
+        var py = gy * d.step;
+        var idx = (Math.round(py) * d.offW + Math.round(px)) * 4;
+        var alpha = d.pixels[idx + 3];
         if (alpha > 40) {
-          ctx.globalAlpha = alpha / 255;
-          ctx.fillStyle = color;
+          ctx.globalAlpha = (alpha / 255) * mainDotAlpha;
+          ctx.fillStyle = mainColor;
           ctx.beginPath();
-          ctx.arc(px + step / 2, py + step / 2, dotR, 0, Math.PI * 2);
+          ctx.arc(px + d.step / 2, py + d.step / 2, d.dotR, 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -715,14 +788,55 @@ Landing.afterDOMLoaded = `
     ctx.globalAlpha = 1;
   }
 
+  function _hoverTick(now) {
+    if (!_hoverLastTime) _hoverLastTime = now;
+    var dt = now - _hoverLastTime;
+    _hoverLastTime = now;
+
+    if (_hoverTarget === 1) {
+      _hoverT = Math.min(1, _hoverT + dt / RAMP_UP);
+    } else {
+      _hoverT = Math.max(0, _hoverT - dt / RAMP_DOWN);
+    }
+
+    var easedT = _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT);
+
+    if (_dotNameEl) drawFrame(_dotNameEl, easedT);
+
+    // Keep ticking until we reach the target
+    if ((_hoverTarget === 1 && _hoverT < 1) || (_hoverTarget === 0 && _hoverT > 0)) {
+      _hoverRafId = requestAnimationFrame(_hoverTick);
+    } else {
+      _hoverRafId = null;
+      _hoverLastTime = 0;
+    }
+  }
+
+  function _startHoverAnim(target) {
+    _hoverTarget = target;
+    _hoverLastTime = 0;
+    if (!_hoverRafId) {
+      _hoverRafId = requestAnimationFrame(_hoverTick);
+    }
+  }
+
   var _dotResizeTimer;
   function _handleDotResize() {
     clearTimeout(_dotResizeTimer);
     _dotResizeTimer = setTimeout(function() {
       var el = document.querySelector('.dot-name');
-      if (el) generateDotName(el);
+      if (el) {
+        _dotData = null;
+        drawFrame(el, _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT));
+      }
     }, 150);
   }
+
+  var _dotNameEl = null;
+  var _nameWrap = null;
+
+  function _onNameEnter() { _startHoverAnim(1); }
+  function _onNameLeave() { _startHoverAnim(0); }
 
   document.addEventListener("nav", function() {
     // Restart reveal-card animations on SPA navigation
@@ -733,23 +847,40 @@ Landing.afterDOMLoaded = `
       cards.forEach(function(el) { el.style.animation = ''; });
     }
 
-    // Generate dot-dithered name
-    var dotEl = document.querySelector('.dot-name');
-    if (dotEl) {
+    // Clean up old listeners
+    if (_nameWrap) {
+      _nameWrap.removeEventListener('mouseenter', _onNameEnter);
+      _nameWrap.removeEventListener('mouseleave', _onNameLeave);
+    }
+
+    _dotNameEl = document.querySelector('.dot-name');
+    _nameWrap = document.querySelector('.landing-name');
+
+    // Reset hover state on nav
+    _hoverT = 0;
+    _hoverTarget = 0;
+    if (_hoverRafId) { cancelAnimationFrame(_hoverRafId); _hoverRafId = null; }
+    _hoverLastTime = 0;
+    _dotData = null;
+
+    if (_dotNameEl) {
       document.fonts.ready.then(function() {
-        generateDotName(dotEl);
+        drawFrame(_dotNameEl, 0);
       });
     }
 
-    // Regenerate on resize so dot grid adapts to viewport
+    if (_nameWrap) {
+      _nameWrap.addEventListener('mouseenter', _onNameEnter);
+      _nameWrap.addEventListener('mouseleave', _onNameLeave);
+    }
+
     window.removeEventListener('resize', _handleDotResize);
     window.addEventListener('resize', _handleDotResize);
   });
 
-  // Redraw when theme changes so dot color matches
   document.addEventListener("themechange", function() {
-    var dotEl = document.querySelector('.dot-name');
-    if (dotEl) generateDotName(dotEl);
+    _dotData = null;
+    if (_dotNameEl) drawFrame(_dotNameEl, _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT));
   });
 `
 
