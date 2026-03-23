@@ -677,7 +677,15 @@ Landing.afterDOMLoaded = `
     ctx.textBaseline = 'top';
     ctx.fillText(text, 30, fontSize * 0.12);
 
-    var cols = 175;
+    // Measure actual monospace character width including letter-spacing
+    var measure = document.createElement('span');
+    measure.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font:' + window.getComputedStyle(container).font + ';letter-spacing:' + window.getComputedStyle(container).letterSpacing;
+    measure.textContent = 'XXXXXXXXXXXXXXXXXXXX';
+    document.body.appendChild(measure);
+    var charW = measure.offsetWidth / 20;
+    document.body.removeChild(measure);
+    var containerW = container.parentElement ? container.parentElement.clientWidth : 680;
+    var cols = Math.max(60, Math.min(175, Math.floor(containerW / charW)));
     var cellW = canvas.width / cols;
     var cellH = cellW * 1.8;
     var rows = Math.floor(canvas.height / cellH);
@@ -749,6 +757,15 @@ Landing.afterDOMLoaded = `
     container.textContent = lines.join('\\n');
   }
 
+  var _asciiResizeTimer;
+  function _handleAsciiResize() {
+    clearTimeout(_asciiResizeTimer);
+    _asciiResizeTimer = setTimeout(function() {
+      var el = document.querySelector('.ascii-name');
+      if (el) generateAsciiName(el);
+    }, 150);
+  }
+
   document.addEventListener("nav", function() {
     // Restart reveal-card animations on SPA navigation
     var cards = document.querySelectorAll('.reveal-card');
@@ -765,6 +782,10 @@ Landing.afterDOMLoaded = `
         generateAsciiName(asciiEl);
       });
     }
+
+    // Regenerate on resize so columns adapt to viewport
+    window.removeEventListener('resize', _handleAsciiResize);
+    window.addEventListener('resize', _handleAsciiResize);
   });
 `
 
