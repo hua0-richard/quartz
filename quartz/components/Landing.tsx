@@ -173,6 +173,21 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
           </a>
         </div>
       </section>
+
+      {/* ── Webring ── */}
+      <section class="landing-webring reveal-card">
+        <a href="https://cs.uwatering.com/#richardhua.dev?nav=prev" class="webring-arrow">&larr;</a>
+        <a
+          href="https://cs.uwatering.com/#richardhua.dev"
+          target="_blank"
+          rel="noreferrer"
+          class="webring-link"
+          aria-label="UW CS Webring"
+        >
+          <canvas class="webring-dither-canvas" aria-hidden="true"></canvas>
+        </a>
+        <a href="https://cs.uwatering.com/#richardhua.dev?nav=next" class="webring-arrow">&rarr;</a>
+      </section>
     </div>
   )
 }
@@ -255,6 +270,36 @@ Landing.css = `
   font-size: 0.75rem;
   user-select: none;
   opacity: 0.4;
+}
+
+/* ── Webring ───────────────────────────────────────────────── */
+.landing-webring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0 4rem;
+}
+.webring-arrow {
+  font-size: 0.88rem;
+  color: var(--gray);
+  text-decoration: none !important;
+  transition: color 0.3s var(--ease);
+}
+.webring-arrow:hover {
+  color: var(--dark);
+}
+.webring-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+.webring-dither-canvas {
+  width: 22px;
+  height: 22px;
+  image-rendering: pixelated;
 }
 
 /* ── Section headings ──────────────────────────────────────── */
@@ -597,6 +642,8 @@ Landing.css = `
 .explore-pill.reveal-card:nth-child(1) { animation-delay: 0.35s; }
 .explore-pill.reveal-card:nth-child(2) { animation-delay: 0.47s; }
 
+.landing-webring.reveal-card { animation-delay: 0.59s; }
+
 /* ── Homepage overrides ─────────────────────────────────────── */
 .page[data-slug="index"] .page-header {
   margin-top: 0;
@@ -838,6 +885,118 @@ Landing.afterDOMLoaded = `
   function _onNameEnter() { _startHoverAnim(1); }
   function _onNameLeave() { _startHoverAnim(0); }
 
+  // ── Dithered webring icon ──
+  var _bayer4 = [
+    [0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]
+  ];
+  var WR_GRID = 32;
+  var _wrCanvas = null;
+  var _wrPixels = null;   // cached Uint8ClampedArray
+  var _wrBlobUrl = null;
+
+  // Hover state
+  var _wrHoverT = 0;
+  var _wrTarget = 0;
+  var _wrRafId = null;
+  var _wrLastTime = 0;
+  var WR_UP = 400;
+  var WR_DOWN = 600;
+
+  function _wrDraw(t) {
+    if (!_wrCanvas || !_wrPixels) return;
+    var G = WR_GRID;
+    var dpr = window.devicePixelRatio || 1;
+    var cell = dpr;
+    var ctx = _wrCanvas.getContext('2d');
+    if (!ctx) return;
+
+    var isDark = document.documentElement.getAttribute('saved-theme') === 'dark';
+    ctx.clearRect(0, 0, _wrCanvas.width, _wrCanvas.height);
+
+    // idle: muted; hover: only the icon pixels brighten
+    var alpha = 0.4 + t * 0.25;
+    ctx.fillStyle = isDark
+      ? 'rgba(255,255,255,' + alpha + ')'
+      : 'rgba(0,0,0,' + alpha + ')';
+
+    for (var y = 0; y < G; y++) {
+      for (var x = 0; x < G; x++) {
+        var a = _wrPixels[(y * G + x) * 4 + 3] / 255;
+        if (a > _bayer4[y % 4][x % 4] / 16) {
+          ctx.fillRect(x * cell, y * cell, cell, cell);
+        }
+      }
+    }
+  }
+
+  function _wrTick(now) {
+    if (!_wrLastTime) _wrLastTime = now;
+    var dt = now - _wrLastTime;
+    _wrLastTime = now;
+    if (_wrTarget === 1) {
+      _wrHoverT = Math.min(1, _wrHoverT + dt / WR_UP);
+    } else {
+      _wrHoverT = Math.max(0, _wrHoverT - dt / WR_DOWN);
+    }
+    var et = _wrTarget === 1 ? _easeOut(_wrHoverT) : _easeIn(_wrHoverT);
+    _wrDraw(et);
+    if ((_wrTarget === 1 && _wrHoverT < 1) || (_wrTarget === 0 && _wrHoverT > 0)) {
+      _wrRafId = requestAnimationFrame(_wrTick);
+    } else {
+      _wrRafId = null;
+      _wrLastTime = 0;
+    }
+  }
+
+  function _wrStartAnim(target) {
+    _wrTarget = target;
+    _wrLastTime = 0;
+    if (!_wrRafId) _wrRafId = requestAnimationFrame(_wrTick);
+  }
+
+  function _wrEnter() { _wrStartAnim(1); }
+  function _wrLeave() { _wrStartAnim(0); }
+
+  var _wrSection = null;
+
+  function _initWebring(canvas) {
+    _wrCanvas = canvas;
+    var G = WR_GRID;
+    var dpr = window.devicePixelRatio || 1;
+    var cell = dpr;
+    canvas.width = G * cell;
+    canvas.height = G * cell;
+    canvas.style.width = '22px';
+    canvas.style.height = '22px';
+
+    function onPixels(img) {
+      var PAD = 4;
+      var off = document.createElement('canvas');
+      off.width = G; off.height = G;
+      var oc = off.getContext('2d');
+      oc.drawImage(img, PAD, PAD, G - PAD * 2, G - PAD * 2);
+      _wrPixels = oc.getImageData(0, 0, G, G).data;
+      _wrDraw(_wrTarget === 1 ? _easeOut(_wrHoverT) : _easeIn(_wrHoverT));
+    }
+
+    if (_wrBlobUrl) {
+      var img = new Image();
+      img.onload = function() { onPixels(img); };
+      img.src = _wrBlobUrl;
+      return;
+    }
+    fetch('https://cs.uwatering.com/icon.black.svg')
+      .then(function(r) { return r.text(); })
+      .then(function(svg) {
+        var blob = new Blob([svg], { type: 'image/svg+xml' });
+        _wrBlobUrl = URL.createObjectURL(blob);
+        var img = new Image();
+        img.onload = function() { onPixels(img); };
+        img.src = _wrBlobUrl;
+      })
+      .catch(function() {});
+  }
+
   document.addEventListener("nav", function() {
     // Restart reveal-card animations on SPA navigation
     var cards = document.querySelectorAll('.reveal-card');
@@ -876,11 +1035,30 @@ Landing.afterDOMLoaded = `
 
     window.removeEventListener('resize', _handleDotResize);
     window.addEventListener('resize', _handleDotResize);
+
+    // Webring dither setup
+    if (_wrSection) {
+      _wrSection.removeEventListener('mouseenter', _wrEnter);
+      _wrSection.removeEventListener('mouseleave', _wrLeave);
+    }
+    _wrHoverT = 0; _wrTarget = 0;
+    if (_wrRafId) { cancelAnimationFrame(_wrRafId); _wrRafId = null; }
+    _wrLastTime = 0; _wrPixels = null;
+
+    var dc = document.querySelector('.webring-dither-canvas');
+    _wrSection = document.querySelector('.landing-webring');
+    if (dc) _initWebring(dc);
+    if (_wrSection) {
+      _wrSection.addEventListener('mouseenter', _wrEnter);
+      _wrSection.addEventListener('mouseleave', _wrLeave);
+    }
   });
 
   document.addEventListener("themechange", function() {
     _dotData = null;
     if (_dotNameEl) drawFrame(_dotNameEl, _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT));
+    _wrPixels = null;
+    if (_wrCanvas) _initWebring(_wrCanvas);
   });
 `
 
