@@ -1046,7 +1046,7 @@ Landing.afterDOMLoaded = `
     _wrLastTime = 0; _wrPixels = null;
 
     var dc = document.querySelector('.webring-dither-canvas');
-    _wrSection = document.querySelector('.landing-webring');
+    _wrSection = document.querySelector('.webring-link');
     if (dc) _initWebring(dc);
     if (_wrSection) {
       _wrSection.addEventListener('mouseenter', _wrEnter);
