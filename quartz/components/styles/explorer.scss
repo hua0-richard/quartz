@@ -103,7 +103,9 @@ button.mobile-explorer {
   cursor: pointer;
   padding: 0;
   color: var(--dark);
-  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  transition:
+    border-color 0.3s var(--ease),
+    background 0.3s var(--ease);
 
   &:hover {
     border-color: var(--border-hover);
@@ -168,7 +170,9 @@ button.desktop-explorer {
       padding: 0.2rem 0.5rem;
       margin: 0 -0.5rem;
       border-radius: 6px;
-      transition: color 0.2s var(--ease), background 0.2s var(--ease);
+      transition:
+        color 0.2s var(--ease),
+        background 0.2s var(--ease);
 
       &:hover {
         color: var(--secondary);
@@ -181,7 +185,7 @@ button.desktop-explorer {
         position: relative;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           left: 0;
           top: 50%;
@@ -218,6 +222,18 @@ button.desktop-explorer {
     border-left: 1px solid var(--border);
     margin-top: 0.1rem;
   }
+}
+
+.explorer-panel {
+  min-width: 0;
+}
+
+.explorer-panel-header {
+  display: none;
+}
+
+.explorer-panel-title {
+  margin: 0;
 }
 
 // ═══════════════════════════════════════════
@@ -257,7 +273,9 @@ button.desktop-explorer {
     display: flex;
     align-items: center;
     font-family: var(--font-sans);
-    transition: color 0.2s var(--ease), background 0.2s var(--ease);
+    transition:
+      color 0.2s var(--ease),
+      background 0.2s var(--ease);
 
     &:hover {
       color: var(--secondary);
@@ -285,7 +303,9 @@ button.desktop-explorer {
   margin-right: 4px;
   color: var(--gray);
   cursor: pointer;
-  transition: transform 0.3s var(--ease), color 0.2s var(--ease);
+  transition:
+    transform 0.3s var(--ease),
+    color 0.2s var(--ease);
   backface-visibility: visible;
   flex-shrink: 0;
 }
@@ -313,6 +333,12 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
         visibility 250ms ease;
     }
 
+    &.modal-ready .explorer-panel {
+      transition:
+        opacity 250ms var(--ease),
+        transform 250ms var(--ease);
+    }
+
     &.modal-open > .explorer-content {
       opacity: 1;
       visibility: visible;
@@ -321,6 +347,11 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       & * {
         pointer-events: auto;
       }
+    }
+
+    &.modal-open > .explorer-content > .explorer-panel {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     // ── Backdrop ──
@@ -333,38 +364,78 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       width: 100vw;
       height: 100dvh;
       margin-top: 0;
-      background: rgba(8, 6, 12, 0.55);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      pointer-events: none;
 
-      // Center the panel
+      :root[saved-theme="dark"] & {
+        background: rgba(0, 0, 0, 0.35);
+      }
+
+      // Position the panel like the search surface rather than a centered dialog
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      padding: 2rem;
+      padding: clamp(1rem, 3vw, 2rem);
     }
 
     // ── Panel ──
-    .explorer-content > .explorer-ul {
-      background: var(--lightgray);
-      border: 1px solid var(--border-hover);
-      border-radius: 14px;
-      max-width: 420px;
-      width: 100%;
-      max-height: 65vh;
+    .explorer-content > .explorer-panel {
+      position: relative;
+      width: min(100%, 32rem);
+      margin-top: 15vh;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.985);
+      box-shadow:
+        0 16px 70px rgba(0, 0, 0, 0.12),
+        0 4px 20px rgba(0, 0, 0, 0.08);
+
+      :root[saved-theme="dark"] & {
+        box-shadow:
+          0 16px 70px rgba(0, 0, 0, 0.42),
+          0 4px 20px rgba(0, 0, 0, 0.28);
+      }
+
+      @media all and ($mobile) {
+        width: min(100%, 94vw);
+        margin-top: 8vh;
+      }
+    }
+
+    .explorer-panel-header {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+    }
+
+    .explorer-panel-title {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .explorer-panel > .explorer-ul {
+      max-height: min(68vh, 34rem);
       overflow-y: auto;
-      padding: 1.75rem 1.5rem;
+      margin-top: 0;
+      padding: 0.75rem 1rem 1rem;
+      overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
       mask-image: none !important;
-      box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.12),
-        0 4px 12px rgba(0, 0, 0, 0.15),
-        0 16px 40px rgba(0, 0, 0, 0.2);
     }
 
     .mobile-explorer {
@@ -378,7 +449,9 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
         transition: stroke 250ms ease;
 
         line {
-          transition: transform 250ms ease, opacity 200ms ease;
+          transition:
+            transform 250ms ease,
+            opacity 200ms ease;
           transform-origin: 12px 12px;
         }
       }
@@ -390,11 +463,11 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 
     // Hamburger → X when open
     &.modal-open .mobile-explorer {
-      background: var(--light);
+      background: var(--surface);
       border-color: var(--border-hover);
 
       .lucide-menu {
-        stroke: #b05565;
+        stroke: var(--secondary);
 
         // Middle line → fades out
         line:nth-child(1) {
