@@ -19,7 +19,7 @@ DitheredTitle.css = `
 .dithered-title {
   margin: 0 0 0.5rem;
 }
-@media (max-width: 800px) {
+@media (max-width: 599px) {
   .dithered-title {
     display: none;
   }

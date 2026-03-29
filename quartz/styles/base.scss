@@ -193,25 +193,14 @@ a {
     row-gap: #{map.get($desktopGrid, rowGap)};
     grid-template-areas: #{map.get($desktopGrid, templateAreas)};
 
-    @media all and ($tablet) {
-      grid-template-columns: #{map.get($tabletGrid, templateColumns)};
-      grid-template-rows: #{map.get($tabletGrid, templateRows)};
-      column-gap: #{map.get($tabletGrid, columnGap)};
-      row-gap: #{map.get($tabletGrid, rowGap)};
-      grid-template-areas: #{map.get($tabletGrid, templateAreas)};
-    }
     @media all and ($mobile) {
       grid-template-columns: #{map.get($mobileGrid, templateColumns)};
       grid-template-rows: #{map.get($mobileGrid, templateRows)};
       column-gap: #{map.get($mobileGrid, columnGap)};
       row-gap: #{map.get($mobileGrid, rowGap)};
       grid-template-areas: #{map.get($mobileGrid, templateAreas)};
-    }
-
-    @media all and not ($desktop) {
+      max-width: 680px;
       padding: 0 1rem;
-    }
-    @media all and ($mobile) {
       margin: 0 auto;
     }
 
@@ -235,13 +224,13 @@ a {
       grid-area: grid-sidebar-left;
       flex-direction: column;
       @media all and ($mobile) {
-        gap: 0;
+        gap: 1.25rem;
         align-items: center;
         position: initial;
         display: flex;
         height: unset;
         flex-direction: row;
-        padding: 0;
+        padding: 0.75rem 0;
         padding-top: 2rem;
       }
     }
@@ -253,18 +242,17 @@ a {
       @media all and ($mobile) {
         margin-left: inherit;
         margin-right: inherit;
-      }
-      @media all and not ($desktop) {
         position: initial;
         height: unset;
         width: 100%;
-        flex-direction: row;
+        flex-direction: column;
         padding: 0;
         pointer-events: auto;
         overflow: visible;
 
         & > * {
-          flex: 1;
+          flex: unset;
+          width: 100%;
           pointer-events: auto;
           overflow: visible;
           max-height: none;
@@ -280,14 +268,6 @@ a {
 
         & > .toc {
           display: none;
-        }
-      }
-      @media all and ($mobile) {
-        flex-direction: column;
-
-        & > * {
-          flex: unset;
-          width: 100%;
         }
       }
     }
@@ -319,9 +299,6 @@ a {
       min-width: 100%;
       margin-left: auto;
       margin-right: auto;
-      @media all and ($tablet) {
-        margin-right: 0;
-      }
       @media all and ($mobile) {
         margin-right: 0;
         margin-left: 0;

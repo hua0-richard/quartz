@@ -29,10 +29,13 @@ function toggleExplorer(this: HTMLElement) {
     nearestExplorer.getAttribute("aria-expanded") === "true" ? "false" : "true",
   )
 
+  nearestExplorer.classList.add("modal-ready")
   if (!explorerCollapsed) {
+    nearestExplorer.classList.add("modal-open")
     // Stop <html> from being scrollable when mobile explorer is open
     document.documentElement.classList.add("mobile-no-scroll")
   } else {
+    nearestExplorer.classList.remove("modal-open")
     document.documentElement.classList.remove("mobile-no-scroll")
   }
 }
@@ -318,6 +321,7 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 
 window.addEventListener("resize", function () {
   for (const explorer of document.getElementsByClassName("explorer")) {
+    explorer.classList.remove("modal-open", "modal-ready")
     if (!explorer.classList.contains("collapsed")) {
       explorer.classList.add("collapsed")
       explorer.setAttribute("aria-expanded", "false")

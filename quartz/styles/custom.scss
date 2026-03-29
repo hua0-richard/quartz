@@ -287,7 +287,7 @@ footer {
 
 // Desktop
 @media (min-width: #{map-get($breakpoints, desktop)}) {
-  .center { max-width: 680px; padding: 0 2rem; }
+  .center { padding: 0 2rem; }
 
   .sidebar.right {
     padding-top: 2rem;
@@ -313,67 +313,35 @@ footer {
   }
 }
 
-// Tablet
-@media (min-width: #{map-get($breakpoints, mobile)}) and (max-width: #{map-get($breakpoints, desktop) - 1px}) {
-  .center { max-width: 680px; padding: 0 1.5rem; margin: 0 auto; }
-  .sidebar.left {
-    width: 100%; max-width: 680px; margin: 0 auto; padding: 1rem 1.5rem;
-    & > * + * { margin-top: 1.25rem; }
-  }
-  .page > #quartz-body > .sidebar.right {
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 1rem 1.5rem;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
-  .explorer { position: static !important; max-height: none !important; }
-  .page > #quartz-body > .sidebar.right > .graph,
-  .page > #quartz-body > .sidebar.right > .backlinks {
-    height: 300px;
-    max-height: 300px;
-    max-width: none;
-    width: auto;
-    margin: 0;
-    flex: 1 1 0;
-    min-width: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-  .page > #quartz-body > .sidebar.right > .backlinks {
-    overflow-y: auto;
-  }
-  .page > #quartz-body > .sidebar.right > .graph > .graph-outer {
-    height: calc(100% - 2.5rem);
-  }
-  article {
-    h2 { margin-top: 2.5rem; }
-    h3 { margin-top: 1.75rem; }
-    p { line-height: 1.65; }
-  }
-}
-
 // Mobile
-@media (max-width: #{map-get($breakpoints, mobile) - 1px}) {
-  .center { padding: 0 1rem; box-sizing: border-box; }
+@media all and ($mobile) {
+  .center { padding: 0; box-sizing: border-box; }
   .sidebar.left {
     width: 100%;
-    padding: 0.75rem 0;
+    padding: 0.75rem 1rem;
     align-items: center;
+    gap: 1.25rem;
     & > * + * { margin-top: 0; }
     & > .explorer { align-self: center; margin-bottom: 0; }
     & .darkmode { display: flex; align-items: center; }
+  }
+  .sidebar.left > .flex-component {
+    margin-left: auto;
+  }
+  .sidebar.left .dithered-title {
+    margin: 0;
+    width: 80px;
+    max-width: 80px;
+    flex: 0 0 80px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   .sidebar.right {
     width: 100%;
     padding: 0.75rem 0;
     & > * + * { margin-top: 1rem; }
   }
+  .explorer { position: static !important; max-height: none !important; }
 
   article {
     h1 { font-size: 1.6rem; margin-bottom: 1rem; }
