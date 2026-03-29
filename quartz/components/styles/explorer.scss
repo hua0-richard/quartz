@@ -343,10 +343,6 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-
-      & * {
-        pointer-events: auto;
-      }
     }
 
     &.modal-open > .explorer-content > .explorer-panel {
@@ -380,23 +376,28 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding: clamp(1rem, 3vw, 2rem);
+      padding: 1rem;
     }
 
     // ── Panel ──
     .explorer-content > .explorer-panel {
       position: relative;
-      width: min(100%, 32rem);
+      width: min(100%, #{$contentWidth});
       margin-top: 15vh;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
       opacity: 0;
+      pointer-events: none;
       transform: translateY(-8px) scale(0.985);
       box-shadow:
         0 16px 70px rgba(0, 0, 0, 0.12),
         0 4px 20px rgba(0, 0, 0, 0.08);
+
+      & * {
+        pointer-events: none;
+      }
 
       :root[saved-theme="dark"] & {
         box-shadow:
@@ -405,9 +406,13 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       }
 
       @media all and ($mobile) {
-        width: min(100%, 94vw);
         margin-top: 8vh;
       }
+    }
+
+    &.modal-open > .explorer-content > .explorer-panel,
+    &.modal-open > .explorer-content > .explorer-panel * {
+      pointer-events: auto;
     }
 
     .explorer-panel-header {
@@ -463,11 +468,11 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 
     // Hamburger → X when open
     &.modal-open .mobile-explorer {
-      background: var(--surface);
-      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface) 82%, #b14f4b 18%);
+      border-color: color-mix(in srgb, var(--border-hover) 55%, #b14f4b 45%);
 
       .lucide-menu {
-        stroke: var(--secondary);
+        stroke: color-mix(in srgb, var(--secondary) 30%, #b14f4b 70%);
 
         // Middle line → fades out
         line:nth-child(1) {
@@ -483,6 +488,11 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
         line:nth-child(3) {
           transform: rotate(-45deg) translateY(-6px);
         }
+      }
+
+      &:hover {
+        background: color-mix(in srgb, var(--surface-hover) 74%, #b14f4b 26%);
+        border-color: color-mix(in srgb, var(--border-hover) 42%, #b14f4b 58%);
       }
     }
   }

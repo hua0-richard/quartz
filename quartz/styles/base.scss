@@ -200,7 +200,7 @@ a {
       column-gap: #{map.get($mobileGrid, columnGap)};
       row-gap: #{map.get($mobileGrid, rowGap)};
       grid-template-areas: #{map.get($mobileGrid, templateAreas)};
-      max-width: 680px;
+      max-width: $contentWidth;
       padding: 0 1rem;
       margin: 0 auto;
     }

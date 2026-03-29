@@ -20,24 +20,38 @@ type FolderState = {
 }
 
 let currentExplorerState: Array<FolderState>
+function syncExplorerState(explorer: HTMLElement) {
+  const isExpanded = !explorer.classList.contains("collapsed")
+  explorer.setAttribute("aria-expanded", isExpanded ? "true" : "false")
+
+  const explorerContent = explorer.querySelector(".explorer-content") as HTMLElement | null
+  if (explorerContent) {
+    explorerContent.setAttribute("aria-hidden", isExpanded ? "false" : "true")
+    if (isExpanded) {
+      explorerContent.removeAttribute("inert")
+    } else {
+      explorerContent.setAttribute("inert", "")
+    }
+  }
+
+  const explorerToggles = explorer.querySelectorAll(".explorer-toggle") as NodeListOf<HTMLElement>
+  for (const toggle of explorerToggles) {
+    toggle.setAttribute("aria-expanded", isExpanded ? "true" : "false")
+  }
+}
+
 function toggleExplorer(this: HTMLElement) {
   const nearestExplorer = this.closest(".explorer") as HTMLElement
   if (!nearestExplorer) return
   const explorerCollapsed = nearestExplorer.classList.toggle("collapsed")
-  nearestExplorer.setAttribute(
-    "aria-expanded",
-    nearestExplorer.getAttribute("aria-expanded") === "true" ? "false" : "true",
-  )
+  const isExpanded = !explorerCollapsed
 
   nearestExplorer.classList.add("modal-ready")
-  if (!explorerCollapsed) {
-    nearestExplorer.classList.add("modal-open")
-    // Stop <html> from being scrollable when mobile explorer is open
-    document.documentElement.classList.add("mobile-no-scroll")
-  } else {
-    nearestExplorer.classList.remove("modal-open")
-    document.documentElement.classList.remove("mobile-no-scroll")
-  }
+  nearestExplorer.classList.toggle("modal-open", isExpanded)
+  syncExplorerState(nearestExplorer)
+
+  // Stop <html> from being scrollable when mobile explorer is open
+  document.documentElement.classList.toggle("mobile-no-scroll", isExpanded)
 }
 
 function toggleFolder(evt: MouseEvent) {
@@ -259,6 +273,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
     }
 
+    syncExplorerState(explorer)
   }
 }
 
@@ -304,29 +319,30 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 
   // if mobile hamburger is visible, collapse by default
   for (const explorer of document.getElementsByClassName("explorer")) {
-    const mobileExplorer = explorer.querySelector(".mobile-explorer")
+    const explorerElement = explorer as HTMLElement
+    const mobileExplorer = explorerElement.querySelector(".mobile-explorer")
     if (!mobileExplorer) return
 
     if (mobileExplorer.checkVisibility()) {
-      explorer.classList.add("collapsed")
-      explorer.setAttribute("aria-expanded", "false")
+      explorerElement.classList.add("collapsed")
+      explorerElement.classList.remove("modal-open")
 
       // Allow <html> to be scrollable when mobile explorer is collapsed
       document.documentElement.classList.remove("mobile-no-scroll")
     }
 
+    syncExplorerState(explorerElement)
     mobileExplorer.classList.remove("hide-until-loaded")
   }
 })
 
 window.addEventListener("resize", function () {
+  document.documentElement.classList.remove("mobile-no-scroll")
   for (const explorer of document.getElementsByClassName("explorer")) {
-    explorer.classList.remove("modal-open", "modal-ready")
-    if (!explorer.classList.contains("collapsed")) {
-      explorer.classList.add("collapsed")
-      explorer.setAttribute("aria-expanded", "false")
-      document.documentElement.classList.remove("mobile-no-scroll")
-    }
+    const explorerElement = explorer as HTMLElement
+    explorerElement.classList.remove("modal-open", "modal-ready")
+    explorerElement.classList.add("collapsed")
+    syncExplorerState(explorerElement)
   }
 })
 
