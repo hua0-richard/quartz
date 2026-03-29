@@ -29,12 +29,12 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
           <canvas class="dot-name" aria-hidden="true"></canvas>
         </div>
         <p class="landing-subtitle">
-          Full-stack engineer building AI-powered products — RAG systems, LLM
-          pipelines, and the interfaces on top of them.
+          Full-stack engineer building AI-powered products — RAG systems, LLM pipelines, and the
+          interfaces on top of them.
         </p>
         <p class="landing-bio">
-          Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to
-          full-stack and AI engineer roles.
+          Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and AI
+          engineer roles.
         </p>
         <div class="landing-links">
           <a href="mailto:hua.richard0@gmail.com">Email</a>
@@ -83,7 +83,9 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
             </div>
             <div class="edu-content">
               <div class="edu-title">Chalmers University of Technology</div>
-              <div class="edu-meta">Jan &ndash; May 2025 &middot; Exchange term in Computer Science</div>
+              <div class="edu-meta">
+                Jan &ndash; May 2025 &middot; Exchange term in Computer Science
+              </div>
               <div class="edu-courses">
                 <span class="edu-courses-label">Selected courses</span>
                 <ul>
@@ -161,11 +163,14 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
       <section class="landing-explorations">
         <h2 class="landing-section-heading">Explorations</h2>
         <p class="landing-section-desc">
-          Study notes and technical explorations — machine learning, statistics,
-          and systems. Linked through Quartz's knowledge graph.
+          Study notes and technical explorations — machine learning, statistics, and systems. Linked
+          through Quartz's knowledge graph.
         </p>
         <div class="landing-explore-links">
-          <a href="/Machine-Learning/Supervised-Learning/Supervised-Learning" class="explore-pill reveal-card">
+          <a
+            href="/Machine-Learning/Supervised-Learning/Supervised-Learning"
+            class="explore-pill reveal-card"
+          >
             Machine Learning
           </a>
           <a href="/Statistics/Fundamentals/Random-Variables" class="explore-pill reveal-card">
@@ -176,7 +181,9 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
 
       {/* ── Webring ── */}
       <section class="landing-webring reveal-card">
-        <a href="https://cs.uwatering.com/#richardhua.dev?nav=prev" class="webring-arrow">&larr;</a>
+        <a href="https://cs.uwatering.com/#richardhua.dev?nav=prev" class="webring-arrow">
+          &larr;
+        </a>
         <a
           href="https://cs.uwatering.com/#richardhua.dev"
           target="_blank"
@@ -186,7 +193,9 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
         >
           <canvas class="webring-dither-canvas" aria-hidden="true"></canvas>
         </a>
-        <a href="https://cs.uwatering.com/#richardhua.dev?nav=next" class="webring-arrow">&rarr;</a>
+        <a href="https://cs.uwatering.com/#richardhua.dev?nav=next" class="webring-arrow">
+          &rarr;
+        </a>
       </section>
     </div>
   )
@@ -695,6 +704,11 @@ Landing.afterDOMLoaded = `
   // Shared pixel data so hover redraws are instant
   var _dotData = null;
 
+  function _syncHomeScrollBounce() {
+    var isHomePage = document.body && document.body.dataset.slug === 'index';
+    document.documentElement.classList.toggle('home-scroll-bounce', isHomePage);
+  }
+
   function _sampleText(containerW) {
     var text = 'RICHARD HUA';
     var offscreen = document.createElement('canvas');
@@ -997,6 +1011,8 @@ Landing.afterDOMLoaded = `
   }
 
   document.addEventListener("nav", function() {
+    _syncHomeScrollBounce();
+
     // Restart reveal-card animations on SPA navigation
     var cards = document.querySelectorAll('.reveal-card');
     if (cards.length) {
@@ -1059,6 +1075,8 @@ Landing.afterDOMLoaded = `
     _wrPixels = null;
     if (_wrCanvas) _initWebring(_wrCanvas);
   });
+
+  _syncHomeScrollBounce();
 `
 
 export default (() => Landing) satisfies QuartzComponentConstructor
