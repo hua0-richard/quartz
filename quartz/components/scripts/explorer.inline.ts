@@ -284,23 +284,37 @@ document.addEventListener("prenav", async () => {
   sessionStorage.setItem("explorerScrollTop", explorer.scrollTop.toString())
 })
 
-// Prevent wheel events on a sticky sidebar from scrolling the main page.
-// Walks up from the event target to find the nearest scrollable child and
-// redirects scroll there; if none exists, the default is still suppressed.
+function canScrollSidebarElement(el: HTMLElement, deltaY: number) {
+  const style = getComputedStyle(el)
+  const maxScrollTop = el.scrollHeight - el.clientHeight
+
+  if (
+    el.scrollHeight <= el.clientHeight ||
+    style.overflowY === "hidden" ||
+    style.overflowY === "visible" ||
+    style.overflowY === "clip" ||
+    maxScrollTop <= 0 ||
+    deltaY === 0
+  ) {
+    return false
+  }
+
+  return deltaY < 0 ? el.scrollTop > 0 : el.scrollTop < maxScrollTop - 1
+}
+
+// Prevent wheel events on a sticky sidebar from scrolling the main page,
+// but only when we can forward the delta to an element that still has room
+// to scroll in that direction.
 function makeSidebarWheelHandler(sidebar: HTMLElement) {
   return (e: WheelEvent) => {
-    e.preventDefault()
     let el = e.target as HTMLElement | null
-    while (el && el !== sidebar) {
-      const style = getComputedStyle(el)
-      if (
-        el.scrollHeight > el.clientHeight &&
-        style.overflowY !== "hidden" &&
-        style.overflowY !== "visible"
-      ) {
+    while (el) {
+      if (canScrollSidebarElement(el, e.deltaY)) {
+        e.preventDefault()
         el.scrollBy(0, e.deltaY)
         return
       }
+      if (el === sidebar) break
       el = el.parentElement
     }
   }
