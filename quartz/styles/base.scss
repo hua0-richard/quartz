@@ -9,11 +9,8 @@ html {
   text-size-adjust: none;
   overflow-x: hidden;
   width: 100%;
-  overscroll-behavior: none;
-
-  &.home-scroll-bounce {
-    overscroll-behavior-y: auto;
-  }
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
 }
 
 body {
