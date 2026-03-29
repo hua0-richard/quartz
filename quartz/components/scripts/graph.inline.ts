@@ -640,6 +640,12 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
     window.addCleanup(() => icon.removeEventListener("click", renderGlobalGraph))
   })
 
+  const graphOpenTriggers = document.getElementsByClassName("graph-open-trigger")
+  Array.from(graphOpenTriggers).forEach((trigger) => {
+    trigger.addEventListener("click", renderGlobalGraph)
+    window.addCleanup(() => trigger.removeEventListener("click", renderGlobalGraph))
+  })
+
   document.addEventListener("keydown", shortcutHandler)
   window.addCleanup(() => {
     document.removeEventListener("keydown", shortcutHandler)

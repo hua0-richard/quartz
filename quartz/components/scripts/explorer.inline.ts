@@ -20,6 +20,11 @@ type FolderState = {
 }
 
 let currentExplorerState: Array<FolderState>
+
+function setExplorerModalPageState(isExpanded: boolean) {
+  document.querySelector(".page")?.classList.toggle("explorer-modal-open", isExpanded)
+}
+
 function syncExplorerState(explorer: HTMLElement) {
   const isExpanded = !explorer.classList.contains("collapsed")
   explorer.setAttribute("aria-expanded", isExpanded ? "true" : "false")
@@ -52,6 +57,7 @@ function toggleExplorer(this: HTMLElement) {
 
   // Stop <html> from being scrollable when mobile explorer is open
   document.documentElement.classList.toggle("mobile-no-scroll", isExpanded)
+  setExplorerModalPageState(isExpanded)
 }
 
 function toggleFolder(evt: MouseEvent) {
@@ -343,6 +349,7 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 
       // Allow <html> to be scrollable when mobile explorer is collapsed
       document.documentElement.classList.remove("mobile-no-scroll")
+      setExplorerModalPageState(false)
     }
 
     syncExplorerState(explorerElement)
@@ -352,6 +359,7 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 
 window.addEventListener("resize", function () {
   document.documentElement.classList.remove("mobile-no-scroll")
+  setExplorerModalPageState(false)
   for (const explorer of document.getElementsByClassName("explorer")) {
     const explorerElement = explorer as HTMLElement
     explorerElement.classList.remove("modal-open", "modal-ready")

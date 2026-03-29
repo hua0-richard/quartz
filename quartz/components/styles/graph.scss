@@ -8,6 +8,32 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  transition:
+    border-color 1.2s var(--ease),
+    box-shadow 1.2s var(--ease),
+    background 1.2s var(--ease);
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.15),
+      0 0 0 1px var(--border);
+  }
+
+  & > .graph-open-trigger {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border-radius: inherit;
+    cursor: pointer;
+    appearance: none;
+  }
 
   & > h3 {
     font-size: 0.7rem;
@@ -48,6 +74,7 @@
       background: none;
       border: none;
       color: var(--dark);
+      z-index: 2;
       opacity: 0.3;
       width: 24px;
       height: 24px;
@@ -106,6 +133,9 @@
   .graph {
     margin: 1.5rem 0 0;
     border-radius: 8px;
-    & > h3 { padding: 0.65rem 1rem 0; font-size: 0.68rem; }
+    & > h3 {
+      padding: 0.65rem 1rem 0;
+      font-size: 0.68rem;
+    }
   }
 }

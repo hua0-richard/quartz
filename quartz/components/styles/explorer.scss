@@ -355,22 +355,15 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       box-sizing: border-box;
       z-index: 100;
       position: fixed;
-      top: 0;
-      left: 0;
+      inset: 0;
       width: 100vw;
       height: 100dvh;
       margin-top: 0;
       overflow-y: auto;
-      background: rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: transparent;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-
-      :root[saved-theme="dark"] & {
-        background: rgba(0, 0, 0, 0.35);
-      }
 
       // Position the panel like the search surface rather than a centered dialog
       display: flex;
@@ -382,6 +375,7 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
     // ── Panel ──
     .explorer-content > .explorer-panel {
       position: relative;
+      z-index: 1;
       width: min(100%, #{$contentWidth});
       margin-top: 15vh;
       background: var(--bg);
@@ -498,8 +492,26 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   }
 }
 
-.mobile-no-scroll {
-  @media all and ($mobile) {
+@media all and ($mobile) {
+  .mobile-no-scroll,
+  .mobile-no-scroll body {
+    overflow: hidden;
     overscroll-behavior: none;
+  }
+}
+
+@media all and ($mobile) {
+  .page > #quartz-body > .center,
+  .page > #quartz-body > .right.sidebar,
+  .page > #quartz-body > footer,
+  .page > #quartz-body > .left.sidebar > *:not(.explorer) {
+    transition: filter 250ms var(--ease);
+  }
+
+  .page.explorer-modal-open > #quartz-body > .center,
+  .page.explorer-modal-open > #quartz-body > .right.sidebar,
+  .page.explorer-modal-open > #quartz-body > footer,
+  .page.explorer-modal-open > #quartz-body > .left.sidebar > *:not(.explorer) {
+    filter: blur(8px);
   }
 }
