@@ -3,11 +3,21 @@ import * as THREE from "three"
 const W = 140
 const H = 100
 
+function parseCSSColor(value: string): THREE.Vector3 {
+  const el = document.createElement("div")
+  el.style.color = value
+  document.body.appendChild(el)
+  const rgb = getComputedStyle(el).color
+  document.body.removeChild(el)
+  const m = rgb.match(/[\d.]+/g)!
+  return new THREE.Vector3(+m[0] / 255, +m[1] / 255, +m[2] / 255)
+}
+
 function getThemeColors() {
-  const isDark = document.documentElement.getAttribute("saved-theme") === "dark"
+  const style = getComputedStyle(document.documentElement)
   return {
-    fg: isDark ? new THREE.Color("#e8e6df") : new THREE.Color("#1A1816"),
-    bg: isDark ? new THREE.Color("#0e0f0c") : new THREE.Color("#FAFAF8"),
+    fg: parseCSSColor(style.getPropertyValue("--dark").trim()),
+    bg: parseCSSColor(style.getPropertyValue("--bg").trim()),
   }
 }
 
@@ -49,6 +59,7 @@ function createScene(canvas: HTMLCanvasElement) {
   canvas.height = H
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: false })
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace
   renderer.setSize(W, H, false)
   renderer.setPixelRatio(1)
 
@@ -92,8 +103,8 @@ function createScene(canvas: HTMLCanvasElement) {
   const ditherMaterial = new THREE.ShaderMaterial({
     uniforms: {
       tDiffuse: { value: renderTarget.texture },
-      uFg: { value: new THREE.Vector3(fg.r, fg.g, fg.b) },
-      uBg: { value: new THREE.Vector3(bg.r, bg.g, bg.b) },
+      uFg: { value: fg },
+      uBg: { value: bg },
     },
     vertexShader: ditherVertexShader,
     fragmentShader: ditherFragmentShader,
@@ -158,8 +169,8 @@ function createScene(canvas: HTMLCanvasElement) {
   return {
     updateColors() {
       const { fg, bg } = getThemeColors()
-      ditherMaterial.uniforms.uFg.value.set(fg.r, fg.g, fg.b)
-      ditherMaterial.uniforms.uBg.value.set(bg.r, bg.g, bg.b)
+      ditherMaterial.uniforms.uFg.value.copy(fg)
+      ditherMaterial.uniforms.uBg.value.copy(bg)
     },
     destroy() {
       running = false
