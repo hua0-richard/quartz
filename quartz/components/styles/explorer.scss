@@ -145,6 +145,17 @@ button.desktop-explorer {
 }
 
 // ═══════════════════════════════════════════
+// SCROLL OVERFLOW GRADIENT
+// ═══════════════════════════════════════════
+
+@media all and ($desktop) {
+  .explorer-ul.overflow.gradient-active {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+  }
+}
+
+// ═══════════════════════════════════════════
 // EXPLORER CONTENT & TREE
 // ═══════════════════════════════════════════
 
@@ -219,7 +230,7 @@ button.desktop-explorer {
     overflow: hidden;
     margin-left: 0;
     padding-left: 1rem;
-    border-left: 1px solid var(--border);
+    border-left: 1px dashed var(--border);
     margin-top: 0.1rem;
   }
 }
@@ -360,7 +371,9 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       height: 100dvh;
       margin-top: 0;
       overflow-y: auto;
-      background: transparent;
+      background: rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
@@ -412,7 +425,7 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
     .explorer-panel-header {
       display: flex;
       align-items: center;
-      padding: 0.75rem 1rem;
+      padding: 0.85rem 1.15rem;
       border-bottom: 1px solid var(--border);
       background: transparent;
     }
@@ -430,7 +443,7 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       max-height: min(68vh, 34rem);
       overflow-y: auto;
       margin-top: 0;
-      padding: 0.75rem 1rem 1rem;
+      padding: 0.85rem 1.15rem 1.15rem;
       overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
@@ -462,11 +475,11 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
 
     // Hamburger → X when open
     &.modal-open .mobile-explorer {
-      background: color-mix(in srgb, var(--surface) 82%, #b14f4b 18%);
-      border-color: color-mix(in srgb, var(--border-hover) 55%, #b14f4b 45%);
+      background: var(--surface-hover);
+      border-color: var(--border-hover);
 
       .lucide-menu {
-        stroke: color-mix(in srgb, var(--secondary) 30%, #b14f4b 70%);
+        stroke: var(--dark);
 
         // Middle line → fades out
         line:nth-child(1) {
@@ -485,8 +498,8 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
       }
 
       &:hover {
-        background: color-mix(in srgb, var(--surface-hover) 74%, #b14f4b 26%);
-        border-color: color-mix(in srgb, var(--border-hover) 42%, #b14f4b 58%);
+        background: var(--surface-hover);
+        border-color: var(--border-hover);
       }
     }
   }
@@ -506,12 +519,5 @@ li:has(> .folder-outer:not(.open)) > .folder-container > svg {
   .page > #quartz-body > footer,
   .page > #quartz-body > .left.sidebar > *:not(.explorer) {
     transition: filter 250ms var(--ease);
-  }
-
-  .page.explorer-modal-open > #quartz-body > .center,
-  .page.explorer-modal-open > #quartz-body > .right.sidebar,
-  .page.explorer-modal-open > #quartz-body > footer,
-  .page.explorer-modal-open > #quartz-body > .left.sidebar > *:not(.explorer) {
-    filter: blur(8px);
   }
 }
