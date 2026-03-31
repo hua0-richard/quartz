@@ -62,8 +62,6 @@
     }
 
     @media all and ($mobile) {
-      pointer-events: none;
-
       & > .global-graph-icon {
         pointer-events: auto;
       }

@@ -20,6 +20,10 @@
     background: var(--surface-hover);
   }
 
+  &:active {
+    transform: scale(0.92);
+  }
+
   & svg {
     width: 15px;
     height: 15px;

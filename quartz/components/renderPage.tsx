@@ -237,6 +237,9 @@ export function renderPage(
       <Head {...componentData} />
       <body data-slug={slug}>
         <div id="quartz-root" class="page">
+          <a href="#main-content" class="skip-to-content">
+            Skip to content
+          </a>
           <Body {...componentData}>
             {LeftComponent}
             <div class="center">
@@ -252,6 +255,7 @@ export function renderPage(
                   ))}
                 </div>
               </div>
+              <div id="main-content"></div>
               <Content {...componentData} />
               <hr />
               <div class="page-footer">

@@ -111,6 +111,10 @@ button.mobile-explorer {
     border-color: var(--border-hover);
     background: var(--surface-hover);
   }
+
+  &:active {
+    transform: scale(0.92);
+  }
 }
 
 button.desktop-explorer {

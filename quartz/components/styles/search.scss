@@ -35,6 +35,10 @@
       background: var(--surface-hover);
     }
 
+    &:active {
+      transform: scale(0.97);
+    }
+
     & > p {
       display: inline;
       color: var(--gray);
