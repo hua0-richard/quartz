@@ -63,7 +63,7 @@ ul.toc-content.overflow {
 
   @for $i from 0 through 6 {
     & .depth-#{$i} {
-      padding-left: calc(1rem * #{$i});
+      padding-left: calc(0.75rem + 1rem * #{$i});
     }
   }
 }

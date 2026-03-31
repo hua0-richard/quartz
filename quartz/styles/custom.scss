@@ -276,17 +276,41 @@ a.tag-link {
 }
 
 .toc #toc-content a {
-  transition: color 0.3s var(--ease);
+  transition:
+    color 0.3s var(--ease),
+    opacity 0.4s var(--ease);
   display: block;
   padding: 0.35rem 0;
+  padding-left: 0.75rem;
   font-size: 0.85rem;
   line-height: 1.4;
+  position: relative;
   &:hover {
     color: var(--secondary);
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 0;
+    background: var(--secondary);
+    border-radius: 1px;
+    opacity: 0;
+    transition:
+      height 0.3s var(--ease),
+      opacity 0.3s var(--ease);
   }
 }
 .toc #toc-content a.in-view {
   color: var(--secondary);
+  opacity: 1 !important;
+  &::before {
+    height: 50%;
+    opacity: 0.5;
+  }
 }
 
 .backlinks ul li a {
