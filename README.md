@@ -1,18 +1,20 @@
-# Quartz v4
+# richardhua.dev
 
-> “[One] who works with the door open gets all kinds of interruptions, but [they] also occasionally gets clues as to what the world is and what might be important.” — Richard Hamming
+My personal portfolio and knowledge base, built on top of [Quartz](https://github.com/jackyzha0/quartz).
 
-Quartz is a set of tools that helps you publish your [digital garden](https://jzhao.xyz/posts/networked-thought) and notes as a website for free.
-Quartz v4 features a from-the-ground rewrite focusing on end-user extensibility and ease-of-use.
+## Features
 
-🔗 Read the documentation and get started: https://quartz.jzhao.xyz/
+- **Landing page** with hero section, education showcase, projects grid, and explorations
+- **Dithered 3D canvas** — an interactive Three.js icosahedron with Bayer dithering as the sidebar logo
+- **Scroll-triggered animations** and SPA crossfade transitions
+- **Knowledge graph** visualization with D3.js
+- **Reader mode** for distraction-free reading
+- **Custom design system** — EB Garamond + Inter typography, warm light/dark palettes, card-based layouts with surface layering
+- **Study notes** for Machine Learning and Statistics with full LaTeX support
 
-[Join the Discord Community](https://discord.gg/cRFFHYye7t)
+## Stack
 
-## Sponsors
-
-<p align="center">
-  <a href="https://github.com/sponsors/jackyzha0">
-    <img src="https://cdn.jsdelivr.net/gh/jackyzha0/jackyzha0/sponsorkit/sponsors.svg" />
-  </a>
-</p>
+- [Quartz v4](https://quartz.jzhao.xyz/) — static site generator for digital gardens
+- [Three.js](https://threejs.org/) — 3D dithered visualization
+- [D3.js](https://d3js.org/) — knowledge graph
+- [Plausible](https://plausible.io/) — privacy-respecting analytics
