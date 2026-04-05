@@ -3,7 +3,7 @@ title: AI Agent for Steam
 description: A conversational game discovery engine with hybrid search, image-based retrieval, and real-time Steam data integration.
 eyebrow: Multi-modal Agent + Search
 github: https://github.com/hua0-richard/ai-agent-ecomm
-demo: 
+demo: https://ai-agent-ecomm.vercel.app
 features:
   - Hybrid BM25 plus vector search with cross-encoder reranking
   - Multi-modal retrieval via CLIP (images) and Whisper (voice)
@@ -16,6 +16,7 @@ tags:
 ---
 
 <div class="project-links">
+  <a class="project-link project-link-primary" href="https://ai-agent-ecomm.vercel.app" target="_blank" rel="noreferrer">Try now</a>
   <a class="project-link" href="https://github.com/hua0-richard/ai-agent-ecomm" target="_blank" rel="noreferrer">GitHub</a>
 </div>
 
