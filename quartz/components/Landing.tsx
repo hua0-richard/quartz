@@ -360,18 +360,16 @@ Landing.css = `
 .edu-item::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -60%;
-  width: 60%;
-  height: 100%;
+  inset: 0;
+  border-radius: inherit;
   background: var(--card-shine);
-  transform: skewX(-18deg);
   opacity: 0;
+  transition: opacity 0.5s var(--ease);
   pointer-events: none;
   z-index: 0;
 }
 .edu-item:hover::before {
-  animation: card-shine-sweep 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  opacity: 1;
 }
 .edu-item > * {
   position: relative;
@@ -492,18 +490,16 @@ Landing.css = `
 .lp-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -60%;
-  width: 60%;
-  height: 100%;
+  inset: 0;
+  border-radius: inherit;
   background: var(--card-shine);
-  transform: skewX(-18deg);
   opacity: 0;
+  transition: opacity 0.5s var(--ease);
   pointer-events: none;
   z-index: 0;
 }
 .lp-card:hover::before {
-  animation: card-shine-sweep 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  opacity: 1;
 }
 .lp-card > * {
   position: relative;
@@ -516,12 +512,6 @@ Landing.css = `
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.06),
     0 12px 28px rgba(0, 0, 0, 0.14);
-}
-.lp-card .lp-card-title {
-  transition: transform 0.45s var(--ease), color 0.45s var(--ease);
-}
-.lp-card:hover .lp-card-title {
-  transform: translateX(2px);
 }
 
 .lp-card-eyebrow {
@@ -652,14 +642,6 @@ Landing.css = `
   box-shadow: 0 0 0 3px var(--surface);
 }
 
-/* ── Card hover shine sweep ────────────────────────────────── */
-@keyframes card-shine-sweep {
-  0%   { left: -60%; opacity: 0; }
-  20%  { opacity: 1; }
-  80%  { opacity: 1; }
-  100% { left: 120%; opacity: 0; }
-}
-
 /* ── Card reveal animation ─────────────────────────────────── */
 @keyframes revealUp {
   from {
@@ -732,20 +714,12 @@ Landing.css = `
     animation: none;
   }
   .edu-item,
-  .lp-card,
-  .lp-card .lp-card-title {
+  .lp-card {
     transition: none;
   }
   .edu-item:hover,
   .lp-card:hover {
     transform: none;
-  }
-  .lp-card:hover .lp-card-title {
-    transform: none;
-  }
-  .edu-item:hover::before,
-  .lp-card:hover::before {
-    animation: none;
   }
 }
 `
