@@ -350,30 +350,40 @@ Landing.css = `
   background: var(--surface);
   position: relative;
   overflow: hidden;
-  transition: border-color 1.2s var(--ease), box-shadow 1.2s var(--ease), background 1.2s var(--ease);
+  will-change: transform;
+  transition:
+    transform 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease),
+    background 0.45s var(--ease);
 }
 .edu-item::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
   background: var(--card-shine);
+  transform: skewX(-18deg);
   opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.0, 0, 0.2, 1);
   pointer-events: none;
   z-index: 0;
 }
 .edu-item:hover::before {
-  opacity: 1;
+  animation: card-shine-sweep 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .edu-item > * {
   position: relative;
   z-index: 1;
 }
 .edu-item:hover {
+  transform: translateY(-2px);
   border-color: var(--border-hover);
   background: var(--surface-hover);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--border);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.14);
 }
 
 .edu-logo {
@@ -472,30 +482,46 @@ Landing.css = `
   background: var(--surface);
   position: relative;
   overflow: hidden;
-  transition: border-color 1.2s var(--ease), box-shadow 1.2s var(--ease), background 1.2s var(--ease);
+  will-change: transform;
+  transition:
+    transform 0.45s var(--ease),
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease),
+    background 0.45s var(--ease);
 }
 .lp-card::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
+  top: 0;
+  left: -60%;
+  width: 60%;
+  height: 100%;
   background: var(--card-shine);
+  transform: skewX(-18deg);
   opacity: 0;
-  transition: opacity 1.2s cubic-bezier(0.0, 0, 0.2, 1);
   pointer-events: none;
   z-index: 0;
 }
 .lp-card:hover::before {
-  opacity: 1;
+  animation: card-shine-sweep 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .lp-card > * {
   position: relative;
   z-index: 1;
 }
 .lp-card:hover {
+  transform: translateY(-2px);
   border-color: var(--border-hover);
   background: var(--surface-hover);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--border);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.14);
+}
+.lp-card .lp-card-title {
+  transition: transform 0.45s var(--ease), color 0.45s var(--ease);
+}
+.lp-card:hover .lp-card-title {
+  transform: translateX(2px);
 }
 
 .lp-card-eyebrow {
@@ -626,6 +652,14 @@ Landing.css = `
   box-shadow: 0 0 0 3px var(--surface);
 }
 
+/* ── Card hover shine sweep ────────────────────────────────── */
+@keyframes card-shine-sweep {
+  0%   { left: -60%; opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
 /* ── Card reveal animation ─────────────────────────────────── */
 @keyframes revealUp {
   from {
@@ -695,6 +729,22 @@ Landing.css = `
   }
   .reveal-card {
     opacity: 1;
+    animation: none;
+  }
+  .edu-item,
+  .lp-card,
+  .lp-card .lp-card-title {
+    transition: none;
+  }
+  .edu-item:hover,
+  .lp-card:hover {
+    transform: none;
+  }
+  .lp-card:hover .lp-card-title {
+    transform: none;
+  }
+  .edu-item:hover::before,
+  .lp-card:hover::before {
     animation: none;
   }
 }
