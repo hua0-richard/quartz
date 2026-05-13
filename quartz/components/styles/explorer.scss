@@ -29,7 +29,7 @@
   flex-direction: column;
   overflow-y: hidden;
   min-height: 1.2rem;
-  flex: 0 1 auto;
+  flex: 1 1 auto;
 
   &.collapsed {
     flex: 0 1 1.2rem;
@@ -81,7 +81,7 @@
     pointer-events: all;
     transition: transform 0.35s var(--ease);
 
-    & > polyline {
+    & > * {
       pointer-events: none;
     }
   }
@@ -184,7 +184,9 @@ button.desktop-explorer {
       line-height: 1.5;
       pointer-events: all;
       text-decoration: none;
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       padding: 0.4rem 0.5rem;
       margin: 0 -0.5rem;
       border-radius: 6px;
@@ -237,7 +239,6 @@ button.desktop-explorer {
     overflow: hidden;
     margin-left: 0;
     padding-left: 1rem;
-    border-left: 1px dashed var(--border);
     margin-top: 0.2rem;
     padding-top: 0.1rem;
   }
@@ -264,6 +265,20 @@ button.desktop-explorer {
   display: flex;
   align-items: center;
   user-select: none;
+  padding: 0.4rem 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 6px;
+  transition:
+    color 0.2s var(--ease),
+    background 0.2s var(--ease);
+
+  &:hover {
+    background: var(--surface);
+  }
+
+  & div {
+    min-width: 0;
+  }
 
   & div > a {
     color: var(--dark);
@@ -272,13 +287,9 @@ button.desktop-explorer {
     font-weight: 500;
     line-height: 1.5;
     display: inline-block;
-    padding: 0.4rem 0;
+    padding: 0;
     text-decoration: none;
     transition: color 0.2s var(--ease);
-
-    &:hover {
-      color: var(--secondary);
-    }
   }
 
   & div > button {
@@ -287,20 +298,12 @@ button.desktop-explorer {
     border: none;
     text-align: left;
     cursor: pointer;
-    padding: 0.4rem 0.5rem;
-    margin: 0 -0.5rem;
-    border-radius: 6px;
+    padding: 0;
+    margin: 0;
     display: flex;
     align-items: center;
     font-family: var(--font-sans);
-    transition:
-      color 0.2s var(--ease),
-      background 0.2s var(--ease);
-
-    &:hover {
-      color: var(--secondary);
-      background: var(--surface);
-    }
+    transition: color 0.2s var(--ease);
 
     & span {
       font-size: 0.85rem;
@@ -312,10 +315,12 @@ button.desktop-explorer {
       pointer-events: none;
       transition: color 0.2s var(--ease);
     }
+  }
 
-    &:hover span {
-      color: var(--secondary);
-    }
+  &:hover div > a,
+  &:hover div > button,
+  &:hover div > button span {
+    color: var(--secondary);
   }
 }
 
@@ -323,18 +328,35 @@ button.desktop-explorer {
   margin-right: 4px;
   color: var(--gray);
   cursor: pointer;
-  transition:
-    transform 0.3s var(--ease),
-    color 0.2s var(--ease);
-  backface-visibility: visible;
+  transition: color 0.2s var(--ease);
   flex-shrink: 0;
 }
 
-li:has(> .folder-outer:not(.open)) > .folder-container > svg {
-  transform: rotate(-90deg);
+.folder-icon-open {
+  display: none;
+}
+
+li:has(> .folder-outer.open) > .folder-container > .folder-icon-closed {
+  display: none;
+}
+
+li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
+  display: inline-block;
 }
 
 .folder-container:hover > .folder-icon {
+  color: var(--secondary);
+}
+
+.explorer-content .file-icon {
+  color: var(--gray);
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: color 0.2s var(--ease);
+}
+
+.explorer-content li > a:hover .file-icon,
+.explorer-content li > a.active .file-icon {
   color: var(--secondary);
 }
 
