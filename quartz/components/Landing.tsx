@@ -28,24 +28,54 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
         <div class="landing-name" role="heading" aria-level={1} aria-label="Richard Hua">
           <canvas class="dot-name" aria-hidden="true"></canvas>
         </div>
-        <p class="landing-subtitle">
-          Full-stack engineer building AI-powered products — RAG systems, LLM pipelines, and the
-          interfaces on top of them.
-        </p>
-        <p class="landing-bio">
-          Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and AI
-          engineer roles.
-        </p>
-        <div class="landing-links">
-          <a href="mailto:hua.richard0@gmail.com">Email</a>
-          <span class="dot">&middot;</span>
-          <a href="https://github.com/hua0-richard" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <span class="dot">&middot;</span>
-          <a href="https://www.linkedin.com/in/richard0hua/" target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>
+        <div class="landing-project-quicklinks">
+          <span class="landing-sublabel">About</span>
+          <p class="landing-subtitle">
+            Full-stack engineer building AI-powered products — RAG systems, LLM pipelines, and the
+            interfaces on top of them.
+          </p>
+          <p class="landing-bio">
+            Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and
+            AI engineer roles.
+          </p>
+        </div>
+        {projects.filter((p) => p.demo).length > 0 && (
+          <div class="landing-project-quicklinks">
+            <span class="landing-sublabel">Featured Projects</span>
+            <div class="landing-links landing-project-links">
+              {projects
+                .filter((p) => p.demo)
+                .map((p, i) => (
+                  <>
+                    {i > 0 && <span class="dot">&middot;</span>}
+                    <a
+                      href={p.demo}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`${p.title} — live demo`}
+                    >
+                      <span class="lp-live-dot"></span>
+                      <span class="quicklink-name">{p.title}</span>
+                    </a>
+                  </>
+                ))}
+            </div>
+          </div>
+        )}
+
+        <div class="landing-project-quicklinks">
+          <span class="landing-sublabel">Contact</span>
+          <div class="landing-links">
+            <a href="mailto:hua.richard0@gmail.com">Email</a>
+            <span class="dot">&middot;</span>
+            <a href="https://github.com/hua0-richard" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <span class="dot">&middot;</span>
+            <a href="https://www.linkedin.com/in/richard0hua/" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+          </div>
         </div>
       </section>
 
@@ -243,16 +273,12 @@ Landing.css = `
   line-height: 1.65;
   color: var(--darkgray);
   margin: 0 0 0.5rem;
-  opacity: 0;
-  animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
 }
 
 .landing-bio {
   font-size: 0.88rem;
   color: var(--gray);
-  margin: 0 0 1.25rem;
-  opacity: 0;
-  animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.5s forwards;
+  margin: 0;
 }
 
 .landing-links {
@@ -278,6 +304,88 @@ Landing.css = `
   font-size: 0.75rem;
   user-select: none;
   opacity: 0.4;
+}
+
+/* ── Hero subsections (About, Featured Projects, Contact) ───── */
+.landing-project-quicklinks {
+  opacity: 0;
+  animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
+  margin-bottom: 1.75rem;
+}
+
+.landing-project-quicklinks + .landing-project-quicklinks {
+  animation-delay: 0.5s;
+}
+
+.landing-project-quicklinks + .landing-project-quicklinks + .landing-project-quicklinks {
+  animation-delay: 0.65s;
+  margin-bottom: 0;
+}
+
+.landing-project-quicklinks .landing-links {
+  opacity: 1;
+  animation: none;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+}
+
+.landing-sublabel {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 0.4rem;
+}
+
+.landing-project-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-style: italic;
+  text-decoration: none;
+}
+
+.landing-project-links .quicklink-name {
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.landing-project-links .quicklink-name::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background-image: linear-gradient(90deg, currentColor 1px, transparent 1px);
+  background-size: 3px 1px;
+  background-repeat: repeat-x;
+  opacity: 0.55;
+  transition: width 0.45s cubic-bezier(0.0, 0, 0.2, 1);
+}
+
+.landing-project-links a:hover .quicklink-name::after {
+  width: 100%;
+}
+
+.landing-project-links .lp-live-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.landing-project-links a::after {
+  content: '↗';
+  display: inline-block;
+  margin-left: 0.1em;
+  transition: transform 0.3s var(--ease);
+  text-decoration: none;
+}
+
+.landing-project-links a:hover::after {
+  transform: translate(1px, -1px);
 }
 
 /* ── Webring ───────────────────────────────────────────────── */
@@ -571,7 +679,7 @@ Landing.css = `
   transition: color 0.3s var(--ease);
 }
 .lp-card-links a::after {
-  content: '→';
+  content: '↗';
   display: inline-block;
   margin-left: 0.2em;
   transition: transform 0.3s var(--ease);
@@ -580,7 +688,7 @@ Landing.css = `
   color: var(--dark);
 }
 .lp-card-links a:hover::after {
-  transform: translateX(3px);
+  transform: translate(1px, -1px);
 }
 
 .lp-link-demo {
@@ -705,8 +813,12 @@ Landing.css = `
   .landing-name,
   .landing-subtitle,
   .landing-bio,
-  .landing-links {
+  .landing-links,
+  .landing-project-quicklinks {
     opacity: 1;
+    animation: none;
+  }
+  .lp-live-dot::after {
     animation: none;
   }
   .reveal-card {
