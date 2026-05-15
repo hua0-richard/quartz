@@ -558,7 +558,11 @@ Landing.css = `
 .edu-courses li {
   font-size: 0.82rem;
   line-height: 1.4;
-  color: var(--darkgray);
+  color: var(--gray);
+}
+
+.edu-courses li::marker {
+  color: var(--border);
 }
 
 @media (max-width: 520px) {
