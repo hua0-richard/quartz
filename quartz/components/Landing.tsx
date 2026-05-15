@@ -450,9 +450,9 @@ Landing.css = `
 .edu-item {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: start;
-  column-gap: 0.75rem;
-  padding: 1rem;
+  align-items: center;
+  column-gap: 1.1rem;
+  padding: 1.25rem 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
