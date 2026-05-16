@@ -1,5 +1,6 @@
 import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
 
 const W = 210
 const H = 150
@@ -95,7 +96,10 @@ function createScene(canvas: HTMLCanvasElement) {
   scene.add(new THREE.AmbientLight(0xffffff, 0.12))
 
   const TARGET_SIZE = 2.4 // diameter the model should fit within
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/")
   const loader = new GLTFLoader()
+  loader.setDRACOLoader(dracoLoader)
   let modelDisposeFns: (() => void)[] = []
   loader.load(
     "/static/endurance.glb",
@@ -125,6 +129,9 @@ function createScene(canvas: HTMLCanvasElement) {
       })
       endurance.add(model)
       loadedModel = model
+      // Trigger the load-in fade on the next animation frame so geometry has
+      // had a paint cycle before the transition begins.
+      requestAnimationFrame(() => canvas.classList.add("loaded"))
       modelDisposeFns.push(() => {
         model.traverse((o) => {
           const m = o as THREE.Mesh

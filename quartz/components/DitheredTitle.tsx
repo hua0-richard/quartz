@@ -35,13 +35,17 @@ DitheredTitle.css = `
   display: block;
   background: var(--bg);
   cursor: grab;
-  opacity: 0.65;
+  opacity: 0;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
-  transition: opacity 0.3s var(--ease);
+  transition: opacity 0.7s cubic-bezier(0, 0, 0.2, 1);
 }
-.dithered-title a:hover canvas {
+.dithered-title canvas.loaded {
+  opacity: 0.65;
+}
+.dithered-title a:hover canvas.loaded {
   opacity: 1;
+  transition: opacity 0.3s var(--ease);
 }
 `
 
