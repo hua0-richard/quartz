@@ -252,6 +252,24 @@ async function setupExplorer(currentSlug: FullSlug) {
       window.addCleanup(() => button.removeEventListener("click", toggleExplorer))
     }
 
+    // ⌘E / Ctrl+E toggles whichever toggle button is currently visible
+    const explorerShortcutHandler = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== "e" || !(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return
+      const target = e.target as HTMLElement | null
+      const tag = target?.tagName
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return
+
+      const toggles = Array.from(
+        explorer.querySelectorAll<HTMLElement>(".explorer-toggle"),
+      ).filter((el) => el.checkVisibility())
+      if (toggles.length === 0) return
+
+      e.preventDefault()
+      toggles[0].click()
+    }
+    document.addEventListener("keydown", explorerShortcutHandler)
+    window.addCleanup(() => document.removeEventListener("keydown", explorerShortcutHandler))
+
     // Set up folder click handlers
     if (opts.folderClickBehavior === "collapse") {
       const folderContainers = explorer.getElementsByClassName(

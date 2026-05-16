@@ -460,10 +460,10 @@ Landing.css = `
   overflow: hidden;
   will-change: transform;
   transition:
-    transform 0.45s var(--ease),
-    border-color 0.45s var(--ease),
-    box-shadow 0.45s var(--ease),
-    background 0.45s var(--ease);
+    transform 0.32s var(--ease),
+    border-color 0.32s var(--ease),
+    box-shadow 0.32s var(--ease),
+    background 0.32s var(--ease);
 }
 .edu-item::before {
   content: '';
@@ -472,12 +472,13 @@ Landing.css = `
   border-radius: inherit;
   background: var(--card-shine);
   opacity: 0;
-  transition: opacity 0.5s var(--ease);
+  transition: opacity 0.32s var(--ease);
   pointer-events: none;
   z-index: 0;
 }
 .edu-item:hover::before {
   opacity: 1;
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .edu-item > * {
   position: relative;
@@ -490,6 +491,11 @@ Landing.css = `
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.06),
     0 12px 28px rgba(0, 0, 0, 0.14);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .edu-logo {
@@ -594,10 +600,10 @@ Landing.css = `
   overflow: hidden;
   will-change: transform;
   transition:
-    transform 0.45s var(--ease),
-    border-color 0.45s var(--ease),
-    box-shadow 0.45s var(--ease),
-    background 0.45s var(--ease);
+    transform 0.32s var(--ease),
+    border-color 0.32s var(--ease),
+    box-shadow 0.32s var(--ease),
+    background 0.32s var(--ease);
 }
 .lp-card::before {
   content: '';
@@ -606,12 +612,13 @@ Landing.css = `
   border-radius: inherit;
   background: var(--card-shine);
   opacity: 0;
-  transition: opacity 0.5s var(--ease);
+  transition: opacity 0.32s var(--ease);
   pointer-events: none;
   z-index: 0;
 }
 .lp-card:hover::before {
   opacity: 1;
+  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .lp-card > * {
   position: relative;
@@ -624,6 +631,11 @@ Landing.css = `
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.06),
     0 12px 28px rgba(0, 0, 0, 0.14);
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lp-card-eyebrow {

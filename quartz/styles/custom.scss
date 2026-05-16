@@ -80,9 +80,10 @@ body {
 h1 {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 1.85rem;
+  font-size: 1.5rem;
   letter-spacing: -0.01em;
   line-height: 1.25;
+  color: var(--dark);
 }
 
 h2,
@@ -94,10 +95,16 @@ h6 {
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.35;
+  color: var(--dark);
+}
+
+.article-title,
+.page-title {
+  color: var(--dark);
 }
 
 h2 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 h3 {
   font-size: 1.1rem;
@@ -108,7 +115,7 @@ h4 {
 
 article p {
   font-size: 0.95rem;
-  line-height: 1.75;
+  line-height: 1.7;
   color: var(--darkgray);
 }
 
@@ -151,6 +158,7 @@ pre,
 }
 
 :not(pre) > code {
+  font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -182,7 +190,7 @@ article {
     margin: 0 0 2rem;
   }
   h2 {
-    margin: 3.5rem 0 1.25rem;
+    margin: 2.75rem 0 1.25rem;
   }
   h3 {
     margin: 2.5rem 0 1rem;

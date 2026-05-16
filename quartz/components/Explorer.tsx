@@ -106,7 +106,6 @@ export default ((userOpts?: Partial<Options>) => {
           data-mobile={false}
           aria-expanded={true}
         >
-          <h2>{explorerTitle}</h2>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="10"
@@ -121,6 +120,8 @@ export default ((userOpts?: Partial<Options>) => {
           >
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
+          <h2>{explorerTitle}</h2>
+          <kbd class="explorer-shortcut" aria-hidden="true">⌘E</kbd>
         </button>
         <div
           id={id}

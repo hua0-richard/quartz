@@ -192,6 +192,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     }
     searchLayout.classList.remove("display-results")
     searchType = "basic" // reset search type after closing
+    document.documentElement.classList.remove("search-active")
     searchButton.focus()
   }
 
@@ -199,6 +200,7 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     searchType = searchTypeNew
     if (sidebar) sidebar.style.zIndex = "1"
     container.classList.add("active")
+    document.documentElement.classList.add("search-active")
     searchBar.focus()
   }
 
