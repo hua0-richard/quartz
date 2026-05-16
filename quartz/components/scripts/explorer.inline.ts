@@ -65,17 +65,8 @@ function toggleFolder(evt: MouseEvent) {
   const target = evt.target as MaybeHTMLElement
   if (!target) return
 
-  // Check if target was svg icon or button
-  const isSvg = target.nodeName === "svg"
-
-  // corresponding <ul> element relative to clicked button/folder
-  const folderContainer = (
-    isSvg
-      ? // svg -> div.folder-container
-        target.parentElement
-      : // button.folder-button -> div -> div.folder-container
-        target.parentElement?.parentElement
-  ) as MaybeHTMLElement
+  // Find the .folder-container ancestor regardless of which inner element was clicked
+  const folderContainer = target.closest(".folder-container") as MaybeHTMLElement
   if (!folderContainer) return
   const childFolderContainer = folderContainer.nextElementSibling as MaybeHTMLElement
   if (!childFolderContainer) return
@@ -263,21 +254,22 @@ async function setupExplorer(currentSlug: FullSlug) {
 
     // Set up folder click handlers
     if (opts.folderClickBehavior === "collapse") {
-      const folderButtons = explorer.getElementsByClassName(
-        "folder-button",
+      const folderContainers = explorer.getElementsByClassName(
+        "folder-container",
       ) as HTMLCollectionOf<HTMLElement>
-      for (const button of folderButtons) {
-        button.addEventListener("click", toggleFolder)
-        window.addCleanup(() => button.removeEventListener("click", toggleFolder))
+      for (const container of folderContainers) {
+        container.addEventListener("click", toggleFolder)
+        window.addCleanup(() => container.removeEventListener("click", toggleFolder))
       }
-    }
-
-    const folderIcons = explorer.getElementsByClassName(
-      "folder-icon",
-    ) as HTMLCollectionOf<HTMLElement>
-    for (const icon of folderIcons) {
-      icon.addEventListener("click", toggleFolder)
-      window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
+    } else {
+      // In link mode, only the icon toggles; the text navigates
+      const folderIcons = explorer.getElementsByClassName(
+        "folder-icon",
+      ) as HTMLCollectionOf<HTMLElement>
+      for (const icon of folderIcons) {
+        icon.addEventListener("click", toggleFolder)
+        window.addCleanup(() => icon.removeEventListener("click", toggleFolder))
+      }
     }
 
     syncExplorerState(explorer)

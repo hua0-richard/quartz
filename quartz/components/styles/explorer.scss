@@ -193,12 +193,13 @@ button.desktop-explorer {
       line-height: 1.5;
       pointer-events: all;
       text-decoration: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 0.35rem 0.6rem;
-      margin: 0 -0.6rem;
       border-radius: 6px;
+      width: fit-content;
+      max-width: 100%;
       transition:
         color 0.3s var(--ease),
         background 0.3s var(--ease);
@@ -270,12 +271,14 @@ button.desktop-explorer {
 
 .folder-container {
   flex-direction: row;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   user-select: none;
+  cursor: pointer;
   padding: 0.35rem 0.6rem;
-  margin: 0 -0.6rem;
   border-radius: 6px;
+  width: fit-content;
+  max-width: 100%;
   transition:
     color 0.7s var(--ease),
     background 0.7s var(--ease);
@@ -299,6 +302,10 @@ button.desktop-explorer {
     padding: 0;
     text-decoration: none;
     transition: color 0.7s var(--ease);
+  }
+
+  & div > button.folder-button .folder-title {
+    pointer-events: none;
   }
 
   & div > button.folder-button {
