@@ -495,6 +495,12 @@ async function fillDocument(data: ContentIndex) {
 }
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
+  // Defensive: ensure scroll-lock is cleared on every navigation. If the user
+  // navigated away while the search modal was open (e.g. via a result link
+  // that didn't trigger hideSearch), the class on <html> would otherwise
+  // persist and keep the new page un-scrollable.
+  document.documentElement.classList.remove("search-active")
+
   const currentSlug = e.detail.url
   const data = await fetchData
   const searchElement = document.getElementsByClassName("search")
