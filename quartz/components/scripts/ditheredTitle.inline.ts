@@ -318,26 +318,40 @@ function handleTheme() {
 // Match the desktop breakpoint in variables.scss ($breakpoints.desktop = 1200px).
 const DESKTOP_QUERY = "(min-width: 1200px)"
 
-document.addEventListener("nav", () => {
-  current?.destroy()
-  current = null
-
-  // Skip init below desktop — the GLB is 4.9MB and the canvas is hidden anyway.
+function tryInitScene() {
+  if (current) return // already running
   if (!window.matchMedia(DESKTOP_QUERY).matches) return
-
   const canvas = document.getElementById("dithered-canvas") as HTMLCanvasElement | null
   if (!canvas) return
-
   try {
     current = createScene(canvas)
   } catch (e) {
     console.error("[DitheredTitle] Failed to initialize:", e)
   }
+}
+
+function tryDestroyScene() {
+  current?.destroy()
+  current = null
+}
+
+document.addEventListener("nav", () => {
+  tryDestroyScene()
+  tryInitScene()
+
+  // Watch the breakpoint so the scene initializes if the user resizes from
+  // below desktop up to desktop (or vice versa, to free resources).
+  const mediaQuery = window.matchMedia(DESKTOP_QUERY)
+  const onMediaChange = (e: MediaQueryListEvent) => {
+    if (e.matches) tryInitScene()
+    else tryDestroyScene()
+  }
+  mediaQuery.addEventListener("change", onMediaChange)
 
   document.addEventListener("themechange", handleTheme)
   window.addCleanup(() => {
-    current?.destroy()
-    current = null
+    tryDestroyScene()
+    mediaQuery.removeEventListener("change", onMediaChange)
     document.removeEventListener("themechange", handleTheme)
   })
 })
