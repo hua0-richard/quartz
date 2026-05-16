@@ -19,7 +19,7 @@ DitheredTitle.css = `
 .dithered-title {
   margin: 0 0 0.5rem;
 }
-@media (max-width: 599px) {
+@media (max-width: 1199px) {
   .dithered-title {
     display: none;
   }
@@ -35,8 +35,13 @@ DitheredTitle.css = `
   display: block;
   background: var(--bg);
   cursor: grab;
+  opacity: 0.65;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
+  transition: opacity 0.3s var(--ease);
+}
+.dithered-title a:hover canvas {
+  opacity: 1;
 }
 `
 
