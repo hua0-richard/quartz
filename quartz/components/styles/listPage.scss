@@ -1,17 +1,46 @@
 @use "../../styles/variables.scss" as *;
 
+// ─── Page listing wrapper (folder count + list) ───────────────
+.page-listing {
+  margin-top: 2.5rem;
+
+  & > p {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin: 0 0 1.25rem;
+  }
+}
+
+// ─── List ──────────────────────────────────────────────────────
 ul.section-ul {
   list-style: none;
-  margin-top: 2em;
+  margin: 0;
   padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 li.section-li {
-  margin-bottom: 1em;
+  margin: 0;
 
   & > .section {
     display: grid;
     grid-template-columns: fit-content(8em) 3fr 1fr;
+    align-items: baseline;
+    column-gap: 1.25rem;
+    padding: 0.85rem 1rem;
+    margin: 0 -1rem;
+    border-radius: 8px;
+    transition: background 0.6s var(--ease);
+
+    &:hover {
+      background: var(--surface);
+    }
 
     @media all and ($mobile) {
       & > .tags {
@@ -19,18 +48,78 @@ li.section-li {
       }
     }
 
-    & > .desc > h3 > a {
-      background-color: transparent;
+    & .meta {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      color: var(--gray);
+      margin: 0;
+      opacity: 1;
     }
 
-    & .meta {
-      margin: 0 1em 0 0;
-      opacity: 0.6;
+    & > .desc {
+      min-width: 0;
+
+      & > h3 {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.4;
+
+        & > a.internal {
+          color: var(--darkgray);
+          background-color: transparent !important;
+          padding: 0 !important;
+          border-radius: 0 !important;
+          line-height: inherit !important;
+          text-decoration: none;
+          transition: color 0.45s var(--ease);
+        }
+      }
+    }
+
+    &:hover .desc > h3 > a.internal {
+      color: var(--dark);
+    }
+
+    & > .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      justify-content: flex-end;
+
+      & > li {
+        margin: 0;
+      }
+
+      & .tag-link {
+        font-family: var(--font-sans);
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 0.15rem 0.55rem;
+        border-radius: 100px;
+        background: transparent;
+        color: var(--gray);
+        border: 1px solid var(--border);
+        text-decoration: none;
+        transition:
+          color 0.3s var(--ease),
+          border-color 0.3s var(--ease);
+
+        &:hover {
+          color: var(--dark);
+          border-color: var(--border-hover);
+        }
+      }
     }
   }
 }
 
-// modifications in popover context
+// ─── Popover context ──────────────────────────────────────────
 .popover .section {
   grid-template-columns: fit-content(8em) 1fr !important;
 

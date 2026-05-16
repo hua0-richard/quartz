@@ -373,21 +373,6 @@ a.tag-link {
   }
 }
 
-.section-li {
-  transition: background 0.3s var(--ease);
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
-  margin: 0 -0.75rem;
-  &:hover {
-    background: var(--surface);
-  }
-  .section > a {
-    transition: color 0.3s var(--ease);
-    &:hover {
-      color: var(--secondary);
-    }
-  }
-}
 
 .popover {
   background: var(--bg) !important;
