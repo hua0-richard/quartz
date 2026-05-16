@@ -497,8 +497,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   }
 
   if (enableZoom) {
+    const isGlobalGraph = !!graph.closest(".global-graph-container")
     select<HTMLCanvasElement, NodeData>(app.canvas).call(
       zoom<HTMLCanvasElement, NodeData>()
+        .filter((event) => {
+          if (event.type === "wheel") {
+            return isGlobalGraph || event.ctrlKey || event.metaKey
+          }
+          return !event.button && !event.ctrlKey
+        })
         .extent([
           [0, 0],
           [width, height],

@@ -350,7 +350,7 @@ Landing.css = `
 
 .landing-project-links .quicklink-name {
   position: relative;
-  padding-bottom: 2px;
+  padding-bottom: 0;
 }
 
 .landing-project-links .quicklink-name::after {
@@ -361,7 +361,7 @@ Landing.css = `
   width: 0;
   height: 1px;
   background-image: linear-gradient(90deg, currentColor 1px, transparent 1px);
-  background-size: 3px 1px;
+  background-size: 2px 1px;
   background-repeat: repeat-x;
   opacity: 0.55;
   transition: width 0.45s cubic-bezier(0.0, 0, 0.2, 1);
