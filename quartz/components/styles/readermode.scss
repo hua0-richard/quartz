@@ -1,34 +1,134 @@
-.readermode {
+@use "../../styles/variables.scss" as *;
+
+// ── Toggle button: in-flow, sits above the article title ────────────
+// Stays visible in both states; clicking it again exits reading mode.
+.readermode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.55rem 0.4rem 0.65rem;
+  margin: 0 0 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--darkgray);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
   cursor: pointer;
-  padding: 0;
-  position: relative;
-  background: none;
-  border: none;
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  text-align: inherit;
-  flex-shrink: 0;
+  // opacity uses the reader-mode timing so it dims/restores in sync with the
+  // rest of the chrome; the other properties stay snappy for hover feedback.
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease),
+    transform 0.2s var(--ease);
 
   & svg {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: calc(50% - 10px);
-    fill: var(--darkgray);
-    stroke: var(--darkgray);
-    transition: opacity 0.1s ease;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    color: var(--dark);
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+  }
+
+  &:active {
+    transform: translateY(1px);
   }
 }
 
+.readermode-toggle-label {
+  white-space: nowrap;
+}
+
+.readermode-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4em;
+  padding: 0.05rem 0.35rem;
+  font-family: var(--font-code, var(--font-sans));
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--gray);
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  line-height: 1.3;
+}
+
+// ── Reader mode entry/exit transitions ──────────────────────────────
+// Layout doesn't shift — sidebars and chrome only fade in/out so the
+// article stays in exactly the same place when reading mode toggles.
+$rm-duration: 0.55s;
+$rm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+.sidebar.left,
+.sidebar.right,
+.breadcrumb-container,
+.content-meta,
+.tags,
+footer,
+hr {
+  transition: opacity $rm-duration $rm-ease;
+}
+
+// ── Reader mode active state ────────────────────────────────────────
 :root[reader-mode="on"] {
   & .sidebar.left,
-  & .sidebar.right {
+  & .sidebar.right,
+  & .breadcrumb-container,
+  & .content-meta,
+  & .tags,
+  & footer,
+  & hr {
     opacity: 0;
-    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
 
-    &:hover {
+  // The reader-mode button stays interactive but dims so it recedes into the
+  // background like the rest of the chrome.
+  & .readermode-toggle {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .readermode-toggle,
+  .sidebar.left,
+  .sidebar.right,
+  .breadcrumb-container,
+  .content-meta,
+  .tags,
+  footer,
+  hr {
+    transition: none;
+  }
+  .readermode-toggle:active {
+    transform: none;
+  }
+}
+
+// ── Disable reader mode on the smallest viewport ────────────────────
+@media (max-width: 520px) {
+  .readermode-toggle {
+    display: none !important;
+  }
+
+  :root[reader-mode="on"] {
+    & .sidebar.left,
+    & .sidebar.right,
+    & .breadcrumb-container,
+    & .content-meta,
+    & .tags,
+    & footer,
+    & hr,
+    & .readermode-toggle {
       opacity: 1;
+      pointer-events: auto;
     }
   }
 }
