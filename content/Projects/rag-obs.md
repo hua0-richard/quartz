@@ -12,7 +12,6 @@ tags:
   - projects
   - rag
   - llm
-  - obsidian
 ---
 
 <div class="project-links">

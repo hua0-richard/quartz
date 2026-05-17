@@ -11,8 +11,7 @@ features:
 tags:
   - projects
   - ai-agent
-  - search-ranking
-  - steam
+  - search
 ---
 
 <div class="project-links">

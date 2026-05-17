@@ -10,7 +10,6 @@ features:
 tags:
   - projects
   - systems
-  - cpp
   - game-engine
 ---
 

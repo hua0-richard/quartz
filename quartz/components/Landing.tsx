@@ -154,37 +154,91 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
       {projects.length > 0 && (
         <section class="landing-projects">
           <h2 class="landing-section-heading">Projects</h2>
-          <div class="landing-project-grid">
-            {projects.map((p, idx) => (
-              <div class="lp-card reveal-card" style={`animation-delay: ${0.4 + idx * 0.12}s`}>
-                {p.eyebrow && <p class="lp-card-eyebrow">{p.eyebrow}</p>}
-                <h3 class="lp-card-title">{p.title}</h3>
-                {p.description && <p class="lp-card-desc">{p.description}</p>}
-                {p.tags && p.tags.length > 0 && (
-                  <div class="lp-card-tags">
-                    {p.tags
-                      .filter((t) => t !== "projects")
-                      .map((t) => (
-                        <span>{t}</span>
-                      ))}
-                  </div>
-                )}
-                <div class="lp-card-links">
-                  {p.demo && (
-                    <a href={p.demo} target="_blank" rel="noreferrer" class="lp-link-demo">
-                      <span class="lp-live-dot"></span>
-                      Live Demo
-                    </a>
-                  )}
-                  <a href={`/${p.slug}`}>Writeup</a>
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noreferrer">
-                      GitHub
-                    </a>
-                  )}
+          {(() => {
+            const allTags = Array.from(
+              new Set(
+                projects
+                  .flatMap((p) => p.tags ?? [])
+                  .filter((t) => t && t !== "projects"),
+              ),
+            ).sort()
+            return (
+              <div class="lp-controls reveal-card" style="animation-delay: 0.3s">
+                <div class="lp-filters" role="group" aria-label="Filter projects by tag">
+                  <button
+                    type="button"
+                    class="lp-filter-pill is-active"
+                    data-filter="all"
+                    aria-pressed="true"
+                  >
+                    All
+                  </button>
+                  {allTags.map((t) => (
+                    <button
+                      type="button"
+                      class="lp-filter-pill"
+                      data-filter={t}
+                      aria-pressed="false"
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+                <div class="lp-sort">
+                  <label for="lp-sort-select" class="lp-sort-label">
+                    Sort
+                  </label>
+                  <select id="lp-sort-select" class="lp-sort-select" aria-label="Sort projects">
+                    <option value="featured">Featured</option>
+                    <option value="az">A → Z</option>
+                    <option value="za">Z → A</option>
+                  </select>
                 </div>
               </div>
-            ))}
+            )
+          })()}
+          <div class="landing-project-grid">
+            {projects.map((p, idx) => {
+              const cleanTags = (p.tags ?? []).filter((t) => t !== "projects")
+              return (
+                <div
+                  class="lp-card reveal-card"
+                  style={`animation-delay: ${0.4 + idx * 0.12}s`}
+                  data-tags={cleanTags.join(",")}
+                  data-title={(p.title ?? "").toLowerCase()}
+                  data-featured={p.demo ? "1" : "0"}
+                  data-order={idx}
+                >
+                  {p.eyebrow && <p class="lp-card-eyebrow">{p.eyebrow}</p>}
+                  <h3 class="lp-card-title">{p.title}</h3>
+                  {p.description && <p class="lp-card-desc">{p.description}</p>}
+                  {cleanTags.length > 0 && (
+                    <div class="lp-card-tags">
+                      {cleanTags.map((t) => (
+                        <span>{t}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div class="lp-card-links">
+                    {p.demo && (
+                      <a href={p.demo} target="_blank" rel="noreferrer" class="lp-link-demo">
+                        <span class="lp-live-dot"></span>
+                        Live Demo
+                      </a>
+                    )}
+                    <a href={`/${p.slug}`}>Writeup</a>
+                    {p.github && (
+                      <a href={p.github} target="_blank" rel="noreferrer">
+                        GitHub
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+            <p class="lp-empty" hidden>
+              No projects match this filter.
+            </p>
           </div>
         </section>
       )}
@@ -586,9 +640,98 @@ Landing.css = `
   padding: 2rem 0;
 }
 
+.lp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.lp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.lp-filter-pill {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease), background 0.25s var(--ease);
+}
+.lp-filter-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--dark);
+}
+.lp-filter-pill.is-active {
+  border-color: var(--border-hover);
+  background: var(--surface);
+  color: var(--dark);
+}
+
+.lp-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lp-sort-label {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.lp-sort-select {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.3rem 1.8rem 0.3rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--darkgray);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 14px) 50%, calc(100% - 10px) 50%;
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+.lp-sort-select:hover {
+  border-color: var(--border-hover);
+  color: var(--dark);
+}
+
 .landing-project-grid {
   display: grid;
   gap: 1rem;
+}
+
+.lp-card.is-hidden {
+  display: none;
+}
+
+.lp-empty {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--gray);
+  text-align: center;
+  padding: 1.5rem 0;
+  margin: 0;
 }
 
 .lp-card {
@@ -1157,6 +1300,69 @@ Landing.afterDOMLoaded = `
       .catch(function() {});
   }
 
+  // ── Project filter + sort ──
+  function _initProjectControls() {
+    var grid = document.querySelector('.landing-project-grid');
+    var filters = document.querySelectorAll('.lp-filter-pill');
+    var sortSel = document.getElementById('lp-sort-select');
+    if (!grid || !filters.length) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.lp-card'));
+    var emptyMsg = grid.querySelector('.lp-empty');
+    var activeFilter = 'all';
+    var activeSort = sortSel ? sortSel.value : 'featured';
+
+    function apply() {
+      // Filter
+      var visibleCount = 0;
+      cards.forEach(function(card) {
+        var tags = (card.getAttribute('data-tags') || '').split(',');
+        var match = activeFilter === 'all' || tags.indexOf(activeFilter) !== -1;
+        card.classList.toggle('is-hidden', !match);
+        if (match) visibleCount++;
+      });
+      if (emptyMsg) emptyMsg.hidden = visibleCount !== 0;
+
+      // Sort — rewrite DOM order
+      var sorted = cards.slice().sort(function(a, b) {
+        if (activeSort === 'az') {
+          return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+        }
+        if (activeSort === 'za') {
+          return b.getAttribute('data-title').localeCompare(a.getAttribute('data-title'));
+        }
+        // featured: demos first, then original order
+        var fa = a.getAttribute('data-featured') === '1' ? 0 : 1;
+        var fb = b.getAttribute('data-featured') === '1' ? 0 : 1;
+        if (fa !== fb) return fa - fb;
+        return parseInt(a.getAttribute('data-order'), 10) - parseInt(b.getAttribute('data-order'), 10);
+      });
+      sorted.forEach(function(card) { grid.appendChild(card); });
+      if (emptyMsg) grid.appendChild(emptyMsg);
+    }
+
+    filters.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activeFilter = btn.getAttribute('data-filter') || 'all';
+        filters.forEach(function(b) {
+          var on = b === btn;
+          b.classList.toggle('is-active', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        apply();
+      });
+    });
+
+    if (sortSel) {
+      sortSel.addEventListener('change', function() {
+        activeSort = sortSel.value;
+        apply();
+      });
+    }
+
+    apply();
+  }
+
   document.addEventListener("nav", function() {
     // Restart reveal-card animations on SPA navigation
     var cards = document.querySelectorAll('.reveal-card');
@@ -1165,6 +1371,8 @@ Landing.afterDOMLoaded = `
       void document.body.offsetHeight;
       cards.forEach(function(el) { el.style.animation = ''; });
     }
+
+    _initProjectControls();
 
     // Clean up old listeners
     if (_nameWrap) {

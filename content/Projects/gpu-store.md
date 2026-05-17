@@ -12,7 +12,6 @@ tags:
   - projects
   - full-stack
   - payments
-  - distributed-systems
 ---
 
 <div class="project-links">
