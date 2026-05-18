@@ -44,10 +44,15 @@ const cleanupFns: Set<(...args: any[]) => void> = new Set()
 window.addCleanup = (fn) => cleanupFns.add(fn)
 
 let loadingBar: HTMLDivElement | null = null
+let trickleTimer: number | null = null
 
 function startLoading() {
   // Remove any existing bar
   loadingBar?.remove()
+  if (trickleTimer !== null) {
+    clearTimeout(trickleTimer)
+    trickleTimer = null
+  }
 
   loadingBar = document.createElement("div")
   loadingBar.className = "navigation-progress"
@@ -55,11 +60,28 @@ function startLoading() {
 
   // Force layout then start the animation
   loadingBar.offsetWidth
-  loadingBar.style.width = "80%"
+  loadingBar.classList.add("visible")
+  loadingBar.style.width = "70%"
+
+  // Trickle: ease toward 95% with small irregular steps so it feels alive
+  const trickle = () => {
+    if (!loadingBar) return
+    const current = parseFloat(loadingBar.style.width) || 70
+    if (current >= 95) return
+    const remaining = 95 - current
+    const next = current + remaining * (0.1 + Math.random() * 0.15)
+    loadingBar.style.width = `${next}%`
+    trickleTimer = window.setTimeout(trickle, 350 + Math.random() * 400)
+  }
+  trickleTimer = window.setTimeout(trickle, 600)
 }
 
 function stopLoading() {
   if (!loadingBar) return
+  if (trickleTimer !== null) {
+    clearTimeout(trickleTimer)
+    trickleTimer = null
+  }
   const bar = loadingBar
   bar.classList.add("done")
   bar.addEventListener("transitionend", () => bar.remove(), { once: true })
