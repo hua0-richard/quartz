@@ -44,50 +44,90 @@ const cleanupFns: Set<(...args: any[]) => void> = new Set()
 window.addCleanup = (fn) => cleanupFns.add(fn)
 
 let loadingBar: HTMLDivElement | null = null
-let trickleTimer: number | null = null
+let progressRaf: number | null = null
+let progress = 0
+let progressStart = 0
+
+// Progress curve: faster early lift than a pure exponential, then a gentle
+// approach to ~0.92. Avoids the "crawl" near the asymptote that reads as a stall.
+//   p(t) = 0.92 * t / (t + 600)   where t is in ms
+// At t=300ms: ~0.31; t=900ms: ~0.55; t=1800ms: ~0.69; t=3600ms: ~0.79
+function progressAt(elapsedMs: number): number {
+  return (0.92 * elapsedMs) / (elapsedMs + 600)
+}
+
+const setProgress = (el: HTMLElement, p: number) => {
+  // translateZ(0) keeps the element on its own GPU layer
+  el.style.transform = `scaleX(${p}) translateZ(0)`
+}
 
 function startLoading() {
-  // Remove any existing bar
   loadingBar?.remove()
-  if (trickleTimer !== null) {
-    clearTimeout(trickleTimer)
-    trickleTimer = null
+  if (progressRaf !== null) {
+    cancelAnimationFrame(progressRaf)
+    progressRaf = null
   }
 
   loadingBar = document.createElement("div")
   loadingBar.className = "navigation-progress"
-  document.body.appendChild(loadingBar)
+  // Attach to <html> so micromorph(document.body, ...) doesn't tear it out mid-animation
+  document.documentElement.appendChild(loadingBar)
 
-  // Force layout then start the animation
+  // Force layout, then fade in
   loadingBar.offsetWidth
   loadingBar.classList.add("visible")
-  loadingBar.style.width = "70%"
 
-  // Trickle: ease toward 95% with small irregular steps so it feels alive
-  const trickle = () => {
+  progress = 0
+  progressStart = performance.now()
+  setProgress(loadingBar, 0)
+
+  const tick = (now: number) => {
     if (!loadingBar) return
-    const current = parseFloat(loadingBar.style.width) || 70
-    if (current >= 95) return
-    const remaining = 95 - current
-    const next = current + remaining * (0.1 + Math.random() * 0.15)
-    loadingBar.style.width = `${next}%`
-    trickleTimer = window.setTimeout(trickle, 350 + Math.random() * 400)
+    progress = progressAt(now - progressStart)
+    setProgress(loadingBar, progress)
+    progressRaf = requestAnimationFrame(tick)
   }
-  trickleTimer = window.setTimeout(trickle, 600)
+  progressRaf = requestAnimationFrame(tick)
 }
 
 function stopLoading() {
   if (!loadingBar) return
-  if (trickleTimer !== null) {
-    clearTimeout(trickleTimer)
-    trickleTimer = null
+  if (progressRaf !== null) {
+    cancelAnimationFrame(progressRaf)
+    progressRaf = null
   }
   const bar = loadingBar
-  bar.classList.add("done")
-  bar.addEventListener("transitionend", () => bar.remove(), { once: true })
-  // Fallback removal in case transitionend doesn't fire
-  setTimeout(() => bar.remove(), 800)
   loadingBar = null
+
+  // Smoothly finish from current progress to 100%, then fade out.
+  const fromProgress = progress
+  const finishStart = performance.now()
+  // Scale finish duration with how much progress remains — short hops feel snappy,
+  // long hops get more time so the velocity stays continuous with the entry curve.
+  const finishDuration = 160 + (1 - fromProgress) * 180
+
+  const finish = (now: number) => {
+    const t = Math.min((now - finishStart) / finishDuration, 1)
+    // ease-out cubic — same easing family as the entry, no kink at the handoff
+    const eased = 1 - Math.pow(1 - t, 3)
+    const p = fromProgress + (1 - fromProgress) * eased
+    setProgress(bar, p)
+    if (t < 1) {
+      progressRaf = requestAnimationFrame(finish)
+    } else {
+      progressRaf = null
+      bar.classList.add("done")
+      const onEnd = (e: TransitionEvent) => {
+        if (e.propertyName !== "opacity") return
+        bar.removeEventListener("transitionend", onEnd)
+        bar.remove()
+      }
+      bar.addEventListener("transitionend", onEnd)
+      // Fallback removal in case transitionend doesn't fire
+      setTimeout(() => bar.remove(), 1000)
+    }
+  }
+  progressRaf = requestAnimationFrame(finish)
 }
 
 let isNavigating = false
