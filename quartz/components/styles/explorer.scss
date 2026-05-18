@@ -457,7 +457,9 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
     // ── Backdrop ──
     .explorer-content {
       box-sizing: border-box;
-      z-index: 100;
+      // Above any graph stacking (global-graph-outer reaches 9999) so the
+      // modal can never be visually overlapped by the graph card at mobile.
+      z-index: 10000;
       position: fixed;
       inset: 0;
       width: 100vw;
@@ -545,7 +547,9 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
 
     .mobile-explorer {
       margin: 0;
-      z-index: 101;
+      // Must sit above .explorer-content (10000) so the close (X) stays tappable.
+      z-index: 10001;
+      position: relative;
 
       .lucide-menu {
         width: 16px;
@@ -599,6 +603,10 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
 }
 
 @media all and ($mobile) {
+  .page.explorer-modal-open > #quartz-body > .left.sidebar:has(.explorer.modal-open) {
+    z-index: 10002;
+  }
+
   .mobile-no-scroll,
   .mobile-no-scroll body {
     overflow: hidden;
