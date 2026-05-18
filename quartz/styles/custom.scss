@@ -13,6 +13,7 @@
 
   --bg: #fafaf8;
   --prose: #6e6b66;
+  --accent: #7a5034;
   --surface: rgba(0, 0, 0, 0.02);
   --border: rgba(0, 0, 0, 0.06);
   --border-hover: rgba(0, 0, 0, 0.12);
@@ -28,6 +29,7 @@
 :root[saved-theme="dark"] {
   --bg: #0e0f0c;
   --prose: #c8c6bf;
+  --accent: #c4a07a;
   --surface: rgba(255, 255, 255, 0.015);
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
@@ -214,35 +216,55 @@ body:not([data-slug="index"]) {
     // Inline code inside serif prose needs a touch more breathing room
     // so the mono glyphs don't collide with serif terminals.
     :not(pre) > code {
-      font-size: 0.82em;
+      font-size: 0.78em;
       padding: 0.18em 0.4em;
     }
 
-    // ── Inline internal links: monospace pill with card-style surface ──
-    // Inspired by the landing project cards — surface + border instead of a
-    // flat highlight wash. Restricted to prose contexts so list pages,
-    // breadcrumbs, and image-wrapping links keep their existing treatment.
+    // Block code: tighten for density in serif prose. Mono at full size
+    // visually overpowers the surrounding text.
+    pre,
+    pre code {
+      font-size: 0.8rem;
+    }
+
+    // Math: bump for clarity. Fractions, subscripts, and Greek letters
+    // are dense — slightly larger renders them legible against serif body
+    // without changing the line-height rhythm noticeably.
+    .katex {
+      font-size: 1.08em;
+    }
+    // Display math gets a touch more since it's a standalone block.
+    .katex-display > .katex {
+      font-size: 1.12em;
+    }
+
+    // ── Inline internal links: monospace pill with accent reference color ──
+    // Inspired by the landing project cards — surface + border framing, but
+    // tinted with the warm accent so cross-references read as a distinct
+    // visual class against the serif prose. Restricted to prose contexts so
+    // list pages, breadcrumbs, and image-wrapping links are untouched.
     :is(p, li, blockquote, td) a.internal:not(:has(> img)):not(.broken) {
       font-family: var(--font-mono);
       font-size: 0.82em;
       font-weight: 500;
       letter-spacing: -0.01em;
-      color: var(--dark);
-      background: var(--surface);
-      border: 1px solid var(--border);
+      color: var(--accent);
+      // Tinted fill so the pill reads as a soft chip integrated with the
+      // prose, not an outlined frame floating on top of it.
+      background: color-mix(in oklab, var(--accent) 9%, var(--bg));
+      border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
       border-radius: 4px;
       padding: 0.12em 0.42em;
       // Keep the pill aligned to the serif baseline rather than the cap line.
       vertical-align: baseline;
       transition:
-        background 0.25s var(--ease),
         border-color 0.25s var(--ease),
         color 0.25s var(--ease);
 
       &:hover {
-        background: var(--surface-hover);
-        border-color: var(--border-hover);
-        color: var(--dark);
+        background: color-mix(in oklab, var(--accent) 16%, var(--bg));
+        border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+        color: var(--accent);
       }
     }
 
@@ -366,11 +388,9 @@ article {
 @keyframes pageIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -534,8 +554,7 @@ a.tag-link {
         color 0.25s var(--ease);
 
       // Title can wrap; chevron stays put.
-      & > :first-child,
-      &::before {
+      & > :first-child {
         flex: 1 1 auto;
         min-width: 0;
         overflow: hidden;

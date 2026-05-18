@@ -28,11 +28,9 @@ Animations.afterDOMLoaded = `
     const article = document.querySelector('article');
     if (article) {
       article.style.opacity = '0';
-      article.style.transform = 'translateY(8px)';
       requestAnimationFrame(() => {
-        article.style.transition = 'opacity 0.4s ' + EASE + ', transform 0.4s ' + EASE;
+        article.style.transition = 'opacity 0.4s ' + EASE;
         article.style.opacity = '1';
-        article.style.transform = 'translateY(0)';
       });
     }
   });
