@@ -7,10 +7,12 @@
 
 :root {
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Source Serif 4", Charter, "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --ease: cubic-bezier(0, 0, 0.2, 1);
 
   --bg: #fafaf8;
+  --prose: #6e6b66;
   --surface: rgba(0, 0, 0, 0.02);
   --border: rgba(0, 0, 0, 0.06);
   --border-hover: rgba(0, 0, 0, 0.12);
@@ -25,6 +27,7 @@
 
 :root[saved-theme="dark"] {
   --bg: #0e0f0c;
+  --prose: #c8c6bf;
   --surface: rgba(255, 255, 255, 0.015);
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
@@ -133,6 +136,136 @@ article blockquote {
   border-left: 2px solid var(--border);
   padding-left: 1.25rem;
   margin: 1.5rem 0;
+}
+
+// ── Notes: serif body for long-form reading ─────────────────
+// Scoped to everything except the landing page. Headings stay Inter
+// so the sans/serif contrast frames each section.
+body:not([data-slug="index"]) {
+  article {
+    p,
+    li {
+      font-family: var(--font-serif);
+      font-size: 1.02rem;
+      line-height: 1.85;
+      letter-spacing: -0.006em;
+      color: var(--prose);
+    }
+
+    // Serif italics carry the voice better here than sans italics.
+    blockquote {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      line-height: 1.78;
+    }
+
+    p {
+      margin: 0 0 1.55rem;
+    }
+
+    // The Inter/serif weight contrast separates sections; these margins
+    // just need to feel proportional to the looser body leading.
+    h2 {
+      margin: 2.5rem 0 1.2rem;
+    }
+    h3 {
+      margin: 2.25rem 0 1.05rem;
+    }
+    h4 {
+      margin: 1.85rem 0 0.85rem;
+    }
+
+    // Global rule sets li+li to 0.5rem — too tight for serif at 1.72.
+    li + li {
+      margin-top: 0.7rem;
+    }
+
+    // Callouts (tip, note, warning, etc.) stay sans-serif — they're meta
+    // commentary on the prose, not part of the reading flow, and the
+    // visual handoff back to Inter signals "switch modes" to the reader.
+    .callout {
+      &,
+      & p,
+      & li,
+      & ul,
+      & ol,
+      & blockquote {
+        font-family: var(--font-sans);
+      }
+
+      & p,
+      & li {
+        font-size: 0.92rem;
+        line-height: 1.6;
+        letter-spacing: normal;
+        color: var(--darkgray);
+      }
+
+      // Callouts have their own spacing rhythm — keep list items tight.
+      & li + li {
+        margin-top: 0.35rem;
+      }
+
+      & .callout-title {
+        font-family: var(--font-sans);
+      }
+    }
+
+    // Inline code inside serif prose needs a touch more breathing room
+    // so the mono glyphs don't collide with serif terminals.
+    :not(pre) > code {
+      font-size: 0.82em;
+      padding: 0.18em 0.4em;
+    }
+
+    // ── Inline internal links: monospace pill with card-style surface ──
+    // Inspired by the landing project cards — surface + border instead of a
+    // flat highlight wash. Restricted to prose contexts so list pages,
+    // breadcrumbs, and image-wrapping links keep their existing treatment.
+    :is(p, li, blockquote, td) a.internal:not(:has(> img)):not(.broken) {
+      font-family: var(--font-mono);
+      font-size: 0.82em;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.12em 0.42em;
+      // Keep the pill aligned to the serif baseline rather than the cap line.
+      vertical-align: baseline;
+      transition:
+        background 0.25s var(--ease),
+        border-color 0.25s var(--ease),
+        color 0.25s var(--ease);
+
+      &:hover {
+        background: var(--surface-hover);
+        border-color: var(--border-hover);
+        color: var(--dark);
+      }
+    }
+
+    // Callout internal links inherit the same pill — callouts are sans-serif
+    // overall, but the mono link treatment still reads as "pointer to another
+    // note" and stays consistent with prose pills.
+    .callout :is(p, li) a.internal:not(:has(> img)):not(.broken) {
+      font-family: var(--font-mono);
+    }
+  }
+}
+
+@media all and ($mobile) {
+  body:not([data-slug="index"]) article {
+    p,
+    li {
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    p {
+      margin: 0 0 1.15rem;
+    }
+  }
 }
 
 .meta,
@@ -352,12 +485,90 @@ a.tag-link {
   }
 }
 
-.backlinks ul li a {
-  display: inline-block;
-  padding: 0.2rem 0;
-  transition: color 0.3s var(--ease);
-  &:hover {
-    color: var(--secondary);
+// ── Backlinks: row-based, each link reads as a distinct, tappable item ──
+.backlinks {
+  & > h3 {
+    color: var(--darkgray);
+    margin-bottom: 0.85rem;
+  }
+
+  ul.overflow {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px; // hairline separation between items, drawn by the dividers below
+  }
+
+  ul li {
+    position: relative;
+    margin: 0;
+    list-style: none;
+
+    // Hairline divider between adjacent items.
+    & + li::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0.65rem;
+      right: 0.65rem;
+      height: 1px;
+      background: var(--border);
+      opacity: 0.6;
+    }
+
+    & > a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 0.65rem;
+      margin: 0 -0.65rem; // bleed hover state slightly outside text edges
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: var(--darkgray);
+      text-decoration: none;
+      transition:
+        background 0.25s var(--ease),
+        color 0.25s var(--ease);
+
+      // Title can wrap; chevron stays put.
+      & > :first-child,
+      &::before {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      // Chevron indicator — faded by default, brightens + slides on hover.
+      &::after {
+        content: "›";
+        flex: 0 0 auto;
+        font-size: 1.05rem;
+        line-height: 1;
+        color: var(--gray);
+        opacity: 0.55;
+        transform: translateX(0);
+        transition:
+          transform 0.25s var(--ease),
+          opacity 0.25s var(--ease),
+          color 0.25s var(--ease);
+      }
+
+      &:hover {
+        background: var(--surface-hover);
+        color: var(--dark);
+
+        &::after {
+          color: var(--secondary);
+          opacity: 1;
+          transform: translateX(3px);
+        }
+      }
+    }
   }
 }
 

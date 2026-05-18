@@ -18,7 +18,7 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "EB Garamond",
+        header: { name: "Source Serif 4", weights: [400, 600], includeItalic: true },
         body: "Inter",
         code: "JetBrains Mono",
       },
