@@ -62,7 +62,13 @@ const setProgress = (el: HTMLElement, p: number) => {
 }
 
 function startLoading() {
-  loadingBar?.remove()
+  // Remove ALL existing bars, not just the one currently tracked by `loadingBar`.
+  // A previous stopLoading() may have nulled the ref and handed the bar off to an
+  // async finish-animation RAF — if we re-enter here during that window, the old
+  // bar is still in the DOM and will be orphaned (stuck near 100%) when we cancel
+  // its finish RAF below. Querying the DOM guarantees we never leave a stranded bar.
+  document.querySelectorAll(".navigation-progress").forEach((el) => el.remove())
+  loadingBar = null
   if (progressRaf !== null) {
     cancelAnimationFrame(progressRaf)
     progressRaf = null
