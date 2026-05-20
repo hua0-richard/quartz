@@ -20,6 +20,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
       slug: f.slug!,
       ...(f.frontmatter as unknown as ProjectFrontmatter),
     }))
+  const featuredProjects = projects.filter((p) => p.demo)
 
   return (
     <div class="landing">
@@ -37,24 +38,34 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             engineer roles.
           </p>
         </div>
-        {projects.filter((p) => p.demo).length > 0 && (
+        {featuredProjects.length > 0 && (
           <div class="landing-project-quicklinks">
             <span class="landing-sublabel">Featured Projects</span>
-            <div class="landing-featured-pills">
-              {projects
-                .filter((p) => p.demo)
-                .map((p) => (
+            <div class="landing-featured-grid">
+              {featuredProjects.map((p) => {
+                const techStack = (p.tags ?? []).filter((t) => t !== "projects").slice(0, 3)
+                return (
                   <a
                     href={p.demo}
                     target="_blank"
                     rel="noreferrer"
-                    class="lp-featured-pill"
+                    class="lp-featured-card"
                     aria-label={`${p.title} — live demo`}
                   >
-                    <span class="lp-live-dot"></span>
-                    <span class="quicklink-name">{p.title}</span>
+                    <div class="lp-featured-card-top">
+                      <span class="lp-live-dot"></span>
+                      <span class="lp-featured-title">{p.title ?? "Project"}</span>
+                      <span class="lp-featured-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </div>
+                    {p.description && <p class="lp-featured-desc">{p.description}</p>}
+                    {techStack.length > 0 && (
+                      <p class="lp-featured-tech">{techStack.join(" · ")}</p>
+                    )}
                   </a>
-                ))}
+                )
+              })}
             </div>
           </div>
         )}
@@ -63,11 +74,9 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
           <span class="landing-sublabel">Contact</span>
           <div class="landing-links">
             <a href="mailto:hua.richard0@gmail.com">Email</a>
-            <span class="dot">&middot;</span>
             <a href="https://github.com/hua0-richard" target="_blank" rel="noreferrer">
               GitHub
             </a>
-            <span class="dot">&middot;</span>
             <a href="https://www.linkedin.com/in/richard0hua/" target="_blank" rel="noreferrer">
               LinkedIn
             </a>
@@ -290,20 +299,20 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 12px 0 36px;
+  padding: 18px 0 40px;
 }
 
 .landing-name {
   position: relative;
-  margin: 0 0 1.25rem;
-  padding-bottom: 1.25rem;
+  margin: 0 0 1.65rem;
+  padding-bottom: 1.35rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
   font-family: var(--font-sans);
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: clamp(2.5rem, 4.6vw, 3.15rem);
+  font-weight: 650;
+  letter-spacing: -0.028em;
+  line-height: 1.06;
   color: var(--dark);
 }
 
@@ -331,51 +340,62 @@ Landing.css = `
 
 .landing-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.98rem;
   font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.005em;
-  color: var(--darkgray);
-  margin: 0 0 0.4rem;
+  line-height: 1.62;
+  letter-spacing: -0.01em;
+  color: var(--dark);
+  max-width: 48ch;
+  margin: 0 0 0.5rem;
 }
 
 .landing-bio {
-  font-size: 0.82rem;
-  line-height: 1.55;
+  font-size: 0.78rem;
+  line-height: 1.6;
   color: var(--gray);
+  opacity: 0.86;
   margin: 0;
 }
 
 .landing-links {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.45rem;
+  flex-wrap: wrap;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
 }
 
 .landing-links a {
+  display: inline-flex;
+  align-items: center;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: var(--secondary);
+  line-height: 1.3;
+  padding: 0.34rem 0.64rem;
+  border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--border) 84%, var(--bg));
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  color: var(--darkgray);
   text-decoration: none;
-  transition: color 0.3s var(--ease);
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
 }
-.landing-links a:hover { color: var(--dark); }
 
-.landing-links .dot {
-  color: var(--gray);
-  font-size: 0.75rem;
-  user-select: none;
-  opacity: 0.4;
+.landing-links a:hover {
+  color: var(--dark);
+  border-color: var(--border-hover);
+  background: color-mix(in oklab, var(--surface-hover) 88%, var(--surface));
 }
 
 /* ── Hero subsections (About, Featured Projects, Contact) ───── */
 .landing-project-quicklinks {
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
 }
 
 .landing-project-quicklinks + .landing-project-quicklinks {
@@ -397,64 +417,117 @@ Landing.css = `
 .landing-sublabel {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 0.3rem;
+  color: color-mix(in oklab, var(--gray) 82%, var(--bg));
+  margin-bottom: 0.42rem;
 }
 
-.landing-featured-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+.landing-featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.6rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
 }
 
-.lp-featured-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 500;
-  padding: 0.35rem 0.7rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  color: var(--darkgray);
+.lp-featured-card {
+  display: block;
   text-decoration: none;
-  background: var(--surface);
+  padding: 0.68rem 0.78rem 0.72rem;
+  min-height: 92px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
   transition:
     border-color 0.18s var(--ease),
-    color 0.18s var(--ease);
+    background-color 0.18s var(--ease);
 }
 
-.lp-featured-pill:hover {
-  border-color: var(--border-hover);
+.lp-featured-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.36rem;
+  margin-bottom: 0.28rem;
+}
+
+.lp-featured-title {
+  font-family: var(--font-sans);
+  font-size: 0.83rem;
+  font-weight: 540;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   color: var(--dark);
 }
 
-.lp-featured-pill .lp-live-dot {
-  width: 7px;
-  height: 7px;
-}
-
-.lp-featured-pill::after {
-  content: '↗';
-  display: inline-block;
-  margin-left: 0.05em;
-  font-size: 0.95em;
+.lp-featured-arrow {
+  margin-left: auto;
+  font-size: 0.78rem;
   color: var(--gray);
   transition:
     transform 0.18s var(--ease),
     color 0.18s var(--ease);
 }
 
-.lp-featured-pill:hover::after {
+.lp-featured-desc {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--darkgray);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lp-featured-tech {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.012em;
+  color: var(--gray);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.lp-featured-card:hover {
+  border-color: var(--border-hover);
+  background: color-mix(in oklab, var(--surface-hover) 88%, var(--surface));
+}
+
+.lp-featured-card:hover .lp-featured-arrow {
   color: var(--dark);
   transform: translate(1px, -1px);
+}
+
+.lp-featured-card .lp-live-dot {
+  width: 6px;
+  height: 6px;
+  box-shadow: 0 0 0 1px color-mix(in oklab, #4a9a7e 40%, transparent);
+}
+
+.lp-featured-card .lp-live-dot::after {
+  animation-duration: 2.2s;
+}
+
+.landing-links a:focus-visible,
+.lp-featured-card:focus-visible,
+.lp-filter-pill:focus-visible,
+.lp-sort-select:focus-visible,
+.lp-card-links a:focus-visible,
+.explore-pill:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--secondary) 50%, transparent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .landing-featured-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── Webring ───────────────────────────────────────────────── */
@@ -490,25 +563,25 @@ Landing.css = `
 /* ── Section headings ──────────────────────────────────────── */
 .landing-section-heading {
   font-family: var(--font-sans);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-size: 1.14rem;
+  font-weight: 620;
+  letter-spacing: -0.018em;
   line-height: 1.3;
   color: var(--dark);
-  margin: 0 0 0.85rem;
+  margin: 0 0 1.05rem;
 }
 
 .landing-section-desc {
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   color: var(--gray);
-  line-height: 1.55;
+  line-height: 1.6;
   max-width: 36rem;
-  margin: -0.5rem 0 1rem;
+  margin: -0.4rem 0 1.1rem;
 }
 
 /* ── Education ─────────────────────────────────────────────── */
 .landing-education {
-  padding: 2rem 0;
+  padding: 2.15rem 0;
 }
 
 .landing-edu-list {
@@ -524,13 +597,19 @@ Landing.css = `
   column-gap: 0.9rem;
   padding: 0.85rem 1rem;
   border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  border: 1px solid color-mix(in oklab, var(--border) 88%, var(--bg));
+  background: color-mix(in oklab, var(--surface) 95%, transparent);
   position: relative;
-  transition: border-color 0.18s var(--ease);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 0.18s var(--ease),
+    box-shadow 0.2s var(--ease);
 }
 .edu-item:hover {
   border-color: var(--border-hover);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 3px 12px rgba(0, 0, 0, 0.12);
 }
 
 .edu-logo {
@@ -569,8 +648,8 @@ Landing.css = `
 }
 
 .edu-meta {
-  font-size: 0.78rem;
-  color: var(--darkgray);
+  font-size: 0.75rem;
+  color: var(--gray);
   margin-top: 1px;
 }
 
@@ -619,7 +698,7 @@ Landing.css = `
 
 /* ── Projects ──────────────────────────────────────────────── */
 .landing-projects {
-  padding: 2rem 0;
+  padding: 2.2rem 0;
 }
 
 .lp-controls {
@@ -639,24 +718,26 @@ Landing.css = `
 
 .lp-filter-pill {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 500;
-  padding: 0.3rem 0.75rem;
+  padding: 0.32rem 0.78rem;
   border-radius: 100px;
   border: 1px solid var(--border);
-  background: transparent;
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
   color: var(--gray);
   cursor: pointer;
   transition:
     border-color 0.18s var(--ease),
-    color 0.18s var(--ease);
+    color 0.18s var(--ease),
+    background-color 0.18s var(--ease);
 }
 .lp-filter-pill:hover {
   border-color: var(--border-hover);
   color: var(--dark);
 }
 .lp-filter-pill.is-active {
-  border-color: var(--border-hover);
+  border-color: color-mix(in oklab, var(--border-hover) 85%, var(--secondary));
+  background: color-mix(in oklab, var(--secondary) 12%, var(--surface));
   color: var(--dark);
 }
 
@@ -668,11 +749,11 @@ Landing.css = `
 
 .lp-sort-label {
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: color-mix(in oklab, var(--gray) 86%, var(--bg));
 }
 
 .lp-sort-select {
@@ -681,8 +762,8 @@ Landing.css = `
   font-weight: 500;
   padding: 0.3rem 1.8rem 0.3rem 0.75rem;
   border-radius: 100px;
-  border: 1px solid var(--border);
-  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
   color: var(--darkgray);
   cursor: pointer;
   appearance: none;
@@ -703,7 +784,8 @@ Landing.css = `
 
 .landing-project-grid {
   display: grid;
-  gap: 0.65rem;
+  gap: 0.72rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .lp-card.is-hidden {
@@ -720,43 +802,54 @@ Landing.css = `
 }
 
 .lp-card {
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
   border-radius: 8px;
-  padding: 1rem 1.15rem;
-  background: var(--surface);
+  padding: 0.92rem 1rem 0.96rem;
+  min-height: 154px;
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
   position: relative;
-  transition: border-color 0.18s var(--ease);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 1px 0 rgba(0, 0, 0, 0.18);
+  transition:
+    border-color 0.18s var(--ease),
+    background-color 0.18s var(--ease),
+    box-shadow 0.18s var(--ease);
 }
 .lp-card:hover {
   border-color: var(--border-hover);
+  background: color-mix(in oklab, var(--surface-hover) 90%, var(--surface));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .lp-card-eyebrow {
   margin: 0 0 0.2rem;
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gray);
 }
 
 .lp-card-title {
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.32rem;
   font-family: var(--font-sans);
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  line-height: 1.3;
+  font-size: 0.98rem;
+  font-weight: 620;
+  letter-spacing: -0.012em;
+  line-height: 1.26;
   color: var(--dark);
 }
 
 .lp-card-desc {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.62rem;
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  line-height: 1.5;
-  color: var(--gray);
+  line-height: 1.52;
+  color: var(--darkgray);
 }
 
 .lp-card-tags {
@@ -767,13 +860,13 @@ Landing.css = `
 }
 .lp-card-tags span {
   font-family: var(--font-sans);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 500;
-  padding: 0.12rem 0.5rem;
+  padding: 0.1rem 0.45rem;
   border-radius: 100px;
-  background: var(--surface);
+  background: color-mix(in oklab, var(--surface) 75%, transparent);
   color: var(--gray);
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--border) 78%, var(--bg));
 }
 
 .lp-card-links {
@@ -782,22 +875,28 @@ Landing.css = `
 }
 .lp-card-links a {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--secondary);
   text-decoration: none;
-  transition: color 0.3s var(--ease);
+  transition:
+    color 0.3s var(--ease),
+    opacity 0.2s var(--ease);
 }
 .lp-card-links a::after {
   content: '↗';
   display: inline-block;
   margin-left: 0.2em;
-  transition: transform 0.3s var(--ease);
+  color: var(--gray);
+  transition:
+    transform 0.3s var(--ease),
+    color 0.2s var(--ease);
 }
 .lp-card-links a:hover {
   color: var(--dark);
 }
 .lp-card-links a:hover::after {
+  color: var(--darkgray);
   transform: translate(1px, -1px);
 }
 
@@ -832,7 +931,7 @@ Landing.css = `
 
 /* ── Explorations ──────────────────────────────────────────── */
 .landing-explorations {
-  padding: 2rem 0 3rem;
+  padding: 2.15rem 0 3.1rem;
 }
 
 .landing-explore-links {
@@ -843,20 +942,22 @@ Landing.css = `
 
 .explore-pill {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 500;
-  padding: 0.32rem 0.85rem;
+  padding: 0.36rem 0.88rem;
   border-radius: 100px;
-  border: 1px solid var(--border);
+  border: 1px solid color-mix(in oklab, var(--border) 82%, var(--bg));
   color: var(--darkgray);
   text-decoration: none;
-  background: transparent;
+  background: color-mix(in oklab, var(--surface) 68%, transparent);
   transition:
     border-color 0.18s var(--ease),
-    color 0.18s var(--ease);
+    color 0.18s var(--ease),
+    background-color 0.18s var(--ease);
 }
 .explore-pill:hover {
   border-color: var(--border-hover);
+  background: color-mix(in oklab, var(--surface-hover) 85%, var(--surface));
   color: var(--dark);
 }
 
@@ -896,10 +997,10 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-name { font-size: 1.75rem; }
-  .landing-hero { padding: 8px 0 24px; }
-  .landing-subtitle { font-size: 0.88rem; line-height: 1.5; }
-  .landing-bio { font-size: 0.8rem; }
+  .landing-name { font-size: clamp(2rem, 7vw, 2.25rem); }
+  .landing-hero { padding: 14px 0 28px; }
+  .landing-subtitle { font-size: 0.92rem; line-height: 1.58; }
+  .landing-bio { font-size: 0.76rem; }
 
   .landing-education,
   .landing-projects,
@@ -911,15 +1012,17 @@ body[data-slug="index"] .center > article > *:not(.landing) {
   .landing-edu-list { gap: 0.5rem; }
   .edu-item { padding: 0.8rem 0.9rem; }
   .lp-card { padding: 0.9rem 1rem; }
+  .landing-featured-grid { gap: 0.5rem; }
 
   .landing-project-grid { gap: 0.55rem; }
+  .lp-card { min-height: 0; }
 }
 
 @media (max-width: 520px) {
-  .landing-name { font-size: 1.5rem; }
-  .landing-hero { padding: 24px 0 20px; }
-  .landing-subtitle { font-size: 0.85rem; }
-  .landing-bio { font-size: 0.78rem; }
+  .landing-name { font-size: 1.82rem; }
+  .landing-hero { padding: 16px 0 22px; }
+  .landing-subtitle { font-size: 0.86rem; }
+  .landing-bio { font-size: 0.73rem; }
   .landing-links a { font-size: 0.78rem; }
   .landing-section-heading { font-size: 0.95rem; }
 }

@@ -22,6 +22,8 @@ button.toc-header {
   }
 
   & .fold {
+    flex: 0 0 auto;
+    display: block;
     margin-left: 0.4rem;
     transition: transform 0.3s ease;
     opacity: 0.6;

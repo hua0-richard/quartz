@@ -2,8 +2,11 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
 
-const W = 210
-const H = 150
+// Internal render resolution. Kept well above the displayed canvas size so the
+// outline pass supersamples — the browser then smooth-downscales the result,
+// which is what keeps the contour lines crisp instead of pixelated.
+const W = 560
+const H = 400
 
 function parseCSSColor(value: string): THREE.Vector3 {
   const el = document.createElement("div")
@@ -23,7 +26,7 @@ function getThemeColors() {
   }
 }
 
-const ditherVertexShader = `
+const stencilVertexShader = `
   varying vec2 vUv;
   void main() {
     vUv = uv;
@@ -31,29 +34,40 @@ const ditherVertexShader = `
   }
 `
 
-const ditherFragmentShader = `
+const stencilFragmentShader = `
   precision highp float;
 
   uniform sampler2D tDiffuse;
   uniform vec3 uFg;
   uniform vec3 uBg;
+  uniform vec2 uTexel;
   varying vec2 vUv;
 
-  // Recursive Bayer dithering
-  float bayer2(vec2 a) {
-    a = floor(a);
-    return fract(dot(a, vec2(0.5, a.y * 0.75)));
+  float lumaOf(vec3 c) {
+    return dot(c, vec3(0.299, 0.587, 0.114));
   }
-  float bayer4(vec2 a) { return bayer2(a * 0.5) * 0.25 + bayer2(a); }
-  float bayer8(vec2 a) { return bayer4(a * 0.5) * 0.25 + bayer2(a); }
 
   void main() {
-    vec4 tex = texture2D(tDiffuse, vUv);
-    float lum = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
-    // Compress the Bayer threshold range so darks stay solid and brights stay
-    // solid; only mid-tones dither. Reduces overall dither noise.
-    float threshold = bayer8(gl_FragCoord.xy) * 0.38 + 0.31;
-    vec3 color = lum > threshold ? uFg : uBg;
+    // Sobel edge magnitude over the 8 neighbours of this pixel.
+    float tl = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2(-1.0, -1.0)).rgb);
+    float tc = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2( 0.0, -1.0)).rgb);
+    float tr = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2( 1.0, -1.0)).rgb);
+    float ml = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2(-1.0,  0.0)).rgb);
+    float mr = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2( 1.0,  0.0)).rgb);
+    float bl = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2(-1.0,  1.0)).rgb);
+    float bc = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2( 0.0,  1.0)).rgb);
+    float br = lumaOf(texture2D(tDiffuse, vUv + uTexel * vec2( 1.0,  1.0)).rgb);
+
+    float gx = -tl - 2.0 * ml - bl + tr + 2.0 * mr + br;
+    float gy = -tl - 2.0 * tc - tr + bl + 2.0 * bc + br;
+    float edge = length(vec2(gx, gy));
+
+    // Pure outline: the ship is drawn entirely as contour lines — the
+    // silhouette boundary plus the internal panel seams the flat-shaded faces
+    // create. No interior fill at all, so it reads as pure line art.
+    float outline = smoothstep(0.09, 0.24, edge);
+
+    vec3 color = mix(uBg, uFg, outline);
     gl_FragColor = vec4(color, 1.0);
   }
 `
@@ -115,7 +129,7 @@ function createScene(canvas: HTMLCanvasElement) {
       const scale = maxDim > 0 ? TARGET_SIZE / maxDim : 1
       model.position.sub(center.multiplyScalar(scale))
       model.scale.setScalar(scale)
-      // Override the GLB's PBR materials with a flat white so the dither reads
+      // Override the GLB's PBR materials with a flat white so the stencil reads
       // form via lighting, not surface texture.
       const flatMat = new THREE.MeshStandardMaterial({
         color: 0xffffff,
@@ -173,9 +187,9 @@ function createScene(canvas: HTMLCanvasElement) {
       attribute float aSize;
       void main() {
         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        // Multiplier 10 → typical star renders as ~1px, brightest ~3-4px on
-        // a 140x100 internal canvas. Stops them from looking like spheres.
-        gl_PointSize = aSize * (10.0 / -mvPosition.z);
+        // Scales with W so stars keep a consistent on-screen size regardless
+        // of the internal render resolution. Stops them looking like spheres.
+        gl_PointSize = aSize * (${(W / 21).toFixed(2)} / -mvPosition.z);
         gl_Position = projectionMatrix * mvPosition;
       }
     `,
@@ -201,23 +215,25 @@ function createScene(canvas: HTMLCanvasElement) {
   const renderTarget = new THREE.WebGLRenderTarget(W, H, {
     minFilter: THREE.LinearFilter,
     magFilter: THREE.LinearFilter,
+    samples: 4,
   })
 
-  // Dither post-processing
+  // Stencil post-processing
   const { fg, bg } = getThemeColors()
-  const ditherMaterial = new THREE.ShaderMaterial({
+  const stencilMaterial = new THREE.ShaderMaterial({
     uniforms: {
       tDiffuse: { value: renderTarget.texture },
       uFg: { value: fg },
       uBg: { value: bg },
+      uTexel: { value: new THREE.Vector2(1 / W, 1 / H) },
     },
-    vertexShader: ditherVertexShader,
-    fragmentShader: ditherFragmentShader,
+    vertexShader: stencilVertexShader,
+    fragmentShader: stencilFragmentShader,
   })
 
-  const ditherScene = new THREE.Scene()
-  const ditherCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-  ditherScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), ditherMaterial))
+  const stencilScene = new THREE.Scene()
+  const stencilCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+  stencilScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), stencilMaterial))
 
   // Mouse interaction (parallax camera shift)
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, over: false }
@@ -230,7 +246,9 @@ function createScene(canvas: HTMLCanvasElement) {
     mouse.tx = ((e.clientX - rect.left) / rect.width - 0.5) * 2
     mouse.ty = ((e.clientY - rect.top) / rect.height - 0.5) * 2
   }
-  function onMouseEnter() { mouse.over = true }
+  function onMouseEnter() {
+    mouse.over = true
+  }
   function onMouseLeave() {
     mouse.over = false
     mouse.tx = 0
@@ -282,7 +300,7 @@ function createScene(canvas: HTMLCanvasElement) {
     renderer.render(scene, camera)
 
     renderer.setRenderTarget(null)
-    renderer.render(ditherScene, ditherCamera)
+    renderer.render(stencilScene, stencilCamera)
   }
 
   animate()
@@ -290,8 +308,8 @@ function createScene(canvas: HTMLCanvasElement) {
   return {
     updateColors() {
       const { fg, bg } = getThemeColors()
-      ditherMaterial.uniforms.uFg.value.copy(fg)
-      ditherMaterial.uniforms.uBg.value.copy(bg)
+      stencilMaterial.uniforms.uFg.value.copy(fg)
+      stencilMaterial.uniforms.uBg.value.copy(bg)
     },
     destroy() {
       running = false
@@ -302,7 +320,7 @@ function createScene(canvas: HTMLCanvasElement) {
       renderer.dispose()
       geometry.dispose()
       material.dispose()
-      ditherMaterial.dispose()
+      stencilMaterial.dispose()
       renderTarget.dispose()
       modelDisposeFns.forEach((fn) => fn())
     },

@@ -2,16 +2,16 @@
 
 // ─── Page listing wrapper (folder count + list) ───────────────
 .page-listing {
-  margin-top: 2.5rem;
+  margin-top: 2.2rem;
 
   & > p {
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.68rem;
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--gray);
-    margin: 0 0 1.25rem;
+    color: color-mix(in oklab, var(--gray) 84%, var(--bg));
+    margin: 0 0 1rem;
   }
 }
 
@@ -22,7 +22,7 @@ ul.section-ul {
   padding-left: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.55rem;
 }
 
 li.section-li {
@@ -33,13 +33,25 @@ li.section-li {
     grid-template-columns: fit-content(8em) 3fr 1fr;
     align-items: baseline;
     column-gap: 1.25rem;
-    padding: 0.85rem 1rem;
-    margin: 0 -1rem;
+    padding: 0.88rem 1rem 0.92rem;
+    margin: 0;
     border-radius: 8px;
-    transition: background 0.6s var(--ease);
+    border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
+    background: color-mix(in oklab, var(--surface) 90%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.02),
+      0 1px 0 rgba(0, 0, 0, 0.15);
+    transition:
+      background-color 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
 
     &:hover {
-      background: var(--surface);
+      background: color-mix(in oklab, var(--surface-hover) 88%, var(--surface));
+      border-color: var(--border-hover);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 6px 16px rgba(0, 0, 0, 0.14);
     }
 
     @media all and ($mobile) {
@@ -50,10 +62,10 @@ li.section-li {
 
     & .meta {
       font-family: var(--font-sans);
-      font-size: 0.82rem;
-      color: var(--gray);
+      font-size: 0.74rem;
+      color: color-mix(in oklab, var(--gray) 88%, var(--bg));
       margin: 0;
-      opacity: 1;
+      opacity: 0.85;
     }
 
     & > .desc {
@@ -62,10 +74,10 @@ li.section-li {
       & > h3 {
         margin: 0;
         font-family: var(--font-sans);
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        line-height: 1.4;
+        font-size: 0.98rem;
+        font-weight: 620;
+        letter-spacing: -0.012em;
+        line-height: 1.35;
 
         & > a.internal {
           color: var(--darkgray);
@@ -74,7 +86,7 @@ li.section-li {
           border-radius: 0 !important;
           line-height: inherit !important;
           text-decoration: none;
-          transition: color 0.45s var(--ease);
+          transition: color 0.25s var(--ease);
         }
       }
     }
@@ -98,21 +110,23 @@ li.section-li {
 
       & .tag-link {
         font-family: var(--font-sans);
-        font-size: 0.7rem;
+        font-size: 0.64rem;
         font-weight: 500;
-        padding: 0.15rem 0.55rem;
+        padding: 0.12rem 0.5rem;
         border-radius: 100px;
-        background: transparent;
+        background: color-mix(in oklab, var(--surface) 65%, transparent);
         color: var(--gray);
-        border: 1px solid var(--border);
+        border: 1px solid color-mix(in oklab, var(--border) 80%, var(--bg));
         text-decoration: none;
         transition:
-          color 0.3s var(--ease),
-          border-color 0.3s var(--ease);
+          color 0.2s var(--ease),
+          border-color 0.2s var(--ease),
+          background-color 0.2s var(--ease);
 
         &:hover {
           color: var(--dark);
           border-color: var(--border-hover);
+          background: color-mix(in oklab, var(--surface-hover) 85%, var(--surface));
         }
       }
     }

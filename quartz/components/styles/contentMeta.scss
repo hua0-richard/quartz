@@ -1,13 +1,21 @@
 .content-meta {
   margin-top: 0;
-  color: var(--darkgray);
+  color: color-mix(in oklab, var(--gray) 88%, var(--bg));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.012em;
+  opacity: 0.86;
 
   &[show-comma="true"] {
     > *:not(:last-child) {
-      margin-right: 8px;
+      margin-right: 0.12rem;
 
       &::after {
         content: ",";
+        margin-left: 0.22rem;
+        opacity: 0.6;
       }
     }
   }

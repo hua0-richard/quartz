@@ -5,6 +5,7 @@
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
+  margin: 0;
 
   & > .graph-open-trigger {
     position: absolute;
@@ -21,19 +22,26 @@
 
   & > .graph-outer {
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
     background: transparent;
-    margin: 0 -0.15rem;
+    margin: 0;
 
-    // Responsive heights
-    height: 160px;
+    // Desktop: make this panel twice as long (tall) as the dithered canvas.
+    height: auto;
+    aspect-ratio: 7 / 10;
+
+    & > .graph-container {
+      width: 100%;
+      height: 100%;
+    }
 
     @media all and ($mobile) {
       height: 140px;
       width: 100%;
+      aspect-ratio: auto;
     }
 
     @media all and ($mobile) {

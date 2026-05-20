@@ -36,8 +36,6 @@ DitheredTitle.css = `
   background: var(--bg);
   cursor: grab;
   opacity: 0;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
   transition: opacity 0.7s cubic-bezier(0, 0, 0.2, 1);
 }
 .dithered-title canvas.loaded {

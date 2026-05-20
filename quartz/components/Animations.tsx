@@ -23,18 +23,6 @@ Animations.afterDOMLoaded = `
     scrollObserver.observe(el);
   });
 
-  // SPA navigation crossfade
-  document.addEventListener('nav', () => {
-    const article = document.querySelector('article');
-    if (article) {
-      article.style.opacity = '0';
-      requestAnimationFrame(() => {
-        article.style.transition = 'opacity 0.4s ' + EASE;
-        article.style.opacity = '1';
-      });
-    }
-  });
-
   // TOC collapse/expand on mobile
   const toc = document.querySelector('.toc');
   const tocHeading = toc?.querySelector('h3');

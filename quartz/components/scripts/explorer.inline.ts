@@ -239,7 +239,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       // try to scroll to the active element if it exists
       const activeElement = explorerUl.querySelector(".active")
       if (activeElement) {
-        activeElement.scrollIntoView({ behavior: "smooth" })
+        activeElement.scrollIntoView({ behavior: "auto", block: "nearest" })
       }
     }
 
@@ -259,9 +259,9 @@ async function setupExplorer(currentSlug: FullSlug) {
       const tag = target?.tagName
       if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return
 
-      const toggles = Array.from(
-        explorer.querySelectorAll<HTMLElement>(".explorer-toggle"),
-      ).filter((el) => el.checkVisibility())
+      const toggles = Array.from(explorer.querySelectorAll<HTMLElement>(".explorer-toggle")).filter(
+        (el) => el.checkVisibility(),
+      )
       if (toggles.length === 0) return
 
       e.preventDefault()
@@ -291,6 +291,7 @@ async function setupExplorer(currentSlug: FullSlug) {
     }
 
     syncExplorerState(explorer)
+    explorer.classList.remove("is-refreshing")
   }
 }
 
@@ -339,6 +340,9 @@ function makeSidebarWheelHandler(sidebar: HTMLElement) {
 
 document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   const currentSlug = e.detail.url
+  for (const explorer of document.getElementsByClassName("explorer")) {
+    ;(explorer as HTMLElement).classList.add("is-refreshing")
+  }
   await setupExplorer(currentSlug)
 
   const leftSidebar = document.querySelector(".sidebar.left") as HTMLElement | null
