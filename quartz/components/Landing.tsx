@@ -35,29 +35,27 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
             interfaces on top of them.
           </p>
           <p class="landing-bio">
-            Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and
-            AI engineer roles.
+            Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and AI
+            engineer roles.
           </p>
         </div>
         {projects.filter((p) => p.demo).length > 0 && (
           <div class="landing-project-quicklinks">
             <span class="landing-sublabel">Featured Projects</span>
-            <div class="landing-links landing-project-links">
+            <div class="landing-featured-pills">
               {projects
                 .filter((p) => p.demo)
-                .map((p, i) => (
-                  <>
-                    {i > 0 && <span class="dot">&middot;</span>}
-                    <a
-                      href={p.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${p.title} — live demo`}
-                    >
-                      <span class="lp-live-dot"></span>
-                      <span class="quicklink-name">{p.title}</span>
-                    </a>
-                  </>
+                .map((p) => (
+                  <a
+                    href={p.demo}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="lp-featured-pill"
+                    aria-label={`${p.title} — live demo`}
+                  >
+                    <span class="lp-live-dot"></span>
+                    <span class="quicklink-name">{p.title}</span>
+                  </a>
                 ))}
             </div>
           </div>
@@ -156,11 +154,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
           <h2 class="landing-section-heading">Projects</h2>
           {(() => {
             const allTags = Array.from(
-              new Set(
-                projects
-                  .flatMap((p) => p.tags ?? [])
-                  .filter((t) => t && t !== "projects"),
-              ),
+              new Set(projects.flatMap((p) => p.tags ?? []).filter((t) => t && t !== "projects")),
             ).sort()
             return (
               <div class="lp-controls reveal-card" style="animation-delay: 0.3s">
@@ -298,15 +292,36 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 16px 0 48px;
+  padding: 12px 0 36px;
 }
 
 .landing-name {
-  margin: 0 0 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  margin: 0 0 1.25rem;
+  padding-bottom: 1.25rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
+}
+
+/* Underline below the name. Spans .center's content width by default;
+   extended 2rem on each side on desktop to reach the vertical divider
+   (matches .page-header::after and footer::before behavior across widths). */
+.landing-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+@media (min-width: 1200px) {
+  .landing-name::after {
+    left: -2rem;
+    right: -2rem;
+  }
 }
 
 .dot-name {
@@ -322,15 +337,17 @@ Landing.css = `
 
 .landing-subtitle {
   font-family: var(--font-sans);
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
   color: var(--darkgray);
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
 }
 
 .landing-bio {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
   color: var(--gray);
   margin: 0;
 }
@@ -364,7 +381,7 @@ Landing.css = `
 .landing-project-quicklinks {
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .landing-project-quicklinks + .landing-project-quicklinks {
@@ -386,59 +403,63 @@ Landing.css = `
 .landing-sublabel {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gray);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
-.landing-project-links a {
+.landing-featured-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  opacity: 0;
+  animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
+}
+
+.lp-featured-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.45em;
-  font-style: italic;
+  gap: 0.5em;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--darkgray);
   text-decoration: none;
+  background: var(--surface);
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 
-.landing-project-links .quicklink-name {
-  position: relative;
-  padding-bottom: 0;
+.lp-featured-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--dark);
 }
 
-.landing-project-links .quicklink-name::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0;
-  height: 1px;
-  background-image: linear-gradient(90deg, currentColor 1px, transparent 1px);
-  background-size: 2px 1px;
-  background-repeat: repeat-x;
-  opacity: 0.55;
-  transition: width 0.45s cubic-bezier(0.0, 0, 0.2, 1);
+.lp-featured-pill .lp-live-dot {
+  width: 7px;
+  height: 7px;
 }
 
-.landing-project-links a:hover .quicklink-name::after {
-  width: 100%;
-}
-
-.landing-project-links .lp-live-dot {
-  width: 8px;
-  height: 8px;
-}
-
-.landing-project-links a::after {
+.lp-featured-pill::after {
   content: '↗';
   display: inline-block;
-  margin-left: 0.1em;
-  transition: transform 0.3s var(--ease);
-  text-decoration: none;
+  margin-left: 0.05em;
+  font-size: 0.95em;
+  color: var(--gray);
+  transition:
+    transform 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 
-.landing-project-links a:hover::after {
+.lp-featured-pill:hover::after {
+  color: var(--dark);
   transform: translate(1px, -1px);
 }
 
@@ -475,18 +496,19 @@ Landing.css = `
 /* ── Section headings ──────────────────────────────────────── */
 .landing-section-heading {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin: 0 0 1rem;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--dark);
+  margin: 0 0 0.85rem;
 }
 
 .landing-section-desc {
-  font-size: 0.9rem;
-  color: var(--darkgray);
-  line-height: 1.6;
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.55;
+  max-width: 36rem;
   margin: -0.5rem 0 1rem;
 }
 
@@ -498,75 +520,40 @@ Landing.css = `
 .landing-edu-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .edu-item {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  column-gap: 1.1rem;
-  padding: 1.25rem 1.5rem;
+  column-gap: 0.9rem;
+  padding: 0.85rem 1rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
   position: relative;
-  overflow: hidden;
-  will-change: transform;
-  transition:
-    transform 0.32s var(--ease),
-    border-color 0.32s var(--ease),
-    box-shadow 0.32s var(--ease),
-    background 0.32s var(--ease);
-}
-.edu-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--card-shine);
-  opacity: 0;
-  transition: opacity 0.32s var(--ease);
-  pointer-events: none;
-  z-index: 0;
-}
-.edu-item:hover::before {
-  opacity: 1;
-  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.edu-item > * {
-  position: relative;
-  z-index: 1;
+  transition: border-color 0.18s var(--ease);
 }
 .edu-item:hover {
-  transform: translateY(-2px);
   border-color: var(--border-hover);
-  background: var(--surface-hover);
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.06),
-    0 12px 28px rgba(0, 0, 0, 0.14);
-  transition:
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .edu-logo {
-  width: clamp(48px, 6vw, 64px);
-  height: clamp(48px, 6vw, 64px);
+  width: clamp(36px, 4.5vw, 44px);
+  height: clamp(36px, 4.5vw, 44px);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--surface);
   border: 1px solid var(--border);
   overflow: hidden;
 }
 
 .edu-logo img {
-  width: clamp(32px, 4.5vw, 44px);
-  height: clamp(32px, 4.5vw, 44px);
+  width: clamp(24px, 3.2vw, 30px);
+  height: clamp(24px, 3.2vw, 30px);
   object-fit: contain;
   margin: 0;
   border-radius: 0;
@@ -581,42 +568,43 @@ Landing.css = `
 .edu-title {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.95rem;
-  line-height: 1.2;
+  font-size: 0.88rem;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
   color: var(--dark);
 }
 
 .edu-meta {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--darkgray);
   margin-top: 1px;
 }
 
 .edu-courses {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
   color: var(--darkgray);
 }
 
 .edu-courses-label {
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--gray);
 }
 
 .edu-courses ul {
-  margin: 0.35rem 0 0;
-  padding-left: 1.1rem;
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
   list-style: disc;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .edu-courses li {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   line-height: 1.4;
   color: var(--gray);
 }
@@ -645,8 +633,8 @@ Landing.css = `
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 1rem;
-  margin: 0 0 1.25rem;
+  gap: 0.5rem 0.75rem;
+  margin: 0 0 0.9rem;
 }
 
 .lp-filters {
@@ -665,7 +653,9 @@ Landing.css = `
   background: transparent;
   color: var(--gray);
   cursor: pointer;
-  transition: border-color 0.25s var(--ease), color 0.25s var(--ease), background 0.25s var(--ease);
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 .lp-filter-pill:hover {
   border-color: var(--border-hover);
@@ -673,7 +663,6 @@ Landing.css = `
 }
 .lp-filter-pill.is-active {
   border-color: var(--border-hover);
-  background: var(--surface);
   color: var(--dark);
 }
 
@@ -709,7 +698,9 @@ Landing.css = `
   background-position: calc(100% - 14px) 50%, calc(100% - 10px) 50%;
   background-size: 4px 4px, 4px 4px;
   background-repeat: no-repeat;
-  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 .lp-sort-select:hover {
   border-color: var(--border-hover);
@@ -718,7 +709,7 @@ Landing.css = `
 
 .landing-project-grid {
   display: grid;
-  gap: 1rem;
+  gap: 0.65rem;
 }
 
 .lp-card.is-hidden {
@@ -737,88 +728,54 @@ Landing.css = `
 .lp-card {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 1rem 1.15rem;
   background: var(--surface);
   position: relative;
-  overflow: hidden;
-  will-change: transform;
-  transition:
-    transform 0.32s var(--ease),
-    border-color 0.32s var(--ease),
-    box-shadow 0.32s var(--ease),
-    background 0.32s var(--ease);
-}
-.lp-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--card-shine);
-  opacity: 0;
-  transition: opacity 0.32s var(--ease);
-  pointer-events: none;
-  z-index: 0;
-}
-.lp-card:hover::before {
-  opacity: 1;
-  transition: opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.lp-card > * {
-  position: relative;
-  z-index: 1;
+  transition: border-color 0.18s var(--ease);
 }
 .lp-card:hover {
-  transform: translateY(-2px);
   border-color: var(--border-hover);
-  background: var(--surface-hover);
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.06),
-    0 12px 28px rgba(0, 0, 0, 0.14);
-  transition:
-    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    background 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lp-card-eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  margin: 0 0 0.2rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gray);
 }
 
 .lp-card-title {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.3rem;
   font-family: var(--font-sans);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
   color: var(--dark);
 }
 
 .lp-card-desc {
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.6rem;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.5;
   color: var(--gray);
 }
 
 .lp-card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
 }
 .lp-card-tags span {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 500;
-  padding: 0.2rem 0.65rem;
+  padding: 0.12rem 0.5rem;
   border-radius: 100px;
   background: var(--surface);
   color: var(--gray);
@@ -827,11 +784,11 @@ Landing.css = `
 
 .lp-card-links {
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 .lp-card-links a {
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--secondary);
   text-decoration: none;
@@ -881,32 +838,32 @@ Landing.css = `
 
 /* ── Explorations ──────────────────────────────────────────── */
 .landing-explorations {
-  padding: 2rem 0 4rem;
+  padding: 2rem 0 3rem;
 }
 
 .landing-explore-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .explore-pill {
   font-family: var(--font-sans);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  padding: 0.4rem 1rem;
+  padding: 0.32rem 0.85rem;
   border-radius: 100px;
   border: 1px solid var(--border);
   color: var(--darkgray);
   text-decoration: none;
   background: transparent;
-  transition: border-color 0.3s var(--ease), color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 .explore-pill:hover {
   border-color: var(--border-hover);
   color: var(--dark);
-  background: var(--surface);
-  box-shadow: 0 0 0 3px var(--surface);
 }
 
 /* ── Card reveal animation ─────────────────────────────────── */
@@ -936,35 +893,39 @@ Landing.css = `
 .landing-webring.reveal-card { animation-delay: 0.59s; }
 
 /* ── Homepage overrides ─────────────────────────────────────── */
-.page[data-slug="index"] .page-header {
+body[data-slug="index"] .page-header {
   margin-top: 0;
 }
-.page[data-slug="index"] .center > article > *:not(.landing) {
+body[data-slug="index"] .center > article > *:not(.landing) {
   display: none;
 }
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .landing-hero { padding: 8px 0 24px; }
-  .landing-subtitle { font-size: 0.95rem; }
+  .landing-subtitle { font-size: 0.88rem; line-height: 1.5; }
+  .landing-bio { font-size: 0.8rem; }
 
   .landing-education,
   .landing-projects,
   .landing-explorations { padding: 1.5rem 0; }
 
-  .landing-edu-list { gap: 0.75rem; }
-  .edu-item { padding: 1rem; }
-  .lp-card { padding: 1rem; }
+  .landing-section-heading { font-size: 1rem; margin-bottom: 0.75rem; }
+  .landing-section-desc { font-size: 0.82rem; margin-bottom: 0.85rem; }
 
-  .landing-project-grid { gap: 0.75rem; }
+  .landing-edu-list { gap: 0.5rem; }
+  .edu-item { padding: 0.8rem 0.9rem; }
+  .lp-card { padding: 0.9rem 1rem; }
+
+  .landing-project-grid { gap: 0.55rem; }
 }
 
 @media (max-width: 520px) {
-  .landing-hero { padding: 32px 0 20px; }
-  .landing-subtitle { font-size: 0.9rem; }
-  .landing-bio { font-size: 0.82rem; }
-  .landing-links a { font-size: 0.82rem; }
-  .landing-section-heading { font-size: 0.72rem; }
+  .landing-hero { padding: 24px 0 20px; }
+  .landing-subtitle { font-size: 0.85rem; }
+  .landing-bio { font-size: 0.78rem; }
+  .landing-links a { font-size: 0.78rem; }
+  .landing-section-heading { font-size: 0.95rem; }
 }
 
 /* ── Reduced motion ────────────────────────────────────────── */
@@ -988,10 +949,6 @@ Landing.css = `
   .lp-card {
     transition: none;
   }
-  .edu-item:hover,
-  .lp-card:hover {
-    transform: none;
-  }
 }
 `
 
@@ -1002,7 +959,7 @@ Landing.afterDOMLoaded = `
   function _sampleText(containerW) {
     var text = 'RICHARD HUA';
     var offscreen = document.createElement('canvas');
-    var fontSize = Math.round(containerW * 0.08);
+    var fontSize = Math.round(containerW * 0.075);
     var offW = containerW;
     var offH = fontSize * 1.4;
     offscreen.width = offW;

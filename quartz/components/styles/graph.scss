@@ -1,26 +1,10 @@
 @use "../../styles/variables.scss" as *;
 
 .graph {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  // surface, border, border-radius, padding, hover come from custom.scss
   overflow: hidden;
   position: relative;
-  width: 100%;
   box-sizing: border-box;
-  transition:
-    border-color 1.2s var(--ease),
-    box-shadow 1.2s var(--ease),
-    background 1.2s var(--ease);
-
-  &:hover,
-  &:focus-within {
-    border-color: var(--border-hover);
-    background: var(--surface-hover);
-    box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.15),
-      0 0 0 1px var(--border);
-  }
 
   & > .graph-open-trigger {
     position: absolute;
@@ -35,29 +19,20 @@
     appearance: none;
   }
 
-  & > h3 {
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--gray);
-    padding: 1rem 1.5rem 0;
-    margin: 0;
-  }
-
   & > .graph-outer {
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
     background: transparent;
+    margin: 0 -0.15rem;
 
     // Responsive heights
-    height: 250px;
+    height: 160px;
 
     @media all and ($mobile) {
-      height: 160px;
+      height: 140px;
       width: 100%;
     }
 
@@ -90,38 +65,42 @@
     }
   }
 
-  & > .global-graph-outer {
+}
+
+// Global graph modal — NOT nested under .graph because graph.inline.ts
+// portals .global-graph-outer up to <body> on open so it can escape every
+// ancestor stacking context. Styles must work regardless of parent.
+.global-graph-outer {
+  position: fixed;
+  z-index: 100000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  background: var(--light);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  overflow: hidden;
+
+  &.active {
+    display: inline-block;
+  }
+
+  & > .global-graph-container {
+    border: 1px solid var(--border);
+    background-color: var(--light);
+    border-radius: 8px;
+    box-sizing: border-box;
     position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100%;
-    background: var(--light);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    display: none;
-    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80vh;
+    width: 80vw;
 
-    &.active {
-      display: inline-block;
-    }
-
-    & > .global-graph-container {
-      border: 1px solid var(--border);
-      background-color: var(--light);
-      border-radius: 8px;
-      box-sizing: border-box;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      height: 80vh;
-      width: 80vw;
-
-      @media all and ($mobile) {
-        width: 90%;
-      }
+    @media all and ($mobile) {
+      width: 90%;
     }
   }
 }
@@ -130,10 +109,5 @@
 @media all and ($mobile) {
   .graph {
     margin: 1.5rem 0 0;
-    border-radius: 8px;
-    & > h3 {
-      padding: 0.65rem 1rem 0;
-      font-size: 0.68rem;
-    }
   }
 }

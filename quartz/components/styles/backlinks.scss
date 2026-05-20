@@ -2,16 +2,12 @@
 
 .backlinks {
   flex-direction: column;
-
-  & > h3 {
-    font-size: 1rem;
-    margin: 0;
-  }
+  // h3 typography is set in custom.scss for consistency with other sidebar cards
 
   & > ul.overflow {
     list-style: none;
     padding: 0;
-    margin: 0.5rem 0;
+    margin: 0;
     max-height: calc(100% - 2rem);
     overscroll-behavior: contain;
 

@@ -603,14 +603,25 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   })
 
   const containers = [...document.getElementsByClassName("global-graph-outer")] as HTMLElement[]
+  // Track where each modal originally lived so we can restore it on close.
+  const modalOriginalParents = new WeakMap<HTMLElement, { parent: HTMLElement; next: Node | null }>()
+
   async function renderGlobalGraph() {
     const slug = getFullSlug(window)
+    document.body.classList.add("global-graph-open")
     for (const container of containers) {
-      container.classList.add("active")
-      const sidebar = container.closest(".sidebar") as HTMLElement
-      if (sidebar) {
-        sidebar.style.zIndex = "1"
+      // Portal the modal up to <body> so it escapes every ancestor
+      // stacking context (sidebar, .graph card, etc.) and z-index just
+      // works without fighting parents.
+      if (container.parentElement && container.parentElement !== document.body) {
+        modalOriginalParents.set(container, {
+          parent: container.parentElement,
+          next: container.nextSibling,
+        })
+        document.body.appendChild(container)
       }
+
+      container.classList.add("active")
 
       const graphContainer = container.querySelector(".global-graph-container") as HTMLElement
       registerEscapeHandler(container, hideGlobalGraph)
@@ -622,11 +633,15 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 
   function hideGlobalGraph() {
     cleanupGlobalGraphs()
+    document.body.classList.remove("global-graph-open")
     for (const container of containers) {
       container.classList.remove("active")
-      const sidebar = container.closest(".sidebar") as HTMLElement
-      if (sidebar) {
-        sidebar.style.zIndex = ""
+      // Put the modal back where it came from so SPA navigations and
+      // querySelector chains relying on the original parent still work.
+      const origin = modalOriginalParents.get(container)
+      if (origin && origin.parent.isConnected) {
+        origin.parent.insertBefore(container, origin.next)
+        modalOriginalParents.delete(container)
       }
     }
   }

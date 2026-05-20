@@ -15,17 +15,18 @@ button.toc-header {
   color: var(--dark);
   display: flex;
   align-items: center;
+  // h3 typography is set in custom.scss for consistency with other sidebar cards
 
   & h3 {
-    font-size: 1rem;
     display: inline-block;
-    margin: 0;
   }
 
   & .fold {
-    margin-left: 0.5rem;
+    margin-left: 0.4rem;
     transition: transform 0.3s ease;
-    opacity: 0.8;
+    opacity: 0.6;
+    width: 10px;
+    height: 10px;
   }
 
   &.collapsed .fold {
@@ -38,7 +39,7 @@ ul.toc-content.overflow {
   position: relative;
   margin: 0;
   padding: 0;
-  margin-top: 0.75rem;
+  margin-top: 0.45rem;
   max-height: 1000px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -52,12 +53,12 @@ ul.toc-content.overflow {
 
   & > li > a {
     color: var(--dark);
-    opacity: 0.35;
+    opacity: 0.55;
     transition:
       0.5s ease opacity,
       0.3s ease color;
     &.in-view {
-      opacity: 0.75;
+      opacity: 0.9;
     }
   }
 
