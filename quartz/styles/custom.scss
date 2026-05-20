@@ -24,6 +24,16 @@
     rgba(0, 0, 0, 0.02) 60%,
     transparent 100%
   );
+
+  // ── Unified card hover ─────────────────────────────────────
+  // Shared by every card surface: featured/project cards, education
+  // rows, and the sidebar cards (graph / backlinks / toc). Minimal by
+  // design — hover shifts border and background color only, no lift or
+  // shadow. Light/dark stay analogous via the theme-split
+  // --border-hover / --surface-hover tokens.
+  --card-transition:
+    border-color 0.2s var(--ease),
+    background-color 0.2s var(--ease);
 }
 
 :root[saved-theme="dark"] {
@@ -40,6 +50,7 @@
     rgba(255, 255, 255, 0.03) 60%,
     transparent 100%
   );
+
 }
 
 .skip-to-content {
@@ -593,17 +604,10 @@ body.global-graph-open .sidebar > * {
   padding: 0.78rem 0.92rem;
   width: 100%;
   box-sizing: border-box;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.022),
-    0 1px 0 rgba(0, 0, 0, 0.2);
-  transition:
-    border-color 0.18s var(--ease),
-    box-shadow 0.2s var(--ease);
+  transition: var(--card-transition);
   &:hover {
     border-color: var(--border-hover);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 6px 18px rgba(0, 0, 0, 0.16);
+    background: color-mix(in oklab, var(--surface-hover) 92%, var(--surface));
   }
 
   // Hide scrollbar on internal overflow lists; the gradient mask + clipping
