@@ -338,8 +338,9 @@ Landing.css = `
   font-family: var(--font-sans);
   /* Matches the header type system (.article-title): same weight, tracking
      and line-height, sized one clear step above content-page titles since
-     this is the homepage's lead heading. */
-  font-size: clamp(2.05rem, 3.3vw, 2.4rem);
+     this is the homepage's lead heading. One fixed size per breakpoint —
+     overrides below at 800px and 520px. */
+  font-size: 2.4rem;
   font-weight: 640;
   letter-spacing: -0.022em;
   line-height: 1.14;
@@ -1024,7 +1025,7 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-name { font-size: clamp(2rem, 7vw, 2.25rem); }
+  .landing-name { font-size: 2.25rem; }
   .landing-hero { padding: 14px 0 28px; }
   .landing-subtitle { font-size: 0.92rem; line-height: 1.58; }
   .landing-bio { font-size: 0.76rem; }

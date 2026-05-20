@@ -397,10 +397,17 @@ body:not([data-slug="index"]) #quartz-body .center .page-header .breadcrumb-cont
 
 body:not([data-slug="index"]) #quartz-body .center .page-header .article-title {
   margin-top: 0.82rem;
-  font-size: clamp(1.85rem, 3vw, 2.15rem);
+  // One fixed size per breakpoint — mobile here, desktop override below.
+  font-size: 2rem;
   font-weight: 640;
   letter-spacing: -0.022em;
   line-height: 1.14;
+}
+
+@media (min-width: #{map-get($breakpoints, desktop)}) {
+  body:not([data-slug="index"]) #quartz-body .center .page-header .article-title {
+    font-size: 2.15rem;
+  }
 }
 
 body:not([data-slug="index"]) #quartz-body .center .page-header .content-meta {
