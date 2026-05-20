@@ -326,7 +326,7 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 18px 0 40px;
+  padding: 18px 0 2.15rem;
 }
 
 .landing-name {
@@ -734,7 +734,7 @@ Landing.css = `
 
 /* ── Projects ──────────────────────────────────────────────── */
 .landing-projects {
-  padding: 2.2rem 0;
+  padding: 2.15rem 0;
 }
 
 .lp-controls {
