@@ -1,6 +1,6 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
-const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) => {
+const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentProps) => {
   const isHomePage = fileData.slug === "index"
   if (!isHomePage) return null
 
@@ -25,9 +25,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles }: QuartzComponentProps) 
     <div class="landing">
       {/* ── Hero ── */}
       <section class="landing-hero">
-        <div class="landing-name" role="heading" aria-level={1} aria-label="Richard Hua">
-          <canvas class="dot-name" aria-hidden="true"></canvas>
-        </div>
+        <h1 class="landing-name">{cfg.pageTitle}</h1>
         <div class="landing-project-quicklinks">
           <span class="landing-sublabel">About</span>
           <p class="landing-subtitle">
@@ -301,6 +299,12 @@ Landing.css = `
   padding-bottom: 1.25rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
+  font-family: var(--font-sans);
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--dark);
 }
 
 /* Underline below the name. Spans .center's content width by default;
@@ -324,16 +328,6 @@ Landing.css = `
   }
 }
 
-.dot-name {
-  display: block;
-  width: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
 
 .landing-subtitle {
   font-family: var(--font-sans);
@@ -902,6 +896,7 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
+  .landing-name { font-size: 1.75rem; }
   .landing-hero { padding: 8px 0 24px; }
   .landing-subtitle { font-size: 0.88rem; line-height: 1.5; }
   .landing-bio { font-size: 0.8rem; }
@@ -921,6 +916,7 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 }
 
 @media (max-width: 520px) {
+  .landing-name { font-size: 1.5rem; }
   .landing-hero { padding: 24px 0 20px; }
   .landing-subtitle { font-size: 0.85rem; }
   .landing-bio { font-size: 0.78rem; }
@@ -953,197 +949,8 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 `
 
 Landing.afterDOMLoaded = `
-  // Shared pixel data so hover redraws are instant
-  var _dotData = null;
-
-  function _sampleText(containerW) {
-    var text = 'RICHARD HUA';
-    var offscreen = document.createElement('canvas');
-    var fontSize = Math.round(containerW * 0.075);
-    var offW = containerW;
-    var offH = fontSize * 1.4;
-    offscreen.width = offW;
-    offscreen.height = offH;
-    var offCtx = offscreen.getContext('2d');
-    if (!offCtx) return null;
-    offCtx.font = '700 ' + fontSize + 'px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif';
-    offCtx.fillStyle = '#000';
-    offCtx.textBaseline = 'top';
-    offCtx.fillText(text, 0, fontSize * 0.15);
-    var pixels = offCtx.getImageData(0, 0, offW, offH).data;
-    var step = 1.5;
-    var dotR = 0.55;
-    var gridCols = Math.floor(offW / step);
-    var gridRows = Math.floor(offH / step);
-    return { pixels: pixels, offW: offW, offH: offH, step: step, dotR: dotR, gridCols: gridCols, gridRows: gridRows };
-  }
-
-  function _setupCanvas(canvas, d) {
-    var dpr = window.devicePixelRatio || 1;
-    var canvasW = d.gridCols * d.step;
-    var canvasH = d.gridRows * d.step;
-    canvas.width = Math.round(canvasW * dpr);
-    canvas.height = Math.round(canvasH * dpr);
-    canvas.style.width = canvasW + 'px';
-    canvas.style.height = canvasH + 'px';
-    var ctx = canvas.getContext('2d');
-    if (!ctx) return null;
-    ctx.scale(dpr, dpr);
-    return ctx;
-  }
-
-  // ── Animated hover state ──
-  // t goes 0 → 1 on enter (ramps up over ~800ms), 1 → 0 on leave (fades over ~600ms)
-  var _hoverT = 0;
-  var _hoverTarget = 0;    // 0 = idle, 1 = hovering
-  var _hoverRafId = null;
-  var _hoverLastTime = 0;
-  var RAMP_UP = 800;   // ms to reach full intensity
-  var RAMP_DOWN = 600;  // ms to fade back to normal
-
   function _easeOut(t) { return 1 - Math.pow(1 - t, 3); }
   function _easeIn(t) { return t * t; }
-
-  function drawFrame(canvas, t) {
-    var containerW = canvas.parentElement ? canvas.parentElement.clientWidth : 680;
-    var d;
-    if (_dotData && _dotData.containerW === containerW) {
-      d = _dotData;
-    } else {
-      d = _sampleText(containerW);
-      if (!d) return;
-      d.containerW = containerW;
-      _dotData = d;
-    }
-    var ctx = _setupCanvas(canvas, d);
-    if (!ctx) return;
-
-    var isDark = document.documentElement.getAttribute('saved-theme') === 'dark';
-    var style = getComputedStyle(document.documentElement);
-    var baseColor = style.getPropertyValue('--darkgray').trim() || '#888';
-
-    // Parse base color to RGB (cached on d to avoid creating canvas each frame)
-    if (d._baseColor !== baseColor) {
-      var tmp = document.createElement('canvas'); tmp.width = 1; tmp.height = 1;
-      var tmpCtx = tmp.getContext('2d');
-      tmpCtx.fillStyle = baseColor;
-      tmpCtx.fillRect(0, 0, 1, 1);
-      var bc = tmpCtx.getImageData(0, 0, 1, 1).data;
-      d._baseColor = baseColor;
-      d._baseR = bc[0]; d._baseG = bc[1]; d._baseB = bc[2];
-    }
-    var baseR = d._baseR, baseG = d._baseG, baseB = d._baseB;
-
-    // Interpolate brightness: base → brighter
-    var brightMul = 1 + t * (isDark ? 0.6 : 0.35);
-    var mainR = Math.min(255, Math.round(baseR * brightMul));
-    var mainG = Math.min(255, Math.round(baseG * brightMul));
-    var mainB = Math.min(255, Math.round(baseB * brightMul));
-    var mainColor = 'rgb(' + mainR + ',' + mainG + ',' + mainB + ')';
-
-    // Fringe parameters scaled by t
-    var fringeAlpha = t * 0.35;
-    var fringeOffset = t * 1.5;
-
-    var channels = [
-      { color: '#ff4040', dx: -fringeOffset },
-      { color: '#40ff40', dx:  0 },
-      { color: '#4060ff', dx:  fringeOffset },
-    ];
-
-    // Draw fringe channels (only when t > 0)
-    if (t > 0.01) {
-      ctx.globalCompositeOperation = 'lighter';
-      for (var c = 0; c < channels.length; c++) {
-        var ch = channels[c];
-        for (var gy = 0; gy < d.gridRows; gy++) {
-          for (var gx = 0; gx < d.gridCols; gx++) {
-            var px = gx * d.step;
-            var py = gy * d.step;
-            var idx = (Math.round(py) * d.offW + Math.round(px)) * 4;
-            var alpha = d.pixels[idx + 3];
-            if (alpha > 40) {
-              ctx.globalAlpha = (alpha / 255) * fringeAlpha;
-              ctx.fillStyle = ch.color;
-              ctx.beginPath();
-              ctx.arc(px + d.step / 2 + ch.dx, py + d.step / 2, d.dotR, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-        }
-      }
-    }
-
-    // Main dots on top
-    ctx.globalCompositeOperation = 'source-over';
-    var mainDotAlpha = 1 - t * 0.15;  // slightly more transparent at peak so fringe peeks through
-    for (var gy = 0; gy < d.gridRows; gy++) {
-      for (var gx = 0; gx < d.gridCols; gx++) {
-        var px = gx * d.step;
-        var py = gy * d.step;
-        var idx = (Math.round(py) * d.offW + Math.round(px)) * 4;
-        var alpha = d.pixels[idx + 3];
-        if (alpha > 40) {
-          ctx.globalAlpha = (alpha / 255) * mainDotAlpha;
-          ctx.fillStyle = mainColor;
-          ctx.beginPath();
-          ctx.arc(px + d.step / 2, py + d.step / 2, d.dotR, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  function _hoverTick(now) {
-    if (!_hoverLastTime) _hoverLastTime = now;
-    var dt = now - _hoverLastTime;
-    _hoverLastTime = now;
-
-    if (_hoverTarget === 1) {
-      _hoverT = Math.min(1, _hoverT + dt / RAMP_UP);
-    } else {
-      _hoverT = Math.max(0, _hoverT - dt / RAMP_DOWN);
-    }
-
-    var easedT = _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT);
-
-    if (_dotNameEl) drawFrame(_dotNameEl, easedT);
-
-    // Keep ticking until we reach the target
-    if ((_hoverTarget === 1 && _hoverT < 1) || (_hoverTarget === 0 && _hoverT > 0)) {
-      _hoverRafId = requestAnimationFrame(_hoverTick);
-    } else {
-      _hoverRafId = null;
-      _hoverLastTime = 0;
-    }
-  }
-
-  function _startHoverAnim(target) {
-    _hoverTarget = target;
-    _hoverLastTime = 0;
-    if (!_hoverRafId) {
-      _hoverRafId = requestAnimationFrame(_hoverTick);
-    }
-  }
-
-  var _dotResizeTimer;
-  function _handleDotResize() {
-    clearTimeout(_dotResizeTimer);
-    _dotResizeTimer = setTimeout(function() {
-      var el = document.querySelector('.dot-name');
-      if (el) {
-        _dotData = null;
-        drawFrame(el, _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT));
-      }
-    }, 150);
-  }
-
-  var _dotNameEl = null;
-  var _nameWrap = null;
-
-  function _onNameEnter() { _startHoverAnim(1); }
-  function _onNameLeave() { _startHoverAnim(0); }
 
   // ── Dithered webring icon ──
   var _bayer4 = [
@@ -1331,36 +1138,6 @@ Landing.afterDOMLoaded = `
 
     _initProjectControls();
 
-    // Clean up old listeners
-    if (_nameWrap) {
-      _nameWrap.removeEventListener('mouseenter', _onNameEnter);
-      _nameWrap.removeEventListener('mouseleave', _onNameLeave);
-    }
-
-    _dotNameEl = document.querySelector('.dot-name');
-    _nameWrap = document.querySelector('.landing-name');
-
-    // Reset hover state on nav
-    _hoverT = 0;
-    _hoverTarget = 0;
-    if (_hoverRafId) { cancelAnimationFrame(_hoverRafId); _hoverRafId = null; }
-    _hoverLastTime = 0;
-    _dotData = null;
-
-    if (_dotNameEl) {
-      document.fonts.ready.then(function() {
-        drawFrame(_dotNameEl, 0);
-      });
-    }
-
-    if (_nameWrap) {
-      _nameWrap.addEventListener('mouseenter', _onNameEnter);
-      _nameWrap.addEventListener('mouseleave', _onNameLeave);
-    }
-
-    window.removeEventListener('resize', _handleDotResize);
-    window.addEventListener('resize', _handleDotResize);
-
     // Webring dither setup
     if (_wrSection) {
       _wrSection.removeEventListener('mouseenter', _wrEnter);
@@ -1380,8 +1157,6 @@ Landing.afterDOMLoaded = `
   });
 
   document.addEventListener("themechange", function() {
-    _dotData = null;
-    if (_dotNameEl) drawFrame(_dotNameEl, _hoverTarget === 1 ? _easeOut(_hoverT) : _easeIn(_hoverT));
     _wrPixels = null;
     if (_wrCanvas) _initWebring(_wrCanvas);
   });
