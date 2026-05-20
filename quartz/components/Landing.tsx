@@ -309,10 +309,13 @@ Landing.css = `
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
   font-family: var(--font-sans);
-  font-size: clamp(2.5rem, 4.6vw, 3.15rem);
-  font-weight: 650;
-  letter-spacing: -0.028em;
-  line-height: 1.06;
+  /* Matches the header type system (.article-title): same weight, tracking
+     and line-height, sized one clear step above content-page titles since
+     this is the homepage's lead heading. */
+  font-size: clamp(2.05rem, 3.3vw, 2.4rem);
+  font-weight: 640;
+  letter-spacing: -0.022em;
+  line-height: 1.14;
   color: var(--dark);
 }
 
