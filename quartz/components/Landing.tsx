@@ -757,7 +757,7 @@ Landing.css = `
   font-size: 0.73rem;
   font-weight: 500;
   padding: 0.32rem 0.78rem;
-  border-radius: 100px;
+  border-radius: 4px;
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--surface) 70%, transparent);
   color: var(--gray);
@@ -797,7 +797,7 @@ Landing.css = `
   font-size: 0.78rem;
   font-weight: 500;
   padding: 0.3rem 1.8rem 0.3rem 0.75rem;
-  border-radius: 100px;
+  border-radius: 4px;
   border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
   background: color-mix(in oklab, var(--surface) 72%, transparent);
   color: var(--darkgray);
@@ -890,7 +890,7 @@ Landing.css = `
   font-size: 0.62rem;
   font-weight: 500;
   padding: 0.1rem 0.45rem;
-  border-radius: 100px;
+  border-radius: 4px;
   background: color-mix(in oklab, var(--surface) 75%, transparent);
   color: var(--gray);
   border: 1px solid color-mix(in oklab, var(--border) 78%, var(--bg));
