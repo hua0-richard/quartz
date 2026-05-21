@@ -583,6 +583,90 @@ body[data-slug="index"] .center .page-header::after {
 }
 
 // ═══════════════════════════════════════════
+// TOP STATUS BAR
+// ═══════════════════════════════════════════
+// Thin, full-width strip above everything — rendered in renderPage.tsx as
+// the first child of <body>, before #quartz-root. A muted status line
+// announcing current work; no CTA, since most visitors arrive already
+// holding the resume (the bar's job is reinforcement, not contact).
+// In reader mode the text (.top-bar-text) fades out while the bar and its
+// divider line stay — see the :root[reader-mode="on"] lists in
+// components/styles/readermode.scss.
+
+.top-bar {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem 1.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 78%, transparent);
+  text-align: center;
+}
+
+.top-bar-text {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  color: var(--darkgray);
+}
+
+// "Currently" lead-in. No label treatment — just a muted color step
+// down from the body text, so the line reads as one sentence and the
+// project description (not the word "Currently") carries the emphasis.
+.top-bar-lead {
+  color: var(--gray);
+}
+
+// Synopsys partner link — underline is the affordance (no arrow). Base
+// text + hover text colors come from the global link rules; the
+// underline sits muted and firms up on hover.
+.top-bar-link {
+  font-weight: 600;
+  color: var(--darkgray);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in oklab, var(--darkgray) 35%, transparent);
+  transition:
+    color 0.2s var(--ease),
+    text-decoration-color 0.2s var(--ease);
+}
+
+.top-bar-link:hover {
+  text-decoration-color: color-mix(in oklab, var(--darkgray) 72%, transparent);
+}
+
+// Keeps the partner phrase ("Synopsys capstone") intact when the bar
+// wraps on narrow screens.
+.top-bar-nowrap {
+  white-space: nowrap;
+}
+
+// ── Tablet ───────────────────────────────────────────────────
+@media (max-width: 800px) {
+  .top-bar {
+    padding: 0.46rem 1rem;
+  }
+  .top-bar-text {
+    font-size: 0.72rem;
+  }
+}
+
+// ── Phone — on the narrowest screens the line wraps to two rows;
+//    text stays centered. ──────────────────────────────────────
+@media (max-width: 520px) {
+  .top-bar {
+    padding: 0.44rem 0.8rem;
+  }
+  .top-bar-text {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+}
+
+// ═══════════════════════════════════════════
 // GLOBAL GRAPH MODAL
 // ═══════════════════════════════════════════
 // graph.inline.ts portals .global-graph-outer up to <body> when the modal

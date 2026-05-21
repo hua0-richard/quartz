@@ -236,6 +236,25 @@ export function renderPage(
     <html lang={lang} dir={direction}>
       <Head {...componentData} />
       <body data-slug={slug}>
+        {/* Site-wide status bar — styles under ".top-bar" in custom.scss.
+            Update this line whenever the current focus changes. */}
+        <div class="top-bar">
+          <p class="top-bar-text">
+            <span class="top-bar-lead">Currently &middot;</span> ML-driven
+            compute-resource prediction &middot;{" "}
+            <span class="top-bar-nowrap">
+              <a
+                class="top-bar-link"
+                href="https://www.synopsys.com"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Synopsys
+              </a>{" "}
+              capstone
+            </span>
+          </p>
+        </div>
         <div id="quartz-root" class="page">
           <a href="#main-content" class="skip-to-content">
             Skip to content

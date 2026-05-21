@@ -66,6 +66,7 @@
 $rm-duration: 0.55s;
 $rm-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
+.top-bar-text,
 .sidebar.left,
 .sidebar.right,
 .breadcrumb-container,
@@ -78,6 +79,8 @@ hr {
 
 // ── Reader mode active state ────────────────────────────────────────
 :root[reader-mode="on"] {
+  // Only the text fades — .top-bar itself stays so its divider line remains.
+  & .top-bar-text,
   & .sidebar.left,
   & .sidebar.right,
   & .breadcrumb-container,
@@ -119,6 +122,7 @@ hr {
   }
 
   :root[reader-mode="on"] {
+    & .top-bar-text,
     & .sidebar.left,
     & .sidebar.right,
     & .breadcrumb-container,
