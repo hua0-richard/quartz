@@ -114,20 +114,26 @@ button.mobile-explorer {
   border-radius: 8px;
   width: 2.1rem;
   height: 2.1rem;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   padding: 0;
   color: var(--dark);
-  transition: border-color 0.18s var(--ease);
+  // Matches the darkmode toggle (its twin icon-square button): same
+  // border + background hover shift, same timing, same press scale.
+  transition:
+    border-color 0.3s var(--ease),
+    background 0.3s var(--ease);
 
   &:hover {
     border-color: var(--border-hover);
+    background: var(--surface-hover);
   }
 
   &:active {
-    transform: scale(0.94);
+    transform: scale(0.92);
   }
 }
 
@@ -137,7 +143,12 @@ button.desktop-explorer {
   border-radius: 0;
   text-align: left;
   cursor: pointer;
-  padding: 0 0 0 0.65rem;
+  // Left padding insets the chevron to line up with the search button's
+  // icon (the search button insets its content by its 1px border +
+  // 0.65rem padding — mirror that). Right padding is 0 so the ⌘E shortcut
+  // sits flush with the sidebar's right edge, level with the darkmode
+  // toggle in the row above.
+  padding: 0 0 0 calc(0.65rem + 1px);
   margin: 0;
   color: var(--dark);
   display: flex;
@@ -432,11 +443,15 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
 
     // Enable transitions only after user interaction
     &.modal-ready .explorer-content {
-      transition: visibility 0.22s var(--ease);
+      transition:
+        opacity 0.24s var(--ease),
+        visibility 0.24s var(--ease);
     }
 
     &.modal-ready .explorer-panel {
-      transition: transform 0.22s var(--ease);
+      transition:
+        opacity 0.24s var(--ease),
+        transform 0.3s var(--ease);
     }
 
     &.modal-open > .explorer-content {
@@ -447,7 +462,7 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
 
     &.modal-open > .explorer-content > .explorer-panel {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
 
     // ── Backdrop ──
@@ -459,49 +474,36 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
       width: 100vw;
       height: 100dvh;
       margin-top: 0;
-      overflow-y: auto;
+      overflow: hidden;
       background: rgba(0, 0, 0, 0.03);
       -webkit-backdrop-filter: blur(5px);
       backdrop-filter: blur(5px);
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-
       display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 1rem;
     }
 
-    // ── Panel ──
+    // ── Fullscreen panel ──
     .explorer-content > .explorer-panel {
       position: relative;
       z-index: 1;
-      width: min(100%, #{$contentWidth});
-      margin-top: 12vh;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      margin-top: 0;
       background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
       overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(-6px) scale(0.99);
-      box-shadow:
-        0 12px 48px rgba(0, 0, 0, 0.1),
-        0 2px 12px rgba(0, 0, 0, 0.05);
+      transform: translateY(16px);
 
       & * {
         pointer-events: none;
-      }
-
-      :root[saved-theme="dark"] & {
-        box-shadow:
-          0 12px 48px rgba(0, 0, 0, 0.45),
-          0 2px 12px rgba(0, 0, 0, 0.3);
-      }
-
-      @media all and ($mobile) {
-        margin-top: 8vh;
       }
     }
 
@@ -513,25 +515,90 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
     .explorer-panel-header {
       display: flex;
       align-items: center;
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--border);
+      gap: 0.75rem;
+      flex-shrink: 0;
+      position: relative;
+      // Minimal vertical padding so the header height matches the top
+      // status bar (~31px) — the X button is sized to fit. Top padding
+      // still expands for the safe-area inset on notched devices. Divider
+      // colour matches the top bar / page dividers (soft, not full border).
+      // Match the full top-to-divider distance of the homepage mobile top bar:
+      // 0.44rem (top padding) + 0.7rem*1.4 (text line box) + 0.44rem (bottom padding).
+      // Then match the homepage mobile control-row spacing below that divider (0.75rem).
+      padding: calc(env(safe-area-inset-top) + 0.44rem + (0.7rem * 1.4) + 0.44rem + 0.75rem)
+        max(1.25rem, calc((100% - #{$contentWidth}) / 2)) 0.19rem;
+      border-bottom: none;
       background: transparent;
+
+      // Top divider positioned at the same visual height as the homepage
+      // top-bar divider on mobile.
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(env(safe-area-inset-top) + 0.44rem + (0.7rem * 1.4) + 0.44rem);
+        height: 1px;
+        background: color-mix(in oklab, var(--border) 78%, transparent);
+        pointer-events: none;
+      }
     }
 
     .explorer-panel-title {
       font-family: var(--font-sans);
-      font-size: 0.62rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.09em;
+      line-height: 1;
       text-transform: uppercase;
       color: var(--gray);
     }
 
+    // ── Fullscreen modal close button ──
+    .explorer-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      // Match the top control buttons (hamburger/darkmode): 2.1rem square.
+      width: 2.1rem;
+      height: 2.1rem;
+      padding: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--gray);
+      cursor: pointer;
+      transition:
+        color 0.18s var(--ease),
+        border-color 0.18s var(--ease),
+        background 0.18s var(--ease);
+
+      &:hover {
+        color: var(--dark);
+        border-color: var(--border-hover);
+        background: var(--surface-hover);
+      }
+
+      &:active {
+        transform: scale(0.94);
+      }
+
+      .lucide-x {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+      }
+    }
+
     .explorer-panel > .explorer-ul {
-      max-height: min(68vh, 34rem);
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: none;
       overflow-y: auto;
       margin-top: 0;
-      padding: 0.75rem 1rem 1rem;
+      padding: 1rem max(1.25rem, calc((100% - #{$contentWidth}) / 2))
+        calc(1.5rem + env(safe-area-inset-bottom));
       overscroll-behavior: contain;
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
@@ -543,11 +610,20 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
       z-index: 10001;
       position: relative;
 
+      // The 10001 z-index keeps this above the explorer's own fullscreen
+      // modal — but the search overlay (z-index 999) should cover it like
+      // the rest of the page, so drop below it while search is open.
+      html.search-active & {
+        z-index: 0;
+      }
+
       .lucide-menu {
         width: 16px;
         height: 16px;
         stroke: var(--gray);
-        transition: stroke 0.18s var(--ease);
+        // 0.3s matches the button's border/background transition and the
+        // darkmode toggle's icon, so the icon brightens in sync.
+        transition: stroke 0.3s var(--ease);
       }
 
       &:hover .lucide-menu {
@@ -555,13 +631,10 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
       }
     }
 
-    // Keep trigger simple and stable when open
+    // Hide the hamburger while the fullscreen modal is open;
+    // the header close button dismisses it instead.
     &.modal-open .mobile-explorer {
-      border-color: var(--border-hover);
-
-      &:hover {
-        border-color: var(--border-hover);
-      }
+      display: none;
     }
   }
 }
