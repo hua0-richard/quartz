@@ -118,12 +118,31 @@ a {
   }
 
   &.external .external-icon {
-    height: 1ex;
-    margin: 0 0.15em;
+    width: 0.62em;
+    height: 0.62em;
+    margin-left: 0.22em;
+    margin-right: 0;
+    vertical-align: 0.02em;
+    opacity: 0.72;
+    transition:
+      opacity 0.2s var(--ease),
+      transform 0.2s var(--ease);
+    flex-shrink: 0;
 
+    > line,
+    > polyline,
     > path {
-      fill: var(--dark);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
+  }
+
+  &.external:hover .external-icon {
+    opacity: 0.96;
+    transform: translate(0.5px, -0.5px);
   }
 }
 
@@ -369,8 +388,9 @@ thead {
   margin-bottom: 0;
 
   article > & > a[role="anchor"] {
-    color: var(--dark);
+    color: var(--gray);
     background-color: transparent;
+    transition: color 0.2s var(--ease);
   }
 }
 
@@ -381,16 +401,31 @@ h4,
 h5,
 h6 {
   &[id] > a[href^="#"] {
-    margin: 0 0.5rem;
+    margin-left: 0.32rem;
+    margin-right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    line-height: 1;
     opacity: 0;
-    transition: opacity 0.25s ease-out;
-    transform: translateY(-0.1rem);
+    transition:
+      opacity 0.2s var(--ease),
+      color 0.2s var(--ease);
+    transform: none;
     font-family: var(--codeFont);
     user-select: none;
   }
 
-  &[id]:hover > a {
-    opacity: 1;
+  &[id] > a[role="anchor"] > svg {
+    display: block;
+    width: 0.78em;
+    height: 0.78em;
+  }
+
+  &[id]:hover > a[role="anchor"] {
+    opacity: 0.78;
+    color: color-mix(in oklab, var(--gray) 90%, var(--darkgray));
   }
 
   &:not([id]) > a[role="anchor"] {

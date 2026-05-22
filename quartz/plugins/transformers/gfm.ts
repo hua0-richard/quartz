@@ -39,12 +39,12 @@ export const GitHubFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>> =
                 type: "element",
                 tagName: "svg",
                 properties: {
-                  width: 18,
-                  height: 18,
+                  width: 13,
+                  height: 13,
                   viewBox: "0 0 24 24",
                   fill: "none",
                   stroke: "currentColor",
-                  "stroke-width": "2",
+                  "stroke-width": "1.6",
                   "stroke-linecap": "round",
                   "stroke-linejoin": "round",
                 },
@@ -53,7 +53,7 @@ export const GitHubFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>> =
                     type: "element",
                     tagName: "path",
                     properties: {
-                      d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71",
+                      d: "M9 17H7A5 5 0 1 1 7 7h2",
                     },
                     children: [],
                   },
@@ -61,7 +61,15 @@ export const GitHubFlavoredMarkdown: QuartzTransformerPlugin<Partial<Options>> =
                     type: "element",
                     tagName: "path",
                     properties: {
-                      d: "M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71",
+                      d: "M15 7h2a5 5 0 1 1 0 10h-2",
+                    },
+                    children: [],
+                  },
+                  {
+                    type: "element",
+                    tagName: "path",
+                    properties: {
+                      d: "M8 12h8",
                     },
                     children: [],
                   },
