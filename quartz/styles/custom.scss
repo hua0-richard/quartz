@@ -573,7 +573,7 @@ body:not([data-slug="index"]) .page > #quartz-body > footer {
 // On the homepage the Landing component wraps everything inside .page-header,
 // so .page-header::after renders at the bottom of Landing — directly above
 // .footer::before, creating a duplicate bottom divider. Hide page-header::after
-// on the homepage; .landing-name::after handles the top divider, and
+// on the homepage; .landing-namerow::after handles the top divider, and
 // footer::before handles the bottom divider.
 body[data-slug="index"] .center .page-header::after {
   display: none;

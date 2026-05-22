@@ -26,7 +26,12 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
     <div class="landing">
       {/* ── Hero ── */}
       <section class="landing-hero">
-        <h1 class="landing-name">{cfg.pageTitle}</h1>
+        <div class="landing-namerow">
+          <h1 class="landing-name">{cfg.pageTitle}</h1>
+          <a href="/Blog" class="landing-name-blog">
+            Blog
+          </a>
+        </div>
         <div class="landing-project-quicklinks">
           <span class="landing-sublabel">About</span>
           <p class="landing-subtitle">
@@ -329,12 +334,23 @@ Landing.css = `
   padding: 18px 0 2.15rem;
 }
 
-.landing-name {
+/* Name + Blog quicklink row. The row carries the underline and bottom
+   spacing so the rule spans the full content width even though
+   .landing-name shrinks to its text width as a flex item. */
+.landing-namerow {
   position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
   margin: 0 0 1.65rem;
   padding-bottom: 1.35rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
+}
+
+.landing-name {
+  margin: 0;
   font-family: var(--font-sans);
   /* Matches the header type system (.article-title): same weight, tracking
      and line-height, sized one clear step above content-page titles since
@@ -347,10 +363,56 @@ Landing.css = `
   color: var(--dark);
 }
 
-/* Underline below the name. Spans .center's content width by default;
+/* Blog quicklink — sits opposite the name, baseline-aligned with it.
+   A trailing arrow reads as 'navigate' and slides right on hover. */
+.landing-name-blog {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--gray) 86%, var(--bg));
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: transparent;
+  transition:
+    color 0.2s var(--ease),
+    text-decoration-color 0.2s var(--ease);
+}
+
+.landing-name-blog::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.3em;
+  font-size: 0.94em;
+  color: var(--gray);
+  transition: color 0.18s var(--ease);
+}
+
+.landing-name-blog:hover {
+  color: var(--darkgray);
+  text-decoration-color: color-mix(in oklab, var(--darkgray) 45%, transparent);
+}
+
+.landing-name-blog:hover::after {
+  color: var(--darkgray);
+}
+
+.landing-name-blog:focus-visible {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in oklab, var(--darkgray) 45%, transparent);
+}
+
+/* Underline below the name row. Spans .center's content width by default;
    extended 2rem on each side on desktop to reach the vertical divider
    (matches .page-header::after and footer::before behavior across widths). */
-.landing-name::after {
+.landing-namerow::after {
   content: "";
   position: absolute;
   left: 0;
@@ -362,7 +424,7 @@ Landing.css = `
 }
 
 @media (min-width: 1200px) {
-  .landing-name::after {
+  .landing-namerow::after {
     left: -2rem;
     right: -2rem;
   }
@@ -556,6 +618,7 @@ Landing.css = `
   animation-duration: 2.2s;
 }
 
+.landing-name-blog:focus-visible,
 .landing-links a:focus-visible,
 .lp-featured-card:focus-visible,
 .lp-filter-pill:focus-visible,
@@ -1057,7 +1120,7 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Reduced motion ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .landing-name,
+  .landing-namerow,
   .landing-subtitle,
   .landing-bio,
   .landing-links,
