@@ -1038,6 +1038,21 @@ body[data-slug="index"] .recent-notes {
   }
   .sidebar.left > .flex-component {
     margin-left: auto;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+
+    // Search lane grows; darkmode lane stays fixed.
+    > div:first-child {
+      flex: 1 1 auto !important;
+      min-width: 0;
+    }
+
+    > div:last-child {
+      flex: 0 0 auto !important;
+      margin-left: 0;
+    }
   }
   .sidebar.left .dithered-title {
     margin: 0;

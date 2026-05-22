@@ -3,9 +3,9 @@
   position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  width: 2.1rem;
-  height: 2.1rem;
+  border-radius: 7px;
+  width: 1.85rem;
+  height: 1.85rem;
   margin: 0;
   padding: 0;
   display: flex;
@@ -20,13 +20,9 @@
     background: var(--surface-hover);
   }
 
-  &:active {
-    transform: scale(0.92);
-  }
-
   & svg {
-    width: 15px;
-    height: 15px;
+    width: 13px;
+    height: 13px;
     stroke: var(--gray);
     fill: none;
     transition: stroke 0.3s var(--ease);

@@ -45,6 +45,33 @@ function syncExplorerState(explorer: HTMLElement) {
   }
 }
 
+// The top status bar wraps to a variable number of lines on a phone, so
+// the distance from the viewport top down to the hamburger cannot be
+// expressed in CSS. Measure the live trigger (and the top bar) the moment
+// the modal opens and expose them as custom properties the fullscreen
+// modal header pins itself to. See `.explorer-panel-header` in explorer.scss.
+function pinModalHeaderToTrigger(explorer: HTMLElement) {
+  const trigger = explorer.querySelector(".mobile-explorer") as HTMLElement | null
+  if (!trigger || !trigger.checkVisibility()) return
+
+  const rect = trigger.getBoundingClientRect()
+  explorer.style.setProperty("--explorer-trigger-top", `${rect.top}px`)
+  explorer.style.setProperty("--explorer-trigger-left", `${rect.left}px`)
+  explorer.style.setProperty("--explorer-trigger-size", `${rect.width}px`)
+
+  const topBar = document.querySelector(".top-bar")
+  if (topBar) {
+    // `.bottom` is the outer edge of the top bar's 1px border-bottom; the
+    // visible divider line occupies the 1px just above it. Offset by 1 so
+    // the modal's divider overlays the homepage divider exactly instead of
+    // landing 1px lower.
+    explorer.style.setProperty(
+      "--explorer-divider-top",
+      `${topBar.getBoundingClientRect().bottom - 1}px`,
+    )
+  }
+}
+
 function toggleExplorer(this: HTMLElement) {
   const nearestExplorer = this.closest(".explorer") as HTMLElement
   if (!nearestExplorer) return
@@ -58,6 +85,14 @@ function toggleExplorer(this: HTMLElement) {
   // Stop <html> from being scrollable when mobile explorer is open
   document.documentElement.classList.toggle("mobile-no-scroll", isExpanded)
   setExplorerModalPageState(isExpanded)
+
+  // Pin the modal header to the hamburger AFTER the classes above are
+  // applied. `mobile-no-scroll` removes the document scrollbar; on a
+  // resized desktop window that widens the viewport, which re-wraps the
+  // multi-line top bar and shifts the hamburger. Measuring last captures
+  // its final position. This still runs synchronously before the browser
+  // paints, so the modal's first frame is already aligned.
+  if (isExpanded) pinModalHeaderToTrigger(nearestExplorer)
 }
 
 function toggleFolder(evt: MouseEvent) {
