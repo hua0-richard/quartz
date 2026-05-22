@@ -500,7 +500,10 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
 
 .explorer {
   @media all and ($mobile) {
-    flex: 0 0 34px;
+    // Initial mobile render must match the post-nav collapsed width.
+    // explorer.inline.ts adds `.collapsed` on first `nav`; if this slot starts
+    // wider, the adjacent search lane visibly "jiggles" when scripts finish.
+    flex: 0 0 var(--explorer-control-size, 1.85rem);
 
     // Enable transitions only after user interaction
     &.modal-ready .explorer-content {
