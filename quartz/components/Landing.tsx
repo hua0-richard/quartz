@@ -961,6 +961,11 @@ Landing.css = `
   color: var(--gray);
   border: 1px solid color-mix(in oklab, var(--border) 78%, var(--bg));
 }
+.lp-card-tags span::before {
+  content: "#";
+  margin-right: 0.1em;
+  color: color-mix(in oklab, var(--gray) 60%, transparent);
+}
 
 .lp-card-links {
   display: flex;
