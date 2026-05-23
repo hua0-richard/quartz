@@ -11,9 +11,9 @@
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --ease: cubic-bezier(0, 0, 0.2, 1);
 
-  --bg: #fafaf8;
-  --prose: #6e6b66;
-  --accent: #7a5034;
+  --bg: #fafafa; // pearl
+  --prose: #525252; // graphite body copy
+  --accent: #8c7560; // muted taupe — link-pill accent only (desaturated copper)
   --surface: rgba(0, 0, 0, 0.02);
   --border: rgba(0, 0, 0, 0.06);
   --border-hover: rgba(0, 0, 0, 0.16);
@@ -37,9 +37,9 @@
 }
 
 :root[saved-theme="dark"] {
-  --bg: #0e0f0c;
-  --prose: #c8c6bf;
-  --accent: #c4a07a;
+  --bg: #0a0a0a; // anthracite
+  --prose: #d4d4d4; // pale platinum body copy
+  --accent: #a89580; // muted taupe — link-pill accent only (desaturated copper)
   --surface: rgba(255, 255, 255, 0.015);
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.18);
@@ -214,8 +214,8 @@ body:not([data-slug="index"]) {
       font-weight: 500;
       letter-spacing: -0.01em;
       color: var(--accent);
-      background: color-mix(in oklab, var(--accent) 9%, var(--bg));
-      border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+      background: color-mix(in oklab, var(--accent) 5%, var(--bg));
+      border: 1px solid color-mix(in oklab, var(--accent) 14%, transparent);
       border-radius: 4px;
       padding: 0.1em 0.38em;
       vertical-align: baseline;
@@ -224,8 +224,8 @@ body:not([data-slug="index"]) {
         color 0.25s var(--ease);
 
       &:hover {
-        background: color-mix(in oklab, var(--accent) 16%, var(--bg));
-        border-color: color-mix(in oklab, var(--accent) 50%, transparent);
+        background: color-mix(in oklab, var(--accent) 10%, var(--bg));
+        border-color: color-mix(in oklab, var(--accent) 38%, transparent);
         color: var(--accent);
       }
     }

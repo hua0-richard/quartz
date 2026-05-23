@@ -611,7 +611,7 @@ Landing.css = `
 .lp-featured-card .lp-live-dot {
   width: 6px;
   height: 6px;
-  box-shadow: 0 0 0 1px color-mix(in oklab, #4a9a7e 40%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, #3FB494 40%, transparent);
 }
 
 .lp-featured-card .lp-live-dot::after {
@@ -1006,8 +1006,8 @@ Landing.css = `
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #4a9a7e;
-  box-shadow: 0 0 4px rgba(74, 154, 126, 0.6), 0 0 10px rgba(74, 154, 126, 0.3);
+  background: #3FB494;
+  box-shadow: 0 0 4px rgba(63, 180, 148, 0.6), 0 0 10px rgba(63, 180, 148, 0.3);
   flex-shrink: 0;
   position: relative;
 }
@@ -1016,7 +1016,7 @@ Landing.css = `
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #4a9a7e;
+  background: #3FB494;
   animation: pulse-ring 1.8s ease-out infinite;
 }
 
