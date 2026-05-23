@@ -569,8 +569,8 @@ Landing.css = `
 .lp-featured-arrow {
   margin-left: auto;
   font-size: 0.78rem;
-  color: var(--accent-external);
-  opacity: 0.72;
+  color: var(--darkgray);
+  opacity: 0.55;
   transition:
     transform 0.18s var(--ease),
     color 0.18s var(--ease),
@@ -965,59 +965,39 @@ Landing.css = `
 .lp-card-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.95rem;
   align-items: center;
-  margin-top: 0.15rem;
+  margin-top: 0.25rem;
 }
-/* Shared pill geometry — matches the in-notes link pills (font, radius, transition).
-   Slightly more padding than the inline pills since these read as CTAs, not text inflections.
-   Accent (color/background/border) is chosen per link type below. */
+/* Plain text links — no chrome, so the card border is the only enclosed box.
+   External links get a trailing ↗ as the affordance. */
 .lp-card-links a {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
+  line-height: 1.3;
+  color: var(--darkgray);
   text-decoration: none;
-  vertical-align: baseline;
-  transition:
-    border-color 0.25s var(--ease),
-    background-color 0.25s var(--ease),
-    color 0.25s var(--ease);
+  transition: color 0.18s var(--ease);
 }
-/* Internal link (Writeup) — taupe pill, no arrow */
-.lp-card-links a:not([target="_blank"]) {
-  color: var(--accent);
-  background: color-mix(in oklab, var(--accent) 5%, var(--bg));
-  border: 1px solid color-mix(in oklab, var(--accent) 14%, transparent);
-}
-.lp-card-links a:not([target="_blank"]):hover {
-  background: color-mix(in oklab, var(--accent) 10%, var(--bg));
-  border-color: color-mix(in oklab, var(--accent) 38%, transparent);
-}
-/* External link (Live Demo, GitHub) — blued-steel pill with arrow */
-.lp-card-links a[target="_blank"] {
-  color: var(--accent-external);
-  background: color-mix(in oklab, var(--accent-external) 5%, var(--bg));
-  border: 1px solid color-mix(in oklab, var(--accent-external) 14%, transparent);
-}
-.lp-card-links a[target="_blank"]:hover {
-  background: color-mix(in oklab, var(--accent-external) 10%, var(--bg));
-  border-color: color-mix(in oklab, var(--accent-external) 38%, transparent);
+.lp-card-links a:hover {
+  color: var(--dark);
 }
 .lp-card-links a[target="_blank"]::after {
   content: '↗';
   display: inline-block;
-  margin-left: 0.22em;
+  margin-left: 0.05em;
   color: currentColor;
-  opacity: 0.78;
+  opacity: 0.55;
   transition:
-    transform 0.3s var(--ease),
-    opacity 0.3s var(--ease);
+    transform 0.25s var(--ease),
+    opacity 0.25s var(--ease);
 }
 .lp-card-links a[target="_blank"]:hover::after {
-  opacity: 1;
+  opacity: 0.95;
   transform: translate(1px, -1px);
 }
 
