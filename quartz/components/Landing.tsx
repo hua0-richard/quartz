@@ -569,10 +569,12 @@ Landing.css = `
 .lp-featured-arrow {
   margin-left: auto;
   font-size: 0.78rem;
-  color: var(--gray);
+  color: var(--accent-external);
+  opacity: 0.72;
   transition:
     transform 0.18s var(--ease),
-    color 0.18s var(--ease);
+    color 0.18s var(--ease),
+    opacity 0.18s var(--ease);
 }
 
 .lp-featured-desc {
@@ -604,7 +606,7 @@ Landing.css = `
 }
 
 .lp-featured-card:hover .lp-featured-arrow {
-  color: var(--dark);
+  opacity: 1;
   transform: translate(1px, -1px);
 }
 
@@ -962,32 +964,60 @@ Landing.css = `
 
 .lp-card-links {
   display: flex;
-  gap: 0.85rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.15rem;
 }
+/* Shared pill geometry — matches the in-notes link pills (font, radius, transition).
+   Slightly more padding than the inline pills since these read as CTAs, not text inflections.
+   Accent (color/background/border) is chosen per link type below. */
 .lp-card-links a {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 500;
-  color: var(--secondary);
+  letter-spacing: -0.01em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
   text-decoration: none;
+  vertical-align: baseline;
   transition:
-    color 0.3s var(--ease),
-    opacity 0.2s var(--ease);
+    border-color 0.25s var(--ease),
+    background-color 0.25s var(--ease),
+    color 0.25s var(--ease);
 }
-.lp-card-links a::after {
+/* Internal link (Writeup) — taupe pill, no arrow */
+.lp-card-links a:not([target="_blank"]) {
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 5%, var(--bg));
+  border: 1px solid color-mix(in oklab, var(--accent) 14%, transparent);
+}
+.lp-card-links a:not([target="_blank"]):hover {
+  background: color-mix(in oklab, var(--accent) 10%, var(--bg));
+  border-color: color-mix(in oklab, var(--accent) 38%, transparent);
+}
+/* External link (Live Demo, GitHub) — blued-steel pill with arrow */
+.lp-card-links a[target="_blank"] {
+  color: var(--accent-external);
+  background: color-mix(in oklab, var(--accent-external) 5%, var(--bg));
+  border: 1px solid color-mix(in oklab, var(--accent-external) 14%, transparent);
+}
+.lp-card-links a[target="_blank"]:hover {
+  background: color-mix(in oklab, var(--accent-external) 10%, var(--bg));
+  border-color: color-mix(in oklab, var(--accent-external) 38%, transparent);
+}
+.lp-card-links a[target="_blank"]::after {
   content: '↗';
   display: inline-block;
-  margin-left: 0.2em;
-  color: var(--gray);
+  margin-left: 0.22em;
+  color: currentColor;
+  opacity: 0.78;
   transition:
     transform 0.3s var(--ease),
-    color 0.2s var(--ease);
+    opacity 0.3s var(--ease);
 }
-.lp-card-links a:hover {
-  color: var(--dark);
-}
-.lp-card-links a:hover::after {
-  color: var(--darkgray);
+.lp-card-links a[target="_blank"]:hover::after {
+  opacity: 1;
   transform: translate(1px, -1px);
 }
 

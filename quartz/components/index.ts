@@ -24,7 +24,6 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
-import ProjectGrid from "./ProjectGrid"
 import Landing from "./Landing"
 import Animations from "./Animations"
 import DitheredTitle from "./DitheredTitle"
@@ -55,7 +54,6 @@ export {
   Comments,
   Flex,
   ConditionalRender,
-  ProjectGrid,
   Landing,
   Animations,
   DitheredTitle,
