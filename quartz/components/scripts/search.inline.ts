@@ -153,8 +153,6 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
   const container = searchElement.querySelector(".search-container") as HTMLElement
   if (!container) return
 
-  const sidebar = container.closest(".sidebar") as HTMLElement | null
-
   const searchButton = searchElement.querySelector(".search-button") as HTMLButtonElement
   if (!searchButton) return
 
@@ -182,10 +180,18 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
     appendLayout(preview)
   }
 
+  // Track where the overlay originally lived so we can restore it on close.
+  let containerOrigin: { parent: HTMLElement; next: Node | null } | null = null
+
   function hideSearch() {
     container.classList.remove("active")
     searchBar.value = "" // clear the input when we dismiss the search
-    if (sidebar) sidebar.style.zIndex = ""
+    // Put the overlay back where it came from so SPA navigations and
+    // querySelector chains relying on the original parent still work.
+    if (containerOrigin && containerOrigin.parent.isConnected) {
+      containerOrigin.parent.insertBefore(container, containerOrigin.next)
+      containerOrigin = null
+    }
     removeAllChildren(results)
     if (preview) {
       removeAllChildren(preview)
@@ -198,7 +204,18 @@ async function setupSearch(searchElement: Element, currentSlug: FullSlug, data: 
 
   function showSearch(searchTypeNew: SearchType) {
     searchType = searchTypeNew
-    if (sidebar) sidebar.style.zIndex = "1"
+    // Portal the overlay up to <body> so it escapes every ancestor stacking
+    // context (the `isolation: isolate` on #quartz-body and the sidebar's
+    // own z-index). Otherwise its `backdrop-filter` can only blur content
+    // within the sidebar's stacking context, leaving the rest of the page
+    // unblurred. See quartz/components/styles/search.scss.
+    if (container.parentElement && container.parentElement !== document.body) {
+      containerOrigin = {
+        parent: container.parentElement,
+        next: container.nextSibling,
+      }
+      document.body.appendChild(container)
+    }
     container.classList.add("active")
     document.documentElement.classList.add("search-active")
     searchBar.focus()
