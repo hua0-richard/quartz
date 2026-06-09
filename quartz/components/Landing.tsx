@@ -35,12 +35,11 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
         <div class="landing-project-quicklinks">
           <span class="landing-sublabel">About</span>
           <p class="landing-subtitle">
-            Full-stack engineer building AI-powered products — RAG systems, LLM pipelines, and the
-            interfaces on top of them.
+            Full-stack engineer interested in machine learning, systems, and product design.
           </p>
           <p class="landing-bio">
-            Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to full-stack and AI
-            engineer roles.
+            Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to software engineer
+            roles.
           </p>
         </div>
         {featuredProjects.length > 0 && (
