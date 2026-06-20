@@ -592,9 +592,10 @@ Landing.css = `
 
 .lp-featured-tech {
   margin: 0.25rem 0 0;
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.012em;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: -0.003em;
   color: var(--gray);
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -696,7 +697,7 @@ Landing.css = `
 .edu-item {
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: center;
+  align-items: start;
   column-gap: 0.9rem;
   padding: 0.85rem 1rem;
   border-radius: 8px;
@@ -804,22 +805,70 @@ Landing.css = `
   width: clamp(22px, 3vw, 28px);
   height: clamp(22px, 3vw, 28px);
   border-radius: 50%;
-  background: #5cbbb5;
-  filter: grayscale(0.5) saturate(0.85);
+  /* domed enamel inlay — bright centre keeps the seal legible, edges deepen so the
+     disc reads as curved glass; inset shadows seat it into the metal and a bottom
+     inner highlight bounces light back like a clear-coat meniscus */
+  background:
+    /* Wealthsimple-style liquid chrome — a smooth diagonal gradient flows
+       light→dark→light→dark in soft bands across the disc for a brushed-steel
+       ribbon. low contrast, no harsh specular. (sits under the seal.) */
+    linear-gradient(
+      135deg,
+      #f3f6f5 0%,
+      #ccd6d3 17%,
+      #eef2f1 33%,
+      #b6c5c1 51%,
+      #e8edec 67%,
+      #c1cecb 84%,
+      #f0f4f3 100%
+    );
+  box-shadow: inset 0 1px 1.5px rgba(0, 24, 22, 0.16);
+  filter: grayscale(0.4) saturate(0.85);
   z-index: 0;
 }
 
+/* clear-coat polish — a crisp specular reflection top-left plus a soft wet-gloss
+   along the lower curve, layered over the satin streak so the Chalmers tile reads
+   as enamel sealed under polished glass */
+.edu-logo:has(.edu-logo-chalmers)::after {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0) 28%,
+      transparent 72%,
+      rgba(255, 255, 255, 0.12) 100%
+    );
+}
+
+:root[saved-theme="dark"] .edu-logo:has(.edu-logo-chalmers)::after {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 28%,
+      transparent 72%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+}
 .edu-logo .edu-logo-chalmers {
   width: clamp(22px, 3vw, 28px);
   height: clamp(22px, 3vw, 28px);
   position: relative;
   z-index: 1;
   /* render the seal artwork in a flat colour via mask, so the tint is exact */
-  background-color: #f3efe4; /* soft off-white — warm, pairs cleanly with the teal */
-  -webkit-mask: url(/static/chalmers-emblem.png) center / auto 86% no-repeat;
-  mask: url(/static/chalmers-emblem.png) center / auto 86% no-repeat;
-  /* hairline dark halo so the fine off-white strokes separate from the teal */
-  filter: drop-shadow(0 0 0.4px rgba(0, 40, 38, 0.7));
+  background-color: #05201d; /* near-black teal — max contrast ink on the pale disc */
+  /* vector seal traced from the emblem — stays crisp at any size, no bloom or
+     clipping. tight-cropped artwork so it centres cleanly inside the disc. */
+  -webkit-mask: url(/static/chalmers-emblem.svg) center / auto 78% no-repeat;
+  mask: url(/static/chalmers-emblem.svg) center / auto 78% no-repeat;
+  /* painted-into-enamel: a hairline dark bevel on the upper edge and a light
+     bounce on the lower edge make the ink read as pressed beneath the clear coat;
+     faint halo keeps it separated from the teal */
+  filter:
+    drop-shadow(0 0.4px 0.2px rgba(255, 255, 255, 0.5))
+    drop-shadow(0 -0.35px 0.25px rgba(0, 28, 26, 0.45))
+    drop-shadow(0 0 0.4px rgba(232, 246, 243, 0.55));
 }
 
 /* UBC Okanagan — sky-blue field with soft clouds, shield inscribed */
@@ -1054,6 +1103,8 @@ Landing.css = `
   font-family: var(--font-sans);
   font-size: 0.62rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   padding: 0.1rem 0.45rem;
   border-radius: 4px;
   background: color-mix(in oklab, var(--surface) 75%, transparent);
@@ -1069,7 +1120,7 @@ Landing.css = `
 .lp-card-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.95rem;
+  gap: 0.85rem;
   align-items: center;
   margin-top: 0.25rem;
 }
@@ -1078,7 +1129,7 @@ Landing.css = `
 .lp-card-links a {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0;
   font-family: var(--font-sans);
   font-size: 0.76rem;
   font-weight: 500;
@@ -1093,7 +1144,7 @@ Landing.css = `
 .lp-card-links a[target="_blank"]::after {
   content: '↗';
   display: inline-block;
-  margin-left: 0.05em;
+  margin-left: 0.22em;
   color: currentColor;
   opacity: 0.55;
   transition:
@@ -1108,20 +1159,33 @@ Landing.css = `
 .lp-link-demo {
   display: inline-flex !important;
   align-items: center;
-  gap: 0.4em;
+  gap: 0;
 }
 
 @keyframes live-breathe {
-  0%, 100% { box-shadow: 0 0 2px rgba(92, 155, 130, 0.4), 0 0 5px rgba(92, 155, 130, 0.18); }
-  50%      { box-shadow: 0 0 4px rgba(92, 155, 130, 0.65), 0 0 11px rgba(92, 155, 130, 0.36); }
+  0%, 100% {
+    box-shadow:
+      0 0 2px color-mix(in oklab, var(--darkgray) 40%, transparent),
+      0 0 5px color-mix(in oklab, var(--darkgray) 18%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 4px color-mix(in oklab, var(--darkgray) 65%, transparent),
+      0 0 11px color-mix(in oklab, var(--darkgray) 34%, transparent);
+  }
 }
 .lp-live-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #5C9B82; /* verdigris — oxidized-copper green */
+  /* platinum/brushed-metal — adapts per theme, stays on the monochrome palette;
+     the breathing pulse, not colour, signals "live" */
+  background: var(--darkgray);
+  margin-right: 0.45em;
   /* static fallback glow — kept when motion is reduced */
-  box-shadow: 0 0 3px rgba(92, 155, 130, 0.5), 0 0 8px rgba(92, 155, 130, 0.25);
+  box-shadow:
+    0 0 3px color-mix(in oklab, var(--darkgray) 50%, transparent),
+    0 0 8px color-mix(in oklab, var(--darkgray) 25%, transparent);
   flex-shrink: 0;
   position: relative;
   animation: live-breathe 2.6s ease-in-out infinite;
