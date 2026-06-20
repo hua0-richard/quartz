@@ -57,7 +57,6 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                     aria-label={`${p.title} — live demo`}
                   >
                     <div class="lp-featured-card-top">
-                      <span class="lp-live-dot" aria-hidden="true"></span>
                       <span class="lp-featured-title">{p.title ?? "Project"}</span>
                       <span class="lp-featured-arrow" aria-hidden="true">
                         ↗
@@ -256,7 +255,6 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                   <div class="lp-card-links">
                     {p.demo && (
                       <a href={p.demo} target="_blank" rel="noreferrer" class="lp-link-demo">
-                        <span class="lp-live-dot" aria-hidden="true"></span>
                         Live Demo
                       </a>
                     )}
@@ -610,11 +608,6 @@ Landing.css = `
 .lp-featured-card:hover .lp-featured-arrow {
   opacity: 1;
   transform: translate(1px, -1px);
-}
-
-.lp-featured-card .lp-live-dot {
-  width: 6px;
-  height: 6px;
 }
 
 .landing-name-blog:focus-visible,
@@ -1162,35 +1155,6 @@ Landing.css = `
   gap: 0;
 }
 
-@keyframes live-breathe {
-  0%, 100% {
-    box-shadow:
-      0 0 2px color-mix(in oklab, var(--darkgray) 40%, transparent),
-      0 0 5px color-mix(in oklab, var(--darkgray) 18%, transparent);
-  }
-  50% {
-    box-shadow:
-      0 0 4px color-mix(in oklab, var(--darkgray) 65%, transparent),
-      0 0 11px color-mix(in oklab, var(--darkgray) 34%, transparent);
-  }
-}
-.lp-live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  /* platinum/brushed-metal — adapts per theme, stays on the monochrome palette;
-     the breathing pulse, not colour, signals "live" */
-  background: var(--darkgray);
-  margin-right: 0.45em;
-  /* static fallback glow — kept when motion is reduced */
-  box-shadow:
-    0 0 3px color-mix(in oklab, var(--darkgray) 50%, transparent),
-    0 0 8px color-mix(in oklab, var(--darkgray) 25%, transparent);
-  flex-shrink: 0;
-  position: relative;
-  animation: live-breathe 2.6s ease-in-out infinite;
-}
-
 /* ── Explorations ──────────────────────────────────────────── */
 .landing-explorations {
   padding: 2.15rem 0 3.1rem;
@@ -1297,9 +1261,6 @@ body[data-slug="index"] .center > article > *:not(.landing) {
   .landing-links,
   .landing-project-quicklinks {
     opacity: 1;
-    animation: none;
-  }
-  .lp-live-dot {
     animation: none;
   }
   .reveal-card {
