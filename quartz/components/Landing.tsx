@@ -57,7 +57,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                     aria-label={`${p.title} — live demo`}
                   >
                     <div class="lp-featured-card-top">
-                      <span class="lp-live-dot"></span>
+                      <span class="lp-live-dot" aria-hidden="true"></span>
                       <span class="lp-featured-title">{p.title ?? "Project"}</span>
                       <span class="lp-featured-arrow" aria-hidden="true">
                         ↗
@@ -142,10 +142,11 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
 
           <div class="edu-item reveal-card">
             <div class="edu-logo">
-              <img
-                src="https://cdn.worldvectorlogo.com/logos/chalmers-university-of-technology.svg"
-                alt="Chalmers University of Technology"
-              />
+              <span
+                class="edu-logo-chalmers"
+                role="img"
+                aria-label="Chalmers University of Technology"
+              ></span>
             </div>
             <div class="edu-content">
               <div class="edu-title">Chalmers University of Technology</div>
@@ -167,6 +168,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             <div class="edu-logo">
               <img
                 src="https://commons.wikimedia.org/wiki/Special:FilePath/UBC_COA2.svg"
+                class="edu-logo-ubc"
                 alt="University of British Columbia"
               />
             </div>
@@ -254,7 +256,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                   <div class="lp-card-links">
                     {p.demo && (
                       <a href={p.demo} target="_blank" rel="noreferrer" class="lp-link-demo">
-                        <span class="lp-live-dot"></span>
+                        <span class="lp-live-dot" aria-hidden="true"></span>
                         Live Demo
                       </a>
                     )}
@@ -612,11 +614,6 @@ Landing.css = `
 .lp-featured-card .lp-live-dot {
   width: 6px;
   height: 6px;
-  box-shadow: 0 0 0 1px color-mix(in oklab, #3FB494 40%, transparent);
-}
-
-.lp-featured-card .lp-live-dot::after {
-  animation-duration: 2.2s;
 }
 
 .landing-name-blog:focus-visible,
@@ -719,18 +716,121 @@ Landing.css = `
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  border-radius: 10px;
   overflow: hidden;
+  position: relative;
+  /* satin aluminum plate — smooth cool color gradient (sheen overlaid via ::after) */
+  background: linear-gradient(
+    135deg,
+    #e8ebee 0%,
+    #d4d8dd 45%,
+    #e0e4e8 65%,
+    #ccd1d6 100%
+  );
+  border: none;
 }
 
+:root[saved-theme="dark"] .edu-logo {
+  /* satin space black — smooth graphite (sheen overlaid via ::after) */
+  background: linear-gradient(
+    135deg,
+    #2a2a2c 0%,
+    #1e1d1f 45%,
+    #232224 65%,
+    #171618 100%
+  );
+}
+
+/* shared satin sheen painted over the whole tile — logo catches the same
+   highlight as the metal, so it reads as painted on rather than pasted on */
+.edu-logo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    radial-gradient(circle at 27% 20%, rgba(255, 255, 255, 0.42), transparent 45%),
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.42) 0%,
+      rgba(255, 255, 255, 0.08) 20%,
+      transparent 42%,
+      transparent 62%,
+      rgba(255, 255, 255, 0.18) 84%,
+      rgba(255, 255, 255, 0.34) 100%
+    );
+}
+
+:root[saved-theme="dark"] .edu-logo::after {
+  background:
+    radial-gradient(circle at 27% 20%, rgba(255, 255, 255, 0.18), transparent 45%),
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.13) 0%,
+      rgba(255, 255, 255, 0.03) 20%,
+      transparent 42%,
+      transparent 62%,
+      rgba(255, 255, 255, 0.06) 84%,
+      rgba(255, 255, 255, 0.11) 100%
+    );
+}
+
+/* logos sit on a brand-colored disc inside the metal rim; sheen overlays so
+   they read as painted onto the medallion */
+/* Waterloo seal paints straight onto the metal — no disc */
 .edu-logo img {
-  width: clamp(24px, 3.2vw, 30px);
-  height: clamp(24px, 3.2vw, 30px);
+  width: clamp(22px, 3vw, 28px);
+  height: clamp(22px, 3vw, 28px);
   object-fit: contain;
   margin: 0;
-  border-radius: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  /* desaturated — colors still read, but muted for the metal palette */
+  filter: grayscale(0.55) saturate(0.9);
+  opacity: 1;
+}
+
+/* Chalmers — teal disc is drawn as ::before on the tile; the black seal sits on
+   top at reduced opacity so it picks up the teal behind it, landing on a deep
+   teal that's legible but neither pure black nor white. */
+.edu-logo:has(.edu-logo-chalmers)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(22px, 3vw, 28px);
+  height: clamp(22px, 3vw, 28px);
+  border-radius: 50%;
+  background: #5cbbb5;
+  filter: grayscale(0.5) saturate(0.85);
+  z-index: 0;
+}
+
+.edu-logo .edu-logo-chalmers {
+  width: clamp(22px, 3vw, 28px);
+  height: clamp(22px, 3vw, 28px);
+  position: relative;
+  z-index: 1;
+  /* render the seal artwork in a flat colour via mask, so the tint is exact */
+  background-color: #f3efe4; /* soft off-white — warm, pairs cleanly with the teal */
+  -webkit-mask: url(/static/chalmers-emblem.png) center / auto 86% no-repeat;
+  mask: url(/static/chalmers-emblem.png) center / auto 86% no-repeat;
+  /* hairline dark halo so the fine off-white strokes separate from the teal */
+  filter: drop-shadow(0 0 0.4px rgba(0, 40, 38, 0.7));
+}
+
+/* UBC Okanagan — sky-blue field with soft clouds, shield inscribed */
+.edu-logo img.edu-logo-ubc {
+  background:
+    radial-gradient(ellipse 55% 32% at 32% 78%, rgba(255, 255, 255, 0.95), transparent 60%),
+    radial-gradient(ellipse 48% 30% at 68% 86%, rgba(255, 255, 255, 0.85), transparent 58%),
+    radial-gradient(ellipse 60% 34% at 52% 93%, rgba(255, 255, 255, 0.8), transparent 60%),
+    linear-gradient(180deg, #79c4ee 0%, #a6d9f1 100%);
+  padding: 6%;
+  filter: grayscale(0.5) saturate(0.85);
 }
 
 .edu-content {
@@ -1011,27 +1111,20 @@ Landing.css = `
   gap: 0.4em;
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.5; }
-  70% { transform: scale(2.2); opacity: 0; }
-  100% { transform: scale(2.2); opacity: 0; }
+@keyframes live-breathe {
+  0%, 100% { box-shadow: 0 0 2px rgba(92, 155, 130, 0.4), 0 0 5px rgba(92, 155, 130, 0.18); }
+  50%      { box-shadow: 0 0 4px rgba(92, 155, 130, 0.65), 0 0 11px rgba(92, 155, 130, 0.36); }
 }
 .lp-live-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #3FB494;
-  box-shadow: 0 0 4px rgba(63, 180, 148, 0.6), 0 0 10px rgba(63, 180, 148, 0.3);
+  background: #5C9B82; /* verdigris — oxidized-copper green */
+  /* static fallback glow — kept when motion is reduced */
+  box-shadow: 0 0 3px rgba(92, 155, 130, 0.5), 0 0 8px rgba(92, 155, 130, 0.25);
   flex-shrink: 0;
   position: relative;
-}
-.lp-live-dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #3FB494;
-  animation: pulse-ring 1.8s ease-out infinite;
+  animation: live-breathe 2.6s ease-in-out infinite;
 }
 
 /* ── Explorations ──────────────────────────────────────────── */
@@ -1142,7 +1235,7 @@ body[data-slug="index"] .center > article > *:not(.landing) {
     opacity: 1;
     animation: none;
   }
-  .lp-live-dot::after {
+  .lp-live-dot {
     animation: none;
   }
   .reveal-card {
