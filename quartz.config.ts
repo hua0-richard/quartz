@@ -38,7 +38,7 @@ const config: QuartzConfig = {
         },
         darkMode: {
           light: "#0A0A0A", // anthracite
-          lightgray: "#171717", // dark graphite
+          lightgray: "#242424", // dark graphite
           gray: "#737373", // tungsten
           darkgray: "#E5E5E5", // brushed aluminum
           dark: "#FAFAFA", // polished platinum
