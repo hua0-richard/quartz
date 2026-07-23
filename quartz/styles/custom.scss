@@ -1215,24 +1215,15 @@ body[data-slug="index"] .recent-notes {
   }
 }
 
-// Scrollbars
+// Scrollbars — hidden everywhere while keeping scroll functional
 * {
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE/legacy Edge
 }
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-  &:hover {
-    background: var(--border-hover);
-  }
+  width: 0;
+  height: 0;
+  display: none; // Chrome/Safari/Edge
 }
 
 // Reduced motion
