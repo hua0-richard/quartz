@@ -18,34 +18,35 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: { name: "Source Serif 4", weights: [400, 600], includeItalic: true },
-        body: "Inter",
-        code: "JetBrains Mono",
+        // Grotesk-only. Weights 400/500 only — never load 600+.
+        header: { name: "Inter", weights: [400, 500], includeItalic: true },
+        body: { name: "Inter", weights: [400, 500], includeItalic: true },
+        code: { name: "JetBrains Mono", weights: [400, 500], includeItalic: false },
       },
-      // Palette: pure achromatic monochrome (Tailwind neutral scale). Flat by design.
-      // A muted taupe accent lives in custom.scss --accent for inline link pills only.
+      // Warm off-white / soft near-black surfaces; one muted slate accent for links.
+      // Inline link-pill taupe/steel accents remain in custom.scss (--accent*).
       colors: {
         lightMode: {
-          light: "#FAFAFA", // pearl
-          lightgray: "#E5E5E5", // brushed aluminum
-          gray: "#A3A3A3", // nickel
-          darkgray: "#525252", // graphite
-          dark: "#0A0A0A", // graphite-black
-          secondary: "#171717", // gunmetal
-          tertiary: "#404040", // tungsten
-          highlight: "rgba(10, 10, 10, 0.05)",
-          textHighlight: "#E5E5E5",
+          light: "#FAFAF9", // warm off-white
+          lightgray: "rgba(0, 0, 0, 0.07)", // hairline border
+          gray: "#A1A1A1", // muted meta
+          darkgray: "#0A0A0A", // near-black body
+          dark: "#0A0A0A", // headers ≈ body
+          secondary: "#3C4A57", // muted slate — reads as color, not highlight
+          tertiary: "#5A6B78", // quiet hover step
+          highlight: "rgba(60, 74, 87, 0.06)",
+          textHighlight: "rgba(60, 74, 87, 0.12)",
         },
         darkMode: {
-          light: "#0A0A0A", // anthracite
-          lightgray: "#242424", // dark graphite
-          gray: "#737373", // tungsten
-          darkgray: "#E5E5E5", // brushed aluminum
-          dark: "#FAFAFA", // polished platinum
-          secondary: "#D4D4D4", // pale platinum
-          tertiary: "#A3A3A3", // nickel
-          highlight: "rgba(255, 255, 255, 0.05)",
-          textHighlight: "rgba(255, 255, 255, 0.1)",
+          light: "#0F0F0F", // soft near-black
+          lightgray: "rgba(255, 255, 255, 0.08)", // hairline border
+          gray: "#737373", // muted meta
+          darkgray: "#E8E6E3", // warm near-white body
+          dark: "#FAFAF9", // headers ≈ body
+          secondary: "#A8B4C0", // muted slate
+          tertiary: "#8A98A4", // quiet hover step
+          highlight: "rgba(255, 255, 255, 0.04)",
+          textHighlight: "rgba(255, 255, 255, 0.08)",
         },
       },
     },

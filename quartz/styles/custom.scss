@@ -7,17 +7,16 @@
 
 :root {
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-serif: "Source Serif 4", Charter, "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --ease: cubic-bezier(0, 0, 0.2, 1);
 
-  --bg: #fafafa; // pearl
-  --prose: #525252; // graphite body copy
+  --bg: #fafaf9; // warm off-white (matches theme light)
+  --prose: #0a0a0a; // near-black body copy
   --accent: #8c7560; // muted taupe — internal link-pill accent (desaturated copper)
   --accent-external: #5c6e80; // blued steel — external link-pill accent
   --surface: rgba(0, 0, 0, 0.02);
-  --border: rgba(0, 0, 0, 0.06);
-  --border-hover: rgba(0, 0, 0, 0.16);
+  --border: rgba(0, 0, 0, 0.07);
+  --border-hover: rgba(0, 0, 0, 0.14);
   --surface-hover: rgba(0, 0, 0, 0.025);
   --card-shine: linear-gradient(
     135deg,
@@ -38,13 +37,13 @@
 }
 
 :root[saved-theme="dark"] {
-  --bg: #0a0a0a; // anthracite
-  --prose: #d4d4d4; // pale platinum body copy
+  --bg: #0f0f0f; // soft near-black (matches theme light)
+  --prose: #e8e6e3; // warm near-white body copy
   --accent: #a89580; // muted taupe — internal link-pill accent (desaturated copper)
   --accent-external: #8fa0b0; // light blued steel — external link-pill accent
   --surface: rgba(255, 255, 255, 0.015);
-  --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.15);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.14);
   --surface-hover: rgba(255, 255, 255, 0.02);
   --card-shine: linear-gradient(
     135deg,
@@ -85,134 +84,245 @@
 body {
   background: var(--bg) !important;
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 14px; // body stays put — heading contrast does the work
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
+  // Inter + JetBrains Mono ship real 400/500 — never fake a heavier face.
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-// ═══════════════════════════════════════════
-// TYPOGRAPHY
-// ═══════════════════════════════════════════
-
-h1 {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 1.5rem;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: var(--dark);
+// Weight palette: 400 body / 500 emphasis. **bold** must not climb to 700.
+strong,
+b {
+  font-weight: 500;
 }
 
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
-  color: var(--dark);
-}
+// ═══════════════════════════════════════════
+// TYPOGRAPHY — grotesk-only, size + space carry hierarchy
+// ═══════════════════════════════════════════
+// No serif. No weight above 500. Size / tracking / margin do all the work.
+// base.scss `.page article > h1 { font-size: 1.5rem }` beats a bare `h1` —
+// every article override uses `.page article …` so it wins.
+//
+//   body  0.875rem  400  / 0
+//   h3    1.375rem  500  / -0.01em
+//   h2    2.00rem   500  / -0.02em
+//   h1    3.00rem   500  / -0.02em
+//   h4+   = body size, color → gray (secondary text), margin only
 
 .article-title,
 .page-title {
   color: var(--dark);
 }
 
-h2 {
-  font-size: 1.15rem;
-}
-h3 {
-  font-size: 1rem;
-}
-h4 {
-  font-size: 0.9rem;
-}
+.page article {
+  max-width: 68ch;
 
-article p {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--darkgray);
-}
+  // ── Headings ──────────────────────────────────────────────
+  // Beat base `.page article > h1` and `h1…h6 { font-weight: revert }` (~700).
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 1.2;
+  }
 
-article li {
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
+  > h1,
+  h1 {
+    font-size: 3rem;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+  }
 
-article blockquote {
-  font-family: var(--font-sans);
-  font-style: italic;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--gray);
-  border-left: 2px solid var(--border);
-  padding-left: 1rem;
-  margin: 1.25rem 0;
-}
+  h2 {
+    font-size: 2rem;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+  }
 
-// ── Notes: compact sans-serif body ─────────────────────────
-body:not([data-slug="index"]) {
-  article {
-    p,
-    li {
-      font-family: var(--font-sans);
+  h3 {
+    font-size: 1.375rem;
+    color: var(--dark);
+    letter-spacing: -0.01em;
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+  }
+
+  // h4+ — same size/weight as nearby text; muted color + margin do hierarchy
+  h4,
+  h5,
+  h6 {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0;
+    margin-top: 2.5em;
+    margin-bottom: 0.6em;
+  }
+
+  // First heading in the body shouldn't inherit the large top gap.
+  > :is(h1, h2, h3, h4, h5, h6):first-child {
+    margin-top: 0;
+  }
+
+  // ── Body copy ─────────────────────────────────────────────
+  // Beat base `p, li, tbody { line-height: 1.6rem }` (fixed rem).
+  p,
+  li,
+  td,
+  th {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.7;
+    color: var(--darkgray);
+  }
+
+  p {
+    margin: 0 0 1.1em;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 1.1em;
+    padding-left: 1.35rem;
+  }
+
+  li + li {
+    margin-top: 0.45em;
+  }
+
+  // ── Blockquote: size unchanged; color + border only ───────
+  blockquote {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-size: 0.875rem; // match body — no size bump
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.7;
+    color: var(--gray);
+    border-left: 2px solid var(--border);
+    padding-left: 1rem;
+    margin: 1.25em 0;
+  }
+
+  // ── Code: ~0.9em of surrounding text ──────────────────────
+  :not(pre) > code {
+    font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    font-weight: 400;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.12em 0.35em;
+  }
+
+  pre,
+  pre code,
+  .codeblock {
+    font-family: var(--font-mono);
+    font-weight: 400;
+  }
+
+  pre {
+    margin: 1.25em 0;
+  }
+
+  pre > code {
+    font-size: 0.788rem; // 0.9 × 0.875rem body — beat base 0.85rem
+  }
+
+  // pretty-code figures ship an absolute 0.85rem — keep in step with body
+  figure[data-rehype-pretty-code-figure] {
+    line-height: 1.7;
+
+    & > pre > code {
+      font-size: 0.788rem;
+    }
+  }
+
+  // ── Tables / callouts / footnotes inherit the scale ───────
+  .table-container > table {
+    th,
+    td {
       font-size: 0.875rem;
-      line-height: 1.6;
-      color: var(--prose);
+      font-weight: 400;
+      line-height: 1.7;
     }
 
-    p {
-      margin: 0 0 1.08rem;
+    th {
+      font-weight: 500;
+    }
+
+    & > * {
+      line-height: 1.7; // beat base `line-height: 2rem`
+    }
+  }
+
+  .callout {
+    p,
+    li {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--darkgray);
     }
 
     li + li {
-      margin-top: 0.32rem;
+      margin-top: 0.45em;
     }
+  }
 
-    h2 {
-      margin-top: 2.15rem;
-      margin-bottom: 0.82rem;
+  .footnotes {
+    p,
+    li {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.7;
     }
+  }
 
-    h3 {
-      margin-top: 1.62rem;
-      margin-bottom: 0.66rem;
-    }
+  img {
+    margin: 1.25em 0;
+    border-radius: 6px;
+  }
 
-    h4 {
-      margin-top: 1.34rem;
-      margin-bottom: 0.56rem;
-    }
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5em 0;
+  }
+}
 
-    .callout {
-      & p,
-      & li {
-        font-size: 0.82rem;
-        line-height: 1.55;
-        color: var(--darkgray);
-      }
-      & li + li {
-        margin-top: 0.2rem;
-      }
-    }
-
-    :not(pre) > code {
-      font-size: 0.82em;
-      padding: 0.12em 0.35em;
-    }
-
-    pre,
-    pre code {
-      font-size: 0.78rem;
+// ── Notes pages: prose color + link pills (scale lives above) ──
+body:not([data-slug="index"]) {
+  .page article {
+    p,
+    li,
+    td {
+      color: var(--prose);
     }
 
     // ── Inline internal links: monospace pill with accent reference color ──
     :is(p, li, blockquote, td) a.internal:not(:has(> img)):not(.broken) {
       font-family: var(--font-mono);
-      font-size: 0.85em;
+      font-size: 0.9em;
       font-weight: 500;
       letter-spacing: -0.01em;
       color: var(--accent);
@@ -237,7 +347,7 @@ body:not([data-slug="index"]) {
     // var(--accent-external) automatically.
     :is(p, li, blockquote, td) a.external:not(:has(> img)) {
       font-family: var(--font-mono);
-      font-size: 0.85em;
+      font-size: 0.9em;
       font-weight: 500;
       letter-spacing: -0.01em;
       color: var(--accent-external);
@@ -323,19 +433,6 @@ body:not([data-slug="index"]) {
   }
 }
 
-@media all and ($mobile) {
-  body:not([data-slug="index"]) article {
-    p,
-    li {
-      font-size: 0.88rem;
-      line-height: 1.6;
-    }
-    p {
-      margin: 0 0 0.9rem;
-    }
-  }
-}
-
 .meta,
 time,
 .content-meta,
@@ -348,15 +445,11 @@ time,
   opacity: 0.78;
 }
 
+// Global code chrome (outside article) — keep quiet; article rules above win inside notes.
 code,
 pre,
 .codeblock {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-
-  @media all and ($mobile) {
-    font-size: 0.9rem;
-  }
 }
 
 :not(pre) > code {
@@ -365,25 +458,26 @@ pre,
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 0.15em 0.35em;
-  font-size: 0.85em;
+  font-size: 0.9em;
 }
 
-// Section labels (sidebar headings)
+// ── Sidebar / TOC / explorer — locked small type (weight 500 max) ──
 .graph > h3,
 .backlinks > h3 {
   font-family: var(--font-sans);
   font-size: 0.58rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.11em;
   color: color-mix(in oklab, var(--gray) 84%, var(--bg));
   margin: 0 0 0.6rem;
+  line-height: 1.2;
 }
 
 .toc button.toc-header h3 {
   font-family: var(--font-sans);
   font-size: 0.58rem;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.11em;
   color: color-mix(in oklab, var(--gray) 84%, var(--bg));
@@ -391,53 +485,25 @@ pre,
   line-height: 1;
 }
 
-// ═══════════════════════════════════════════
-// GLOBAL SPACING
-// ═══════════════════════════════════════════
-
-article {
-  h1 {
-    margin: 0 0 1.25rem;
-  }
-  h2 {
-    margin: 2rem 0 0.75rem;
-  }
-  h3 {
-    margin: 1.5rem 0 0.6rem;
-  }
-  h4 {
-    margin: 1.25rem 0 0.5rem;
-  }
-
-  p {
-    margin: 0 0 1rem;
-  }
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  ul,
-  ol {
-    margin: 0 0 1rem;
-    padding-left: 1.35rem;
-  }
-  li + li {
-    margin-top: 0.25rem;
-  }
-
-  pre {
-    margin: 1.25rem 0;
-  }
-  img {
-    margin: 1.25rem 0;
-    border-radius: 6px;
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 2rem 0;
-  }
+// ── Weight clamp — beat component CSS that still ships 520–640 ──
+// Landing, explorer, and list pages hardcode heavier weights in their
+// own stylesheets; custom.scss loads after them in the join order.
+.landing-name,
+.landing-sublabel,
+.landing-section-heading,
+.lp-featured-title,
+.edu-title,
+.edu-courses-label,
+.lp-sort-label,
+.lp-card-eyebrow,
+.lp-card-title,
+.page-listing > p,
+li.section-li > .section > .desc > h3,
+.explorer h2,
+.explorer .explorer-panel-title,
+.explorer-content ul li > a.active,
+.top-bar-link {
+  font-weight: 500;
 }
 
 .sidebar.left > * + *,
@@ -484,16 +550,15 @@ body:not([data-slug="index"]) #quartz-body .center .page-header .breadcrumb-cont
 
 body:not([data-slug="index"]) #quartz-body .center .page-header .article-title {
   margin-top: 0.82rem;
-  // One fixed size per breakpoint — mobile here, desktop override below.
-  font-size: 2rem;
-  font-weight: 640;
-  letter-spacing: -0.022em;
-  line-height: 1.14;
+  font-size: 2.75rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
 @media (min-width: #{map-get($breakpoints, desktop)}) {
   body:not([data-slug="index"]) #quartz-body .center .page-header .article-title {
-    font-size: 2.15rem;
+    font-size: 3rem;
   }
 }
 
@@ -707,7 +772,7 @@ body[data-slug="index"] .center .page-header::after {
 // text + hover text colors come from the global link rules; the
 // underline sits muted and firms up on hover.
 .top-bar-link {
-  font-weight: 600;
+  font-weight: 500;
   color: var(--darkgray);
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -1004,7 +1069,7 @@ input:focus-visible,
   background: var(--bg) !important;
   border: 1px solid var(--border) !important;
   border-radius: 8px !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(8px);
   animation: fadeIn 0.25s var(--ease);
   .popover-inner {
@@ -1021,6 +1086,11 @@ input:focus-visible,
       line-height: 1.5 !important;
     }
   }
+}
+
+// Soften search modal elevation — hairline border carries the edge; no drop shadow.
+.search-container > .search-space > .search-panel {
+  box-shadow: none !important;
 }
 
 footer {
@@ -1161,24 +1231,39 @@ body[data-slug="index"] .recent-notes {
     max-height: none !important;
   }
 
-  article {
+  // Keep decisive size steps on small screens — compressed, not flattened.
+  .page article {
+    > h1,
     h1 {
-      font-size: 1.35rem;
-      margin-bottom: 1rem;
+      font-size: 2.25rem;
+      margin-top: 2.5em;
+      margin-bottom: 0.6em;
     }
     h2 {
-      font-size: 1.1rem;
-      margin-top: 1.6rem;
-      margin-bottom: 0.6rem;
+      font-size: 1.5rem;
+      margin-top: 2.5em;
+      margin-bottom: 0.6em;
     }
     h3 {
-      font-size: 0.98rem;
-      margin-top: 1.25rem;
+      font-size: 1.1875rem;
+      margin-top: 2.5em;
+      margin-bottom: 0.6em;
+    }
+    h4,
+    h5,
+    h6 {
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-top: 2.5em;
+      margin-bottom: 0.6em;
+    }
+    p,
+    li {
+      font-size: 0.875rem;
+      line-height: 1.7;
     }
     p {
-      font-size: 0.88rem;
-      line-height: 1.6;
-      margin-bottom: 0.9rem;
+      margin: 0 0 1.1em;
     }
   }
 
