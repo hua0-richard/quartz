@@ -204,44 +204,43 @@ button.desktop-explorer {
   border-radius: 0;
   text-align: left;
   cursor: pointer;
-  // Align header with hairline tree below (no pill inset).
+  // Match search/darkmode control row height so ⌘E stacks under the theme toggle.
   padding: 0;
   margin: 0;
+  min-height: 1.85rem;
   color: var(--dark);
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.4rem;
   width: 100%;
   box-sizing: border-box;
   transition: color 0.18s var(--ease);
 
   & .fold {
-    // Keep the chevron optically centered with the label baseline.
-    align-self: center;
-    position: relative;
-    top: 0.02em;
+    flex-shrink: 0;
   }
 
   & .explorer-shortcut {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.625rem;
     font-weight: 400;
     letter-spacing: 0.06em;
-    line-height: 1rem;
-    color: color-mix(in oklab, var(--gray) 72%, var(--bg));
+    line-height: 1;
+    color: color-mix(in oklab, var(--gray) 88%, var(--bg));
     background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+    border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
+    border-radius: 4px;
+    padding: 0.12rem 0.32rem;
     flex-shrink: 0;
-    display: inline;
-    vertical-align: baseline;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: none;
     font-variant-numeric: tabular-nums;
-    transition: color 0.18s var(--ease);
+    transition:
+      color 0.18s var(--ease),
+      border-color 0.18s var(--ease);
   }
 
   &:hover {
@@ -255,6 +254,7 @@ button.desktop-explorer {
 
     & .explorer-shortcut {
       color: var(--darkgray);
+      border-color: color-mix(in oklab, var(--dark) 22%, transparent);
     }
   }
 
@@ -264,9 +264,9 @@ button.desktop-explorer {
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    line-height: 1rem;
+    line-height: 1;
     color: color-mix(in oklab, var(--gray) 84%, var(--bg));
-    display: inline;
+    display: inline-block;
     margin: 0;
     transition: color 0.18s var(--ease);
   }
@@ -571,6 +571,7 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
     }
 
     // ── Backdrop ──
+    // Opaque warm dim — Cursor-style recessed chrome, not a light filter.
     .explorer-content {
       box-sizing: border-box;
       z-index: 10000;
@@ -580,9 +581,9 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
       height: 100dvh;
       margin-top: 0;
       overflow: hidden;
-      background: rgba(0, 0, 0, 0.03);
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
+      background: color-mix(in oklab, var(--bg) 32%, #161512);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;

@@ -1169,7 +1169,7 @@ input:focus-visible,
   border: 1px solid var(--border) !important;
   border-radius: 8px !important;
   box-shadow: none !important;
-  backdrop-filter: blur(8px);
+  backdrop-filter: none;
   animation: fadeIn 0.25s var(--ease);
   .popover-inner {
     padding: 1rem 1.25rem !important;
@@ -1238,6 +1238,10 @@ body[data-slug="index"] .recent-notes {
   }
   .sidebar.left {
     padding-top: 2rem;
+    .flex-component {
+      width: 100%;
+      align-items: center;
+    }
     .explorer {
       position: sticky;
       top: 2rem;

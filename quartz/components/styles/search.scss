@@ -112,9 +112,11 @@ html.search-active body {
 
 // ── Overlay ──
 // NOTE: intentionally NOT nested under `.search`. When opened, the overlay is
-// portaled up to <body> (see search.inline.ts) so its `backdrop-filter` can
-// blur the entire page instead of being trapped inside the sidebar's stacking
-// context. Its styles must therefore work regardless of parent.
+// portaled up to <body> (see search.inline.ts) so it can cover the full page
+// instead of being trapped inside the sidebar's stacking context. Its styles
+// must therefore work regardless of parent.
+// Cursor-quiet: opaque warm dim (not a translucent color filter).
+// Mix canvas into near-black so the page reads as recessed chrome.
 .search-container {
   position: fixed;
   z-index: 999;
@@ -124,9 +126,9 @@ html.search-active body {
   height: 100vh;
   overflow-y: auto;
   display: none;
-  background: rgba(0, 0, 0, 0.05);
-  -webkit-backdrop-filter: blur(24px);
-  backdrop-filter: blur(24px);
+  background: color-mix(in oklab, var(--bg) 32%, #161512);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 
   &.active {
     display: flex;
