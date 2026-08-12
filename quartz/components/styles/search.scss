@@ -27,59 +27,85 @@ html.search-active body {
   }
 
   // ── Trigger button ──
+  // Quiet hairline chrome — matches explorer/darkmode controls and the
+  // site's parchment surfaces (no filled cool-gray slab).
   & > .search-button {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    font-family: var(--bodyFont);
-    font-size: 0.82rem;
-    height: 1.95rem;
-    padding: 0 0.58rem;
+    background: transparent;
+    border: 1px solid color-mix(in oklab, var(--border) 92%, var(--bg));
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    height: 1.85rem;
+    padding: 0 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.44rem;
+    gap: 0.4rem;
     text-align: inherit;
     cursor: pointer;
     white-space: nowrap;
     width: 100%;
     transition:
-      border-color 0.3s var(--ease),
-      background 0.3s var(--ease);
+      border-color 0.18s var(--ease),
+      color 0.18s var(--ease),
+      background 0.18s var(--ease);
 
     &:hover {
-      border-color: var(--border-hover);
-      background: var(--surface-hover);
+      border-color: color-mix(in oklab, var(--dark) 22%, transparent);
+      background: transparent;
     }
 
     & > p {
       display: inline;
-      color: var(--gray);
+      color: color-mix(in oklab, var(--gray) 90%, var(--bg));
       flex: 1;
       font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: -0.005em;
+      margin: 0;
+    }
+
+    &:hover > p {
+      color: var(--darkgray);
     }
 
     & svg {
-      width: 13px;
-      min-width: 13px;
+      width: 12px;
+      min-width: 12px;
+      height: 12px;
       flex-shrink: 0;
 
       .search-path {
-        stroke: var(--gray);
-        stroke-width: 2px;
+        stroke: color-mix(in oklab, var(--gray) 90%, var(--bg));
+        stroke-width: 1.5px;
+        transition: stroke 0.18s var(--ease);
       }
     }
 
+    &:hover svg .search-path {
+      stroke: var(--darkgray);
+    }
+
     & > .search-shortcut {
-      font-family: var(--bodyFont);
-      font-size: 0.62rem;
-      font-weight: 500;
-      color: var(--gray);
-      background: var(--bg);
-      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: color-mix(in oklab, var(--gray) 88%, var(--bg));
+      background: transparent;
+      border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
       border-radius: 4px;
-      padding: 0.08rem 0.32rem;
-      line-height: 1.25;
+      padding: 0.12rem 0.32rem;
+      line-height: 1;
       flex-shrink: 0;
+      transition:
+        color 0.18s var(--ease),
+        border-color 0.18s var(--ease);
+    }
+
+    &:hover > .search-shortcut {
+      color: var(--darkgray);
+      border-color: color-mix(in oklab, var(--dark) 22%, transparent);
     }
   }
 }

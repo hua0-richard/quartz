@@ -23,26 +23,27 @@ const config: QuartzConfig = {
         body: { name: "Geist", weights: [400, 500], includeItalic: true },
         code: { name: "Geist Mono", weights: [400, 500], includeItalic: false },
       },
-      // Warm off-white / soft near-black surfaces; one muted slate accent for links.
+      // Cursor-adjacent neutrals: warm parchment canvas + warm ink text.
+      // Keep slate for secondary links (skip Cursor's ember orange — too marketing).
       // Inline link-pill taupe/steel accents remain in custom.scss (--accent*).
       colors: {
         lightMode: {
-          light: "#FAFAF9", // warm off-white
-          lightgray: "rgba(0, 0, 0, 0.07)", // hairline border
-          gray: "#A1A1A1", // muted meta
-          darkgray: "#0A0A0A", // near-black body
-          dark: "#0A0A0A", // headers ≈ body
+          light: "#F7F7F4", // parchment canvas
+          lightgray: "rgba(38, 37, 30, 0.1)", // warm hairline (stone)
+          gray: "#7A7974", // ash — muted meta
+          darkgray: "#26251E", // warm ink body
+          dark: "#26251E", // headers ≈ body
           secondary: "#3C4A57", // muted slate — reads as color, not highlight
           tertiary: "#5A6B78", // quiet hover step
           highlight: "rgba(60, 74, 87, 0.06)",
           textHighlight: "rgba(60, 74, 87, 0.12)",
         },
         darkMode: {
-          light: "#0F0F0F", // soft near-black
-          lightgray: "rgba(255, 255, 255, 0.08)", // hairline border
-          gray: "#737373", // muted meta
+          light: "#141413", // soft warm near-black
+          lightgray: "rgba(247, 247, 244, 0.1)", // warm hairline
+          gray: "#84847E", // driftwood meta
           darkgray: "#E8E6E3", // warm near-white body
-          dark: "#FAFAF9", // headers ≈ body
+          dark: "#F7F7F4", // parchment headers
           secondary: "#A8B4C0", // muted slate
           tertiary: "#8A98A4", // quiet hover step
           highlight: "rgba(255, 255, 255, 0.04)",

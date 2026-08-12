@@ -1,9 +1,10 @@
 .darkmode {
   cursor: pointer;
   position: relative;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 7px;
+  // Ghost icon control — no filled slab; hairline only on hover.
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
   width: 1.85rem;
   height: 1.85rem;
   margin: 0;
@@ -13,23 +14,25 @@
   justify-content: center;
   text-align: inherit;
   flex-shrink: 0;
-  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  color: color-mix(in oklab, var(--gray) 88%, var(--bg));
+  transition:
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 
   &:hover {
-    border-color: var(--border-hover);
-    background: var(--surface-hover);
+    color: var(--darkgray);
+    border-color: color-mix(in oklab, var(--dark) 18%, transparent);
+  }
+
+  &:focus-visible {
+    border-color: color-mix(in oklab, var(--secondary) 45%, transparent);
   }
 
   & svg {
     width: 13px;
     height: 13px;
-    stroke: var(--gray);
+    stroke: currentColor;
     fill: none;
-    transition: stroke 0.3s var(--ease);
-  }
-
-  &:hover svg {
-    stroke: var(--dark);
   }
 }
 
