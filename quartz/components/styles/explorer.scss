@@ -236,11 +236,12 @@ button.desktop-explorer {
   }
 
   & h2 {
-    font-family: var(--font-sans);
-    font-size: 0.6rem;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
+    line-height: 1rem;
     color: color-mix(in oklab, var(--gray) 84%, var(--bg));
     display: inline-block;
     margin: 0;
@@ -655,10 +656,10 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon-open {
       // Typography follows the desktop explorer header <h2>
       // (button.desktop-explorer h2) — same weight, tracking, casing and
       // muted colour — but a step smaller, tuned for the modal header.
-      font-family: var(--font-sans);
-      font-size: 0.52rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
       line-height: 1;
       text-transform: uppercase;
       color: color-mix(in oklab, var(--gray) 84%, var(--bg));

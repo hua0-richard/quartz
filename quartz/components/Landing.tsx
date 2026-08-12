@@ -330,7 +330,7 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 18px 0 2.15rem;
+  padding: 1.25rem 0 2rem;
 }
 
 /* Name + Blog quicklink row. The row carries the underline and bottom
@@ -342,8 +342,8 @@ Landing.css = `
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin: 0 0 1.65rem;
-  padding-bottom: 1.35rem;
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.25rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
 }
@@ -351,15 +351,13 @@ Landing.css = `
 .landing-name {
   margin: 0;
   font-family: var(--font-sans);
-  /* Matches the header type system (.article-title): same weight, tracking
-     and line-height, sized one clear step above content-page titles since
-     this is the homepage's lead heading. One fixed size per breakpoint —
-     overrides below at 800px and 520px. */
-  font-size: 2.4rem;
-  font-weight: 640;
-  letter-spacing: -0.022em;
-  line-height: 1.14;
+  /* Display scale from gpu-store: tight tracking, near-solid leading. */
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: -0.038em;
+  line-height: 1.06;
   color: var(--dark);
+  text-wrap: balance;
 }
 
 /* Blog quicklink — sits opposite the name, baseline-aligned with it.
@@ -367,11 +365,11 @@ Landing.css = `
 .landing-name-blog {
   flex-shrink: 0;
   white-space: nowrap;
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  line-height: 1.2;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 86%, var(--bg));
   text-decoration-line: underline;
@@ -432,18 +430,18 @@ Landing.css = `
 
 .landing-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.98rem;
+  font-size: 0.9375rem;
   font-weight: 400;
-  line-height: 1.62;
+  line-height: 1.55;
   letter-spacing: -0.01em;
   color: var(--dark);
   max-width: 48ch;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
 }
 
 .landing-bio {
   font-size: 0.78rem;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--gray);
   opacity: 0.86;
   margin: 0;
@@ -463,7 +461,7 @@ Landing.css = `
   align-items: center;
   gap: 0.34rem;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.8125rem; /* 13px UI */
   font-weight: 500;
   line-height: 1.3;
   padding: 0.34rem 0.62rem;
@@ -500,7 +498,7 @@ Landing.css = `
 .landing-project-quicklinks {
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.25rem;
 }
 
 .landing-project-quicklinks + .landing-project-quicklinks {
@@ -521,19 +519,20 @@ Landing.css = `
 
 .landing-sublabel {
   display: block;
-  font-family: var(--font-sans);
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1rem;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 82%, var(--bg));
-  margin-bottom: 0.42rem;
+  margin-bottom: 0.45rem;
 }
 
 .landing-featured-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.6rem;
+  gap: 0.7rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
 }
@@ -541,8 +540,8 @@ Landing.css = `
 .lp-featured-card {
   display: block;
   text-decoration: none;
-  padding: 0.68rem 0.78rem 0.72rem;
-  min-height: 92px;
+  padding: 0.9rem 1rem 0.95rem;
+  min-height: 0;
   border-radius: 8px;
   border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
   background: color-mix(in oklab, var(--surface) 92%, transparent);
@@ -552,14 +551,14 @@ Landing.css = `
 .lp-featured-card-top {
   display: flex;
   align-items: center;
-  gap: 0.36rem;
-  margin-bottom: 0.28rem;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
 }
 
 .lp-featured-title {
   font-family: var(--font-sans);
-  font-size: 0.83rem;
-  font-weight: 540;
+  font-size: 0.84rem;
+  font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.01em;
   color: var(--dark);
@@ -579,7 +578,7 @@ Landing.css = `
 .lp-featured-desc {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   line-height: 1.45;
   color: var(--darkgray);
   display: -webkit-box;
@@ -589,7 +588,7 @@ Landing.css = `
 }
 
 .lp-featured-tech {
-  margin: 0.25rem 0 0;
+  margin: 0.3rem 0 0;
   font-family: var(--font-sans);
   font-size: 0.68rem;
   font-weight: 500;
@@ -633,7 +632,7 @@ Landing.css = `
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 1rem 0 4rem;
+  padding: 1rem 0 3rem;
 }
 .webring-arrow {
   font-size: 0.88rem;
@@ -660,39 +659,40 @@ Landing.css = `
 /* ── Section headings ──────────────────────────────────────── */
 .landing-section-heading {
   font-family: var(--font-sans);
-  font-size: 1.14rem;
-  font-weight: 620;
-  letter-spacing: -0.018em;
-  line-height: 1.3;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.25;
   color: var(--dark);
-  margin: 0 0 1.05rem;
+  margin: 0 0 0.95rem;
+  text-wrap: balance;
 }
 
 .landing-section-desc {
   font-size: 0.84rem;
   color: var(--gray);
-  line-height: 1.6;
+  line-height: 1.55;
   max-width: 36rem;
-  margin: -0.4rem 0 1.1rem;
+  margin: -0.25rem 0 1rem;
 }
 
 /* ── Education ─────────────────────────────────────────────── */
 .landing-education {
-  padding: 2.15rem 0;
+  padding: 2.25rem 0;
 }
 
 .landing-edu-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .edu-item {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: start;
-  column-gap: 0.9rem;
-  padding: 0.85rem 1rem;
+  column-gap: 0.95rem;
+  padding: 0.95rem 1.05rem;
   border-radius: 8px;
   border: 1px solid color-mix(in oklab, var(--border) 88%, var(--bg));
   background: color-mix(in oklab, var(--surface) 95%, transparent);
@@ -883,7 +883,7 @@ Landing.css = `
 
 .edu-title {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.88rem;
   letter-spacing: -0.005em;
   line-height: 1.25;
@@ -903,10 +903,12 @@ Landing.css = `
 }
 
 .edu-courses-label {
+  font-family: var(--font-sans);
   font-size: 0.62rem;
   letter-spacing: 0.08em;
+  line-height: 1;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--gray);
 }
 
@@ -941,7 +943,7 @@ Landing.css = `
 
 /* ── Projects ──────────────────────────────────────────────── */
 .landing-projects {
-  padding: 2.15rem 0;
+  padding: 2.25rem 0;
 }
 
 .lp-controls {
@@ -950,7 +952,7 @@ Landing.css = `
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem 0.75rem;
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.85rem;
 }
 
 .lp-filters {
@@ -991,10 +993,11 @@ Landing.css = `
 }
 
 .lp-sort-label {
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1rem;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 86%, var(--bg));
 }
@@ -1027,7 +1030,7 @@ Landing.css = `
 
 .landing-project-grid {
   display: grid;
-  gap: 0.72rem;
+  gap: 0.75rem;
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
@@ -1040,15 +1043,17 @@ Landing.css = `
   font-size: 0.88rem;
   color: var(--gray);
   text-align: center;
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
   margin: 0;
 }
 
 .lp-card {
+  display: flex;
+  flex-direction: column;
   border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
   border-radius: 8px;
-  padding: 0.92rem 1rem 0.96rem;
-  min-height: 154px;
+  padding: 1.1rem 1.15rem 1.15rem;
+  min-height: 0;
   background: color-mix(in oklab, var(--surface) 92%, transparent);
   position: relative;
   transition: var(--card-transition);
@@ -1059,26 +1064,28 @@ Landing.css = `
 }
 
 .lp-card-eyebrow {
-  margin: 0 0 0.2rem;
+  margin: 0 0 0.25rem;
+  font-family: var(--font-sans);
   font-size: 0.58rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.1em;
+  line-height: 1.2;
   text-transform: uppercase;
   color: var(--gray);
 }
 
 .lp-card-title {
-  margin: 0 0 0.32rem;
+  margin: 0 0 0.35rem;
   font-family: var(--font-sans);
   font-size: 0.98rem;
-  font-weight: 620;
+  font-weight: 500;
   letter-spacing: -0.012em;
   line-height: 1.26;
   color: var(--dark);
 }
 
 .lp-card-desc {
-  margin: 0 0 0.62rem;
+  margin: 0 0 0.7rem;
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 400;
@@ -1090,7 +1097,7 @@ Landing.css = `
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
-  margin-bottom: 0.6rem;
+  margin: 0 0 0.65rem;
 }
 .lp-card-tags span {
   font-family: var(--font-sans);
@@ -1115,7 +1122,8 @@ Landing.css = `
   flex-wrap: wrap;
   gap: 0.85rem;
   align-items: center;
-  margin-top: 0.25rem;
+  margin-top: auto;
+  padding-top: 0.15rem;
 }
 /* Plain text links — no chrome, so the card border is the only enclosed box.
    External links get a trailing ↗ as the affordance. */
@@ -1157,7 +1165,7 @@ Landing.css = `
 
 /* ── Explorations ──────────────────────────────────────────── */
 .landing-explorations {
-  padding: 2.15rem 0 3.1rem;
+  padding: 2.25rem 0 3rem;
 }
 
 .landing-explore-links {
@@ -1223,34 +1231,39 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-name { font-size: 2.25rem; }
-  .landing-hero { padding: 14px 0 28px; }
-  .landing-subtitle { font-size: 0.92rem; line-height: 1.58; }
+  .landing-name { font-size: 2.25rem; letter-spacing: -0.038em; line-height: 1.06; }
+  .landing-hero { padding: 1rem 0 1.65rem; }
+  .landing-namerow { margin-bottom: 1.25rem; padding-bottom: 1.1rem; }
+  .landing-subtitle { font-size: 0.9rem; line-height: 1.55; }
   .landing-bio { font-size: 0.76rem; }
+  .landing-project-quicklinks { margin-bottom: 1.1rem; }
 
   .landing-education,
   .landing-projects,
-  .landing-explorations { padding: 1.5rem 0; }
+  .landing-explorations { padding: 1.75rem 0; }
 
-  .landing-section-heading { font-size: 1rem; margin-bottom: 0.75rem; }
-  .landing-section-desc { font-size: 0.82rem; margin-bottom: 0.85rem; }
+  .landing-section-heading { font-size: 1.05rem; letter-spacing: -0.02em; margin-bottom: 0.8rem; }
+  .landing-section-desc { font-size: 0.8rem; margin-bottom: 0.85rem; }
 
-  .landing-edu-list { gap: 0.5rem; }
-  .edu-item { padding: 0.8rem 0.9rem; }
-  .lp-card { padding: 0.9rem 1rem; }
-  .landing-featured-grid { gap: 0.5rem; }
+  .landing-edu-list { gap: 0.55rem; }
+  .edu-item { padding: 0.9rem 0.95rem; }
+  .lp-card { padding: 1rem 1.05rem; }
+  .landing-featured-grid { gap: 0.6rem; }
+  .lp-featured-card { padding: 0.85rem 0.9rem; }
 
-  .landing-project-grid { gap: 0.55rem; }
-  .lp-card { min-height: 0; }
+  .landing-project-grid { gap: 0.65rem; }
 }
 
 @media (max-width: 520px) {
-  .landing-name { font-size: 1.82rem; }
-  .landing-hero { padding: 16px 0 22px; }
+  .landing-name { font-size: 2rem; }
+  .landing-hero { padding: 0.85rem 0 1.4rem; }
   .landing-subtitle { font-size: 0.86rem; }
   .landing-bio { font-size: 0.73rem; }
   .landing-links a { font-size: 0.78rem; }
-  .landing-section-heading { font-size: 0.95rem; }
+  .landing-section-heading { font-size: 1rem; }
+  .landing-education,
+  .landing-projects,
+  .landing-explorations { padding: 1.5rem 0; }
 }
 
 /* ── Reduced motion ────────────────────────────────────────── */

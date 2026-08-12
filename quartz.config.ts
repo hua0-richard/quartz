@@ -18,10 +18,10 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        // Grotesk-only. Weights 400/500 only — never load 600+.
-        header: { name: "Inter", weights: [400, 500], includeItalic: true },
-        body: { name: "Inter", weights: [400, 500], includeItalic: true },
-        code: { name: "JetBrains Mono", weights: [400, 500], includeItalic: false },
+        // Geist + Geist Mono (same pairing as gpu-store). Weights 400/500 only.
+        header: { name: "Geist", weights: [400, 500], includeItalic: true },
+        body: { name: "Geist", weights: [400, 500], includeItalic: true },
+        code: { name: "Geist Mono", weights: [400, 500], includeItalic: false },
       },
       // Warm off-white / soft near-black surfaces; one muted slate accent for links.
       // Inline link-pill taupe/steel accents remain in custom.scss (--accent*).
