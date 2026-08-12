@@ -85,9 +85,9 @@
   top: 0;
   width: 100vw;
   height: 100%;
-  background: var(--light);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in oklab, var(--bg) 28%, #161512);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   display: none;
   overflow: hidden;
 

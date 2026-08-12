@@ -49,6 +49,7 @@ export const defaultContentPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
       ],
+      gap: "0.45rem",
     }),
     Component.Explorer({
       folderClickBehavior: "collapse",
@@ -102,6 +103,7 @@ export const defaultListPageLayout: PageLayout = {
         },
         { Component: Component.Darkmode() },
       ],
+      gap: "0.45rem",
     }),
     Component.Explorer({
       folderClickBehavior: "collapse",

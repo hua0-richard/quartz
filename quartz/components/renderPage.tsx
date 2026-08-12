@@ -240,7 +240,7 @@ export function renderPage(
             Update this line whenever the current focus changes. */}
         <div class="top-bar">
           <p class="top-bar-text">
-            <span class="top-bar-lead">Currently &middot;</span> ML-driven
+            <span class="top-bar-lead">Currently building &middot;</span> ML-driven
             compute-resource prediction &middot;{" "}
             <span class="top-bar-nowrap">
               <a

@@ -41,40 +41,6 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             Waterloo CS &middot; UBC MDS &middot; Based in Canada &middot; Open to software engineer
             roles.
           </p>
-        </div>
-        {featuredProjects.length > 0 && (
-          <div class="landing-project-quicklinks">
-            <span class="landing-sublabel">Featured Projects</span>
-            <div class="landing-featured-grid">
-              {featuredProjects.map((p) => {
-                const techStack = (p.tags ?? []).filter((t) => t !== "projects").slice(0, 3)
-                return (
-                  <a
-                    href={p.demo}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="lp-featured-card"
-                    aria-label={`${p.title} — live demo`}
-                  >
-                    <div class="lp-featured-card-top">
-                      <span class="lp-featured-title">{p.title ?? "Project"}</span>
-                      <span class="lp-featured-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </div>
-                    {p.description && <p class="lp-featured-desc">{p.description}</p>}
-                    {techStack.length > 0 && (
-                      <p class="lp-featured-tech">{techStack.join(" · ")}</p>
-                    )}
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        <div class="landing-project-quicklinks">
-          <span class="landing-sublabel">Contact</span>
           <div class="landing-links">
             <a href="mailto:hua.richard0@gmail.com">
               <svg
@@ -112,77 +78,71 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             </a>
           </div>
         </div>
+        {featuredProjects.length > 0 && (
+          <div class="landing-project-quicklinks">
+            <span class="landing-sublabel">Featured Projects</span>
+            <div class="landing-featured-grid">
+              {featuredProjects.map((p) => {
+                const techStack = (p.tags ?? []).filter((t) => t !== "projects").slice(0, 3)
+                return (
+                  <a
+                    href={p.demo}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="lp-featured-card"
+                    aria-label={`${p.title} — live demo`}
+                  >
+                    <div class="lp-featured-card-top">
+                      <span class="lp-featured-title">{p.title ?? "Project"}</span>
+                      <span class="lp-featured-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </div>
+                    {p.description && <p class="lp-featured-desc">{p.description}</p>}
+                    {techStack.length > 0 && (
+                      <p class="lp-featured-tech">{techStack.join(" · ")}</p>
+                    )}
+                  </a>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ── Education ── */}
       <section class="landing-education">
-        <h2 class="landing-section-heading">Education</h2>
-        <div class="landing-edu-list">
-          <div class="edu-item reveal-card">
-            <div class="edu-logo">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/University_of_Waterloo_seal.svg/500px-University_of_Waterloo_seal.svg.png?20181003010357"
-                alt="University of Waterloo"
-              />
+        <span class="landing-sublabel">Education</span>
+        <div class="landing-featured-grid landing-edu-list">
+          <div class="lp-featured-card edu-item reveal-card">
+            <div class="lp-featured-card-top">
+              <span class="lp-featured-title">University of Waterloo</span>
+              <span class="edu-years">2020–2025</span>
             </div>
-            <div class="edu-content">
-              <div class="edu-title">University of Waterloo</div>
-              <div class="edu-meta">2020 &ndash; 2025 &middot; B.CS in Computer Science</div>
-              <div class="edu-courses">
-                <span class="edu-courses-label">Selected courses</span>
-                <ul>
-                  <li>Algorithms</li>
-                  <li>Operating Systems</li>
-                  <li>Artificial Intelligence</li>
-                </ul>
-              </div>
-            </div>
+            <p class="edu-degree">B.CS in Computer Science</p>
+            <p class="edu-courses">Algorithms · Operating Systems · AI</p>
           </div>
 
-          <div class="edu-item reveal-card">
-            <div class="edu-logo">
-              <span
-                class="edu-logo-chalmers"
-                role="img"
-                aria-label="Chalmers University of Technology"
-              ></span>
+          <div class="lp-featured-card edu-item reveal-card">
+            <div class="lp-featured-card-top">
+              <span class="lp-featured-title">Chalmers University of Technology</span>
+              <span class="edu-years">Jan–May 2025</span>
             </div>
-            <div class="edu-content">
-              <div class="edu-title">Chalmers University of Technology</div>
-              <div class="edu-meta">
-                Jan &ndash; May 2025 &middot; Exchange term in Computer Science
-              </div>
-              <div class="edu-courses">
-                <span class="edu-courses-label">Selected courses</span>
-                <ul>
-                  <li>Applied Machine Learning</li>
-                  <li>Game Engine Architecture</li>
-                  <li>Agile Software Development</li>
-                </ul>
-              </div>
-            </div>
+            <p class="edu-degree">Exchange term in Computer Science</p>
+            <p class="edu-courses">
+              Applied Machine Learning · Game Engine Architecture · Agile
+            </p>
           </div>
 
-          <div class="edu-item reveal-card">
-            <div class="edu-logo">
-              <img
-                src="https://commons.wikimedia.org/wiki/Special:FilePath/UBC_COA2.svg"
-                class="edu-logo-ubc"
-                alt="University of British Columbia"
-              />
+          <div class="lp-featured-card edu-item reveal-card">
+            <div class="lp-featured-card-top">
+              <span class="lp-featured-title">University of British Columbia</span>
+              <span class="edu-years">2025–2026</span>
             </div>
-            <div class="edu-content">
-              <div class="edu-title">University of British Columbia</div>
-              <div class="edu-meta">2025 &ndash; 2026 &middot; MDS in Data Science (current)</div>
-              <div class="edu-courses">
-                <span class="edu-courses-label">Selected courses</span>
-                <ul>
-                  <li>Statistical Learning</li>
-                  <li>Machine Learning Systems</li>
-                  <li>Data Visualization</li>
-                </ul>
-              </div>
-            </div>
+            <p class="edu-degree">MDS in Data Science</p>
+            <p class="edu-courses">
+              Statistical Learning · ML Systems · Data Visualization
+            </p>
           </div>
         </div>
       </section>
@@ -190,81 +150,59 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
       {/* ── Projects ── */}
       {projects.length > 0 && (
         <section class="landing-projects">
-          <h2 class="landing-section-heading">Projects</h2>
-          {(() => {
-            const allTags = Array.from(
-              new Set(projects.flatMap((p) => p.tags ?? []).filter((t) => t && t !== "projects")),
-            ).sort()
-            return (
-              <div class="lp-controls reveal-card" style="animation-delay: 0.3s">
-                <div class="lp-filters" role="group" aria-label="Filter projects by tag">
-                  <button
-                    type="button"
-                    class="lp-filter-pill is-active"
-                    data-filter="all"
-                    aria-pressed="true"
-                  >
-                    All
-                  </button>
-                  {allTags.map((t) => (
-                    <button
-                      type="button"
-                      class="lp-filter-pill"
-                      data-filter={t}
-                      aria-pressed="false"
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-                <div class="lp-sort">
-                  <label for="lp-sort-select" class="lp-sort-label">
-                    Sort
-                  </label>
-                  <select id="lp-sort-select" class="lp-sort-select" aria-label="Sort projects">
-                    <option value="featured">Featured</option>
-                    <option value="az">A → Z</option>
-                    <option value="za">Z → A</option>
-                  </select>
-                </div>
-              </div>
-            )
-          })()}
-          <div class="landing-project-grid">
+          <div class="landing-section-head">
+            <span class="landing-sublabel">Projects</span>
+            <div class="lp-sort">
+              <label for="lp-sort-select" class="lp-sort-label">
+                Sort
+              </label>
+              <select id="lp-sort-select" class="lp-sort-select" aria-label="Sort projects">
+                <option value="featured">Featured</option>
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+              </select>
+            </div>
+          </div>
+          <div class="landing-featured-grid landing-project-grid">
             {projects.map((p, idx) => {
               const cleanTags = (p.tags ?? []).filter((t) => t !== "projects")
               return (
                 <div
-                  class="lp-card reveal-card"
+                  class="lp-featured-card lp-card reveal-card"
                   style={`animation-delay: ${0.4 + idx * 0.12}s`}
                   data-tags={cleanTags.join(",")}
                   data-title={(p.title ?? "").toLowerCase()}
                   data-featured={p.demo ? "1" : "0"}
                   data-order={idx}
                 >
-                  {p.eyebrow && <p class="lp-card-eyebrow">{p.eyebrow}</p>}
-                  <h3 class="lp-card-title">{p.title}</h3>
-                  {p.description && <p class="lp-card-desc">{p.description}</p>}
-                  {cleanTags.length > 0 && (
-                    <div class="lp-card-tags">
-                      {cleanTags.map((t) => (
-                        <span>{t}</span>
-                      ))}
-                    </div>
-                  )}
-                  <div class="lp-card-links">
-                    {p.demo && (
-                      <a href={p.demo} target="_blank" rel="noreferrer" class="lp-link-demo">
-                        Live Demo
-                      </a>
-                    )}
-                    <a href={`/${p.slug}`}>Writeup</a>
-                    {p.github && (
-                      <a href={p.github} target="_blank" rel="noreferrer">
-                        GitHub
-                      </a>
+                  <div class="lp-featured-card-top">
+                    <a class="lp-featured-title" href={`/${p.slug}`}>
+                      {p.title}
+                    </a>
+                    {(p.github || p.demo) && (
+                      <div class="lp-card-links">
+                        {p.github && (
+                          <a href={p.github} target="_blank" rel="noreferrer">
+                            GitHub
+                          </a>
+                        )}
+                        {p.github && p.demo && (
+                          <span class="lp-card-link-sep" aria-hidden="true">
+                            ·
+                          </span>
+                        )}
+                        {p.demo && (
+                          <a href={p.demo} target="_blank" rel="noreferrer">
+                            Demo
+                          </a>
+                        )}
+                      </div>
                     )}
                   </div>
+                  {p.description && <p class="lp-featured-desc">{p.description}</p>}
+                  {cleanTags.length > 0 && (
+                    <p class="lp-featured-tech">{cleanTags.join(" · ")}</p>
+                  )}
                 </div>
               )
             })}
@@ -277,20 +215,29 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
 
       {/* ── Explorations ── */}
       <section class="landing-explorations">
-        <h2 class="landing-section-heading">Explorations</h2>
-        <p class="landing-section-desc">
-          Study notes and technical explorations — machine learning, statistics, and systems. Linked
-          through Quartz's knowledge graph.
-        </p>
-        <div class="landing-explore-links">
+        <span class="landing-sublabel">Explorations</span>
+        <div class="landing-featured-grid landing-explore-list">
           <a
             href="/Machine-Learning/Supervised-Learning/Supervised-Learning"
-            class="explore-pill reveal-card"
+            class="lp-featured-card explore-row reveal-card"
           >
-            Machine Learning
+            <div class="lp-featured-card-top">
+              <span class="lp-featured-title">Machine Learning</span>
+              <span class="lp-featured-arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
           </a>
-          <a href="/Statistics/Fundamentals/Random-Variables" class="explore-pill reveal-card">
-            Statistics
+          <a
+            href="/Statistics/Fundamentals/Random-Variables"
+            class="lp-featured-card explore-row reveal-card"
+          >
+            <div class="lp-featured-card-top">
+              <span class="lp-featured-title">Statistics</span>
+              <span class="lp-featured-arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
           </a>
         </div>
       </section>
@@ -330,7 +277,7 @@ Landing.css = `
 
 /* ── Hero ──────────────────────────────────────────────────── */
 .landing-hero {
-  padding: 18px 0 2.15rem;
+  padding: 1.25rem 0 0;
 }
 
 /* Name + Blog quicklink row. The row carries the underline and bottom
@@ -342,8 +289,8 @@ Landing.css = `
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin: 0 0 1.65rem;
-  padding-bottom: 1.35rem;
+  margin: 0 0 2.25rem;
+  padding-bottom: 1.25rem;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.1s forwards;
 }
@@ -351,15 +298,13 @@ Landing.css = `
 .landing-name {
   margin: 0;
   font-family: var(--font-sans);
-  /* Matches the header type system (.article-title): same weight, tracking
-     and line-height, sized one clear step above content-page titles since
-     this is the homepage's lead heading. One fixed size per breakpoint —
-     overrides below at 800px and 520px. */
-  font-size: 2.4rem;
-  font-weight: 640;
-  letter-spacing: -0.022em;
-  line-height: 1.14;
+  /* Display: Cursor-style weight 400 + tight tracking (not bold). */
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: -0.038em;
+  line-height: 1.06;
   color: var(--dark);
+  text-wrap: balance;
 }
 
 /* Blog quicklink — sits opposite the name, baseline-aligned with it.
@@ -367,11 +312,11 @@ Landing.css = `
 .landing-name-blog {
   flex-shrink: 0;
   white-space: nowrap;
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  line-height: 1.2;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 86%, var(--bg));
   text-decoration-line: underline;
@@ -432,27 +377,35 @@ Landing.css = `
 
 .landing-subtitle {
   font-family: var(--font-sans);
-  font-size: 0.98rem;
+  font-size: 0.9375rem;
   font-weight: 400;
-  line-height: 1.62;
+  line-height: 1.55;
   letter-spacing: -0.01em;
   color: var(--dark);
   max-width: 48ch;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.4rem;
 }
 
 .landing-bio {
   font-size: 0.78rem;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--gray);
   opacity: 0.86;
   margin: 0;
 }
 
+.landing-project-quicklinks .landing-links {
+  opacity: 1;
+  animation: none;
+  flex-wrap: wrap;
+  row-gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+
 .landing-links {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.95rem;
   flex-wrap: wrap;
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
@@ -463,25 +416,25 @@ Landing.css = `
   align-items: center;
   gap: 0.34rem;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 400;
   line-height: 1.3;
-  padding: 0.34rem 0.62rem;
-  border-radius: 6px;
-  border: 1px solid color-mix(in oklab, var(--border) 84%, var(--bg));
-  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  padding: 0.1rem 0;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid transparent;
+  background: transparent;
   color: var(--darkgray);
   text-decoration: none;
   transition:
     color 0.2s var(--ease),
-    border-color 0.2s var(--ease),
-    background-color 0.2s var(--ease);
+    border-color 0.2s var(--ease);
 }
 
 .landing-links a:hover {
   color: var(--dark);
-  border-color: var(--border-hover);
-  background: color-mix(in oklab, var(--surface-hover) 88%, var(--surface));
+  border-color: color-mix(in oklab, var(--dark) 35%, transparent);
+  background: transparent;
 }
 
 .landing-link-icon {
@@ -496,11 +449,13 @@ Landing.css = `
   opacity: 0.8;
 }
 
-/* ── Hero subsections (About, Featured Projects, Contact) ───── */
+/* ── Hero subsections (About, Featured Projects) ───────────── */
+/* Same section gap as Education / Projects / Explorations. */
 .landing-project-quicklinks {
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.35s forwards;
-  margin-bottom: 1.35rem;
+  margin: 0 0 2.35rem;
+  padding: 0;
 }
 
 .landing-project-quicklinks + .landing-project-quicklinks {
@@ -509,31 +464,81 @@ Landing.css = `
 
 .landing-project-quicklinks + .landing-project-quicklinks + .landing-project-quicklinks {
   animation-delay: 0.65s;
-  margin-bottom: 0;
-}
-
-.landing-project-quicklinks .landing-links {
-  opacity: 1;
-  animation: none;
-  flex-wrap: wrap;
-  row-gap: 0.4rem;
 }
 
 .landing-sublabel {
   display: block;
-  font-family: var(--font-sans);
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1rem;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 82%, var(--bg));
-  margin-bottom: 0.42rem;
+  margin: 0 0 0.7rem;
+}
+
+/* Beat .page article … rules. Landing rows used to be <article>, which made
+   nested cards inherit article body margins/type and blow past Featured
+   (Featured rows are <a>, so they never matched). Keep resets scoped to
+   .landing regardless of ancestor article. */
+.page .landing .lp-featured-title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--dark);
+}
+
+.page .landing .lp-featured-desc,
+.page .landing .lp-featured-tech {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.45;
+  color: var(--darkgray);
+}
+
+.page .landing .lp-featured-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.page .landing .landing-education .lp-featured-desc,
+.page .landing .landing-projects .lp-featured-desc {
+  -webkit-line-clamp: 1;
+}
+
+.page .landing .lp-featured-tech {
+  margin: 0.28rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--gray);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.page .landing .lp-featured-card {
+  padding: 0.72rem 0;
+  margin: 0;
+  max-width: none;
 }
 
 .landing-featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.6rem;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+
+.landing-project-quicklinks .landing-featured-grid {
   opacity: 0;
   animation: fadeIn 0.8s cubic-bezier(0.0, 0, 0.2, 1) 0.6s forwards;
 }
@@ -541,35 +546,42 @@ Landing.css = `
 .lp-featured-card {
   display: block;
   text-decoration: none;
-  padding: 0.68rem 0.78rem 0.72rem;
-  min-height: 92px;
-  border-radius: 8px;
-  border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
-  background: color-mix(in oklab, var(--surface) 92%, transparent);
-  transition: var(--card-transition);
+  padding: 0.72rem 0;
+  min-height: 0;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  transition: color 0.18s var(--ease);
 }
 
 .lp-featured-card-top {
   display: flex;
-  align-items: center;
-  gap: 0.36rem;
-  margin-bottom: 0.28rem;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .lp-featured-title {
   font-family: var(--font-sans);
-  font-size: 0.83rem;
-  font-weight: 540;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
   color: var(--dark);
+  text-decoration: none;
+  transition: color 0.18s var(--ease);
+}
+
+a.lp-featured-title:hover {
+  color: color-mix(in oklab, var(--dark) 72%, var(--gray));
 }
 
 .lp-featured-arrow {
   margin-left: auto;
   font-size: 0.78rem;
-  color: var(--darkgray);
-  opacity: 0.55;
+  color: var(--gray);
+  opacity: 0.7;
   transition:
     transform 0.18s var(--ease),
     color 0.18s var(--ease),
@@ -579,21 +591,21 @@ Landing.css = `
 .lp-featured-desc {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   line-height: 1.45;
   color: var(--darkgray);
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .lp-featured-tech {
-  margin: 0.25rem 0 0;
+  margin: 0.28rem 0 0;
   font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: -0.003em;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
   color: var(--gray);
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -601,12 +613,17 @@ Landing.css = `
 }
 
 .lp-featured-card:hover {
-  border-color: var(--border-hover);
-  background: color-mix(in oklab, var(--surface-hover) 92%, var(--surface));
+  border-color: var(--border);
+  background: transparent;
+}
+
+.lp-featured-card:hover .lp-featured-title {
+  color: var(--dark);
 }
 
 .lp-featured-card:hover .lp-featured-arrow {
   opacity: 1;
+  color: var(--dark);
   transform: translate(1px, -1px);
 }
 
@@ -615,8 +632,9 @@ Landing.css = `
 .lp-featured-card:focus-visible,
 .lp-filter-pill:focus-visible,
 .lp-sort-select:focus-visible,
+a.lp-featured-title:focus-visible,
 .lp-card-links a:focus-visible,
-.explore-pill:focus-visible {
+.explore-row:focus-visible {
   outline: 2px solid color-mix(in oklab, var(--secondary) 50%, transparent);
   outline-offset: 2px;
 }
@@ -633,7 +651,7 @@ Landing.css = `
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  padding: 1rem 0 4rem;
+  padding: 1rem 0 3rem;
 }
 .webring-arrow {
   font-size: 0.88rem;
@@ -657,378 +675,160 @@ Landing.css = `
   image-rendering: pixelated;
 }
 
-/* ── Section headings ──────────────────────────────────────── */
-.landing-section-heading {
-  font-family: var(--font-sans);
-  font-size: 1.14rem;
-  font-weight: 620;
-  letter-spacing: -0.018em;
-  line-height: 1.3;
-  color: var(--dark);
-  margin: 0 0 1.05rem;
+/* ── Education / Projects / Explorations ───────────────────── */
+/* Shared section rhythm with About / Featured above. */
+.landing-education,
+.landing-projects,
+.landing-explorations {
+  padding: 0;
+  margin: 0 0 2.35rem;
 }
 
-.landing-section-desc {
-  font-size: 0.84rem;
-  color: var(--gray);
-  line-height: 1.6;
-  max-width: 36rem;
-  margin: -0.4rem 0 1.1rem;
+.landing-explorations {
+  margin-bottom: 0;
+  padding-bottom: 2.5rem;
 }
 
-/* ── Education ─────────────────────────────────────────────── */
-.landing-education {
-  padding: 2.15rem 0;
-}
-
-.landing-edu-list {
+.landing-section-head {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 0.7rem;
 }
 
-.edu-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: start;
-  column-gap: 0.9rem;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  border: 1px solid color-mix(in oklab, var(--border) 88%, var(--bg));
-  background: color-mix(in oklab, var(--surface) 95%, transparent);
-  position: relative;
-  transition: var(--card-transition);
-}
-.edu-item:hover {
-  border-color: var(--border-hover);
-  background: color-mix(in oklab, var(--surface-hover) 92%, var(--surface));
-}
-
-.edu-logo {
-  width: clamp(36px, 4.5vw, 44px);
-  height: clamp(36px, 4.5vw, 44px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  /* satin aluminum plate — smooth cool color gradient (sheen overlaid via ::after) */
-  background: linear-gradient(
-    135deg,
-    #e8ebee 0%,
-    #d4d8dd 45%,
-    #e0e4e8 65%,
-    #ccd1d6 100%
-  );
-  border: none;
-}
-
-:root[saved-theme="dark"] .edu-logo {
-  /* satin space black — smooth graphite (sheen overlaid via ::after) */
-  background: linear-gradient(
-    135deg,
-    #2a2a2c 0%,
-    #1e1d1f 45%,
-    #232224 65%,
-    #171618 100%
-  );
-}
-
-/* shared satin sheen painted over the whole tile — logo catches the same
-   highlight as the metal, so it reads as painted on rather than pasted on */
-.edu-logo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
-  background:
-    radial-gradient(circle at 27% 20%, rgba(255, 255, 255, 0.42), transparent 45%),
-    linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0.42) 0%,
-      rgba(255, 255, 255, 0.08) 20%,
-      transparent 42%,
-      transparent 62%,
-      rgba(255, 255, 255, 0.18) 84%,
-      rgba(255, 255, 255, 0.34) 100%
-    );
-}
-
-:root[saved-theme="dark"] .edu-logo::after {
-  background:
-    radial-gradient(circle at 27% 20%, rgba(255, 255, 255, 0.18), transparent 45%),
-    linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0.13) 0%,
-      rgba(255, 255, 255, 0.03) 20%,
-      transparent 42%,
-      transparent 62%,
-      rgba(255, 255, 255, 0.06) 84%,
-      rgba(255, 255, 255, 0.11) 100%
-    );
-}
-
-/* logos sit on a brand-colored disc inside the metal rim; sheen overlays so
-   they read as painted onto the medallion */
-/* Waterloo seal paints straight onto the metal — no disc */
-.edu-logo img {
-  width: clamp(22px, 3vw, 28px);
-  height: clamp(22px, 3vw, 28px);
-  object-fit: contain;
+.landing-section-head .landing-sublabel {
   margin: 0;
-  box-sizing: border-box;
-  border-radius: 50%;
-  /* desaturated — colors still read, but muted for the metal palette */
-  filter: grayscale(0.55) saturate(0.9);
-  opacity: 1;
 }
 
-/* Chalmers — teal disc is drawn as ::before on the tile; the black seal sits on
-   top at reduced opacity so it picks up the teal behind it, landing on a deep
-   teal that's legible but neither pure black nor white. */
-.edu-logo:has(.edu-logo-chalmers)::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(22px, 3vw, 28px);
-  height: clamp(22px, 3vw, 28px);
-  border-radius: 50%;
-  /* domed enamel inlay — bright centre keeps the seal legible, edges deepen so the
-     disc reads as curved glass; inset shadows seat it into the metal and a bottom
-     inner highlight bounces light back like a clear-coat meniscus */
-  background:
-    /* Wealthsimple-style liquid chrome — a smooth diagonal gradient flows
-       light→dark→light→dark in soft bands across the disc for a brushed-steel
-       ribbon. low contrast, no harsh specular. (sits under the seal.) */
-    linear-gradient(
-      135deg,
-      #f3f6f5 0%,
-      #ccd6d3 17%,
-      #eef2f1 33%,
-      #b6c5c1 51%,
-      #e8edec 67%,
-      #c1cecb 84%,
-      #f0f4f3 100%
-    );
-  box-shadow: inset 0 1px 1.5px rgba(0, 24, 22, 0.16);
-  filter: grayscale(0.4) saturate(0.85);
-  z-index: 0;
-}
-
-/* clear-coat polish — a crisp specular reflection top-left plus a soft wet-gloss
-   along the lower curve, layered over the satin streak so the Chalmers tile reads
-   as enamel sealed under polished glass */
-.edu-logo:has(.edu-logo-chalmers)::after {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.22) 0%,
-      rgba(255, 255, 255, 0) 28%,
-      transparent 72%,
-      rgba(255, 255, 255, 0.12) 100%
-    );
-}
-
-:root[saved-theme="dark"] .edu-logo:has(.edu-logo-chalmers)::after {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0) 28%,
-      transparent 72%,
-      rgba(255, 255, 255, 0.05) 100%
-    );
-}
-.edu-logo .edu-logo-chalmers {
-  width: clamp(22px, 3vw, 28px);
-  height: clamp(22px, 3vw, 28px);
-  position: relative;
-  z-index: 1;
-  /* render the seal artwork in a flat colour via mask, so the tint is exact */
-  background-color: #05201d; /* near-black teal — max contrast ink on the pale disc */
-  /* vector seal traced from the emblem — stays crisp at any size, no bloom or
-     clipping. tight-cropped artwork so it centres cleanly inside the disc. */
-  -webkit-mask: url(/static/chalmers-emblem.svg) center / auto 78% no-repeat;
-  mask: url(/static/chalmers-emblem.svg) center / auto 78% no-repeat;
-  /* painted-into-enamel: a hairline dark bevel on the upper edge and a light
-     bounce on the lower edge make the ink read as pressed beneath the clear coat;
-     faint halo keeps it separated from the teal */
-  filter:
-    drop-shadow(0 0.4px 0.2px rgba(255, 255, 255, 0.5))
-    drop-shadow(0 -0.35px 0.25px rgba(0, 28, 26, 0.45))
-    drop-shadow(0 0 0.4px rgba(232, 246, 243, 0.55));
-}
-
-/* UBC Okanagan — sky-blue field with soft clouds, shield inscribed */
-.edu-logo img.edu-logo-ubc {
-  background:
-    radial-gradient(ellipse 55% 32% at 32% 78%, rgba(255, 255, 255, 0.95), transparent 60%),
-    radial-gradient(ellipse 48% 30% at 68% 86%, rgba(255, 255, 255, 0.85), transparent 58%),
-    radial-gradient(ellipse 60% 34% at 52% 93%, rgba(255, 255, 255, 0.8), transparent 60%),
-    linear-gradient(180deg, #79c4ee 0%, #a6d9f1 100%);
-  padding: 6%;
-  filter: grayscale(0.5) saturate(0.85);
-}
-
-.edu-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.edu-title {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 0.88rem;
-  letter-spacing: -0.005em;
-  line-height: 1.25;
-  color: var(--dark);
-}
-
-.edu-meta {
-  font-size: 0.75rem;
+.edu-years {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   color: var(--gray);
-  margin-top: 1px;
+  font-variant-numeric: tabular-nums;
 }
 
-.edu-courses {
-  margin-top: 0.4rem;
+.page .landing .edu-degree,
+.edu-degree {
+  margin: 0;
+  font-family: var(--font-sans);
   font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.45;
   color: var(--darkgray);
 }
 
-.edu-courses-label {
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--gray);
-}
-
-.edu-courses ul {
-  margin: 0.25rem 0 0;
-  padding-left: 1rem;
-  list-style: disc;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.edu-courses li {
-  font-size: 0.76rem;
-  line-height: 1.4;
-  color: var(--gray);
-}
-
-.edu-courses li::marker {
-  color: var(--border);
-}
-
-@media (max-width: 520px) {
-  .edu-item {
-    grid-template-columns: 1fr;
-    row-gap: 0.5rem;
-  }
-  .edu-logo {
-    justify-self: start;
-  }
-}
-
-/* ── Projects ──────────────────────────────────────────────── */
-.landing-projects {
-  padding: 2.15rem 0;
-}
-
-.lp-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 0.75rem;
-  margin: 0 0 0.9rem;
-}
-
-.lp-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.lp-filter-pill {
+.page .landing .edu-courses,
+.edu-courses {
+  margin: 0.28rem 0 0;
   font-family: var(--font-sans);
-  font-size: 0.73rem;
-  font-weight: 500;
-  padding: 0.32rem 0.78rem;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.35;
   color: var(--gray);
-  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.landing-education .lp-featured-desc,
+.landing-projects .lp-featured-desc {
+  -webkit-line-clamp: 1;
+}
+
+.lp-card-links {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  align-items: baseline;
+  flex-shrink: 0;
+  margin: 0 0 0 auto;
+  padding: 0;
+}
+.lp-card-links a {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.18s var(--ease);
+}
+.lp-card-links a:hover {
+  color: var(--dark);
+}
+.lp-card-link-sep {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: color-mix(in oklab, var(--gray) 70%, var(--bg));
+  line-height: 1;
+  user-select: none;
+}
+.lp-card-links a[target="_blank"]::after {
+  content: "↗";
+  display: inline-block;
+  margin-left: 0.22em;
+  font-size: 0.95em;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.65;
   transition:
-    border-color 0.18s var(--ease),
-    color 0.18s var(--ease),
-    background-color 0.18s var(--ease);
+    transform 0.18s var(--ease),
+    opacity 0.18s var(--ease);
 }
-.lp-filter-pill:hover {
-  border-color: var(--border-hover);
-  color: var(--dark);
-}
-.lp-filter-pill.is-active {
-  border-color: color-mix(in oklab, var(--border-hover) 85%, var(--secondary));
-  background: color-mix(in oklab, var(--secondary) 12%, var(--surface));
-  color: var(--dark);
+.lp-card-links a[target="_blank"]:hover::after {
+  opacity: 1;
+  transform: translate(1px, -1px);
 }
 
 .lp-sort {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .lp-sort-label {
   font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: color-mix(in oklab, var(--gray) 86%, var(--bg));
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: none;
+  color: var(--gray);
 }
 
 .lp-sort-select {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 500;
-  padding: 0.3rem 1.8rem 0.3rem 0.75rem;
-  border-radius: 4px;
-  border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
-  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  font-size: 0.72rem;
+  font-weight: 400;
+  padding: 0.1rem 1.2rem 0.1rem 0;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
   color: var(--darkgray);
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
     linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - 14px) 50%, calc(100% - 10px) 50%;
+  background-position: calc(100% - 2px) 55%, calc(100% + 2px) 55%;
   background-size: 4px 4px, 4px 4px;
   background-repeat: no-repeat;
-  transition:
-    border-color 0.18s var(--ease),
-    color 0.18s var(--ease);
+  transition: color 0.18s var(--ease);
 }
 .lp-sort-select:hover {
-  border-color: var(--border-hover);
   color: var(--dark);
-}
-
-.landing-project-grid {
-  display: grid;
-  gap: 0.72rem;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .lp-card.is-hidden {
@@ -1037,161 +837,32 @@ Landing.css = `
 
 .lp-empty {
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   color: var(--gray);
-  text-align: center;
-  padding: 1.5rem 0;
+  text-align: left;
+  padding: 0.85rem 0;
   margin: 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.lp-card {
-  border: 1px solid color-mix(in oklab, var(--border) 86%, var(--bg));
-  border-radius: 8px;
-  padding: 0.92rem 1rem 0.96rem;
-  min-height: 154px;
-  background: color-mix(in oklab, var(--surface) 92%, transparent);
-  position: relative;
-  transition: var(--card-transition);
-}
-.lp-card:hover {
-  border-color: var(--border-hover);
-  background: color-mix(in oklab, var(--surface-hover) 92%, var(--surface));
-}
-
-.lp-card-eyebrow {
-  margin: 0 0 0.2rem;
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gray);
-}
-
-.lp-card-title {
-  margin: 0 0 0.32rem;
-  font-family: var(--font-sans);
-  font-size: 0.98rem;
-  font-weight: 620;
-  letter-spacing: -0.012em;
-  line-height: 1.26;
-  color: var(--dark);
-}
-
-.lp-card-desc {
-  margin: 0 0 0.62rem;
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 400;
-  line-height: 1.52;
-  color: var(--darkgray);
-}
-
-.lp-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem;
-  margin-bottom: 0.6rem;
-}
-.lp-card-tags span {
-  font-family: var(--font-sans);
-  font-size: 0.62rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0.1rem 0.45rem;
-  border-radius: 4px;
-  background: color-mix(in oklab, var(--surface) 75%, transparent);
-  color: var(--gray);
-  border: 1px solid color-mix(in oklab, var(--border) 78%, var(--bg));
-}
-.lp-card-tags span::before {
-  content: "#";
-  margin-right: 0.1em;
-  color: color-mix(in oklab, var(--gray) 60%, transparent);
-}
-
-.lp-card-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  align-items: center;
-  margin-top: 0.25rem;
-}
-/* Plain text links — no chrome, so the card border is the only enclosed box.
-   External links get a trailing ↗ as the affordance. */
-.lp-card-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  font-family: var(--font-sans);
-  font-size: 0.76rem;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--darkgray);
-  text-decoration: none;
-  transition: color 0.18s var(--ease);
-}
-.lp-card-links a:hover {
-  color: var(--dark);
-}
-.lp-card-links a[target="_blank"]::after {
-  content: '↗';
-  display: inline-block;
-  margin-left: 0.22em;
-  color: currentColor;
-  opacity: 0.55;
-  transition:
-    transform 0.25s var(--ease),
-    opacity 0.25s var(--ease);
-}
-.lp-card-links a[target="_blank"]:hover::after {
-  opacity: 0.95;
-  transform: translate(1px, -1px);
-}
-
-.lp-link-demo {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 0;
-}
-
-/* ── Explorations ──────────────────────────────────────────── */
-.landing-explorations {
-  padding: 2.15rem 0 3.1rem;
-}
-
-.landing-explore-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.explore-pill {
-  font-family: var(--font-sans);
-  font-size: 0.76rem;
-  font-weight: 500;
-  padding: 0.36rem 0.88rem;
-  border-radius: 100px;
-  border: 1px solid color-mix(in oklab, var(--border) 82%, var(--bg));
-  color: var(--darkgray);
-  text-decoration: none;
-  background: color-mix(in oklab, var(--surface) 68%, transparent);
-  transition:
-    border-color 0.18s var(--ease),
-    color 0.18s var(--ease),
-    background-color 0.18s var(--ease);
-}
-.explore-pill:hover {
-  border-color: var(--border-hover);
-  background: color-mix(in oklab, var(--surface-hover) 85%, var(--surface));
-  color: var(--dark);
+@media (max-width: 640px) {
+  .lp-featured-card-top {
+    flex-wrap: wrap;
+    gap: 0.2rem 0.5rem;
+  }
+  .lp-card-links {
+    margin-left: 0;
+  }
+  .edu-years {
+    margin-left: 0;
+  }
 }
 
 /* ── Card reveal animation ─────────────────────────────────── */
 @keyframes revealUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -1201,15 +872,15 @@ Landing.css = `
 
 .reveal-card {
   opacity: 0;
-  animation: revealUp 0.7s cubic-bezier(0.0, 0, 0.2, 1) forwards;
+  animation: revealUp 0.55s cubic-bezier(0.0, 0, 0.2, 1) forwards;
 }
 
 .edu-item.reveal-card:nth-child(1) { animation-delay: 0.35s; }
 .edu-item.reveal-card:nth-child(2) { animation-delay: 0.47s; }
 .edu-item.reveal-card:nth-child(3) { animation-delay: 0.59s; }
 
-.explore-pill.reveal-card:nth-child(1) { animation-delay: 0.35s; }
-.explore-pill.reveal-card:nth-child(2) { animation-delay: 0.47s; }
+.explore-row.reveal-card:nth-child(1) { animation-delay: 0.35s; }
+.explore-row.reveal-card:nth-child(2) { animation-delay: 0.47s; }
 
 .landing-webring.reveal-card { animation-delay: 0.59s; }
 
@@ -1223,34 +894,45 @@ body[data-slug="index"] .center > article > *:not(.landing) {
 
 /* ── Mobile ────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-  .landing-name { font-size: 2.25rem; }
-  .landing-hero { padding: 14px 0 28px; }
-  .landing-subtitle { font-size: 0.92rem; line-height: 1.58; }
+  .landing-name { font-size: 2.25rem; letter-spacing: -0.038em; line-height: 1.06; }
+  .landing-hero { padding: 1rem 0 0; }
+  .landing-namerow { margin-bottom: 1.85rem; padding-bottom: 1.1rem; }
+  .landing-subtitle { font-size: 0.9rem; line-height: 1.55; }
   .landing-bio { font-size: 0.76rem; }
+  .landing-project-quicklinks { margin-bottom: 1.85rem; }
 
   .landing-education,
   .landing-projects,
-  .landing-explorations { padding: 1.5rem 0; }
+  .landing-explorations {
+    padding: 0;
+    margin-bottom: 1.85rem;
+  }
 
-  .landing-section-heading { font-size: 1rem; margin-bottom: 0.75rem; }
-  .landing-section-desc { font-size: 0.82rem; margin-bottom: 0.85rem; }
+  .landing-section-head {
+    margin-bottom: 0.6rem;
+  }
 
-  .landing-edu-list { gap: 0.5rem; }
-  .edu-item { padding: 0.8rem 0.9rem; }
-  .lp-card { padding: 0.9rem 1rem; }
-  .landing-featured-grid { gap: 0.5rem; }
+  .landing-sublabel {
+    margin-bottom: 0.6rem;
+  }
 
-  .landing-project-grid { gap: 0.55rem; }
-  .lp-card { min-height: 0; }
+  .landing-featured-grid { gap: 0; }
+  .lp-featured-card,
+  .page .landing .lp-featured-card { padding: 0.65rem 0; }
 }
 
 @media (max-width: 520px) {
-  .landing-name { font-size: 1.82rem; }
-  .landing-hero { padding: 16px 0 22px; }
+  .landing-name { font-size: 2rem; }
+  .landing-hero { padding: 0.85rem 0 0; }
   .landing-subtitle { font-size: 0.86rem; }
   .landing-bio { font-size: 0.73rem; }
   .landing-links a { font-size: 0.78rem; }
-  .landing-section-heading { font-size: 0.95rem; }
+  .landing-project-quicklinks,
+  .landing-education,
+  .landing-projects,
+  .landing-explorations {
+    margin-bottom: 1.65rem;
+  }
 }
 
 /* ── Reduced motion ────────────────────────────────────────── */
@@ -1390,30 +1072,17 @@ Landing.afterDOMLoaded = `
       .catch(function() {});
   }
 
-  // ── Project filter + sort ──
+  // ── Project sort ──
   function _initProjectControls() {
     var grid = document.querySelector('.landing-project-grid');
-    var filters = document.querySelectorAll('.lp-filter-pill');
     var sortSel = document.getElementById('lp-sort-select');
-    if (!grid || !filters.length) return;
+    if (!grid) return;
 
     var cards = Array.prototype.slice.call(grid.querySelectorAll('.lp-card'));
     var emptyMsg = grid.querySelector('.lp-empty');
-    var activeFilter = 'all';
     var activeSort = sortSel ? sortSel.value : 'featured';
 
     function apply() {
-      // Filter
-      var visibleCount = 0;
-      cards.forEach(function(card) {
-        var tags = (card.getAttribute('data-tags') || '').split(',');
-        var match = activeFilter === 'all' || tags.indexOf(activeFilter) !== -1;
-        card.classList.toggle('is-hidden', !match);
-        if (match) visibleCount++;
-      });
-      if (emptyMsg) emptyMsg.hidden = visibleCount !== 0;
-
-      // Sort — rewrite DOM order
       var sorted = cards.slice().sort(function(a, b) {
         if (activeSort === 'az') {
           return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
@@ -1427,21 +1096,15 @@ Landing.afterDOMLoaded = `
         if (fa !== fb) return fa - fb;
         return parseInt(a.getAttribute('data-order'), 10) - parseInt(b.getAttribute('data-order'), 10);
       });
-      sorted.forEach(function(card) { grid.appendChild(card); });
-      if (emptyMsg) grid.appendChild(emptyMsg);
-    }
-
-    filters.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        activeFilter = btn.getAttribute('data-filter') || 'all';
-        filters.forEach(function(b) {
-          var on = b === btn;
-          b.classList.toggle('is-active', on);
-          b.setAttribute('aria-pressed', on ? 'true' : 'false');
-        });
-        apply();
+      sorted.forEach(function(card) {
+        card.classList.remove('is-hidden');
+        grid.appendChild(card);
       });
-    });
+      if (emptyMsg) {
+        emptyMsg.hidden = true;
+        grid.appendChild(emptyMsg);
+      }
+    }
 
     if (sortSel) {
       sortSel.addEventListener('change', function() {

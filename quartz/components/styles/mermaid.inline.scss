@@ -45,8 +45,9 @@ pre {
   height: 100vh;
   overflow: hidden;
   display: none;
-  backdrop-filter: blur(4px);
-  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: color-mix(in oklab, var(--bg) 28%, #161512);
 
   &.active {
     display: inline-block;
