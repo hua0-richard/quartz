@@ -1,5 +1,5 @@
 ---
-title: GPU Store
+title: Cloud Billing Layer
 description: A full-stack compute storefront with Stripe Checkout, Redis-backed webhook safety, and the kind of backend concerns that show up in real payment flows.
 eyebrow: Payments + Distributed Systems
 github: https://github.com/hua0-richard/gpu-store
