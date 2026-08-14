@@ -300,9 +300,9 @@ Landing.css = `
   flex-shrink: 0;
   white-space: nowrap;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--mono-label-size);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--mono-label-tracking);
   line-height: 1;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 86%, var(--bg));
@@ -456,9 +456,9 @@ Landing.css = `
 .landing-sublabel {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--mono-label-size);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--mono-label-tracking);
   line-height: 1rem;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--gray) 82%, var(--bg));
@@ -632,12 +632,13 @@ a.lp-featured-title:hover {
   margin-left: auto;
   flex-shrink: 0;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--mono-micro-size);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--mono-micro-tracking);
   line-height: 1.3;
   text-transform: uppercase;
   color: var(--gray);
+  transition: color 0.18s var(--ease);
 }
 
 .landing-hero .lp-featured-arrow,
@@ -646,9 +647,17 @@ a.lp-featured-title:hover {
   opacity: 0.7;
 }
 
-.landing-hero .lp-featured-card:hover .lp-card-more,
+.landing-hero .lp-featured-card:hover .lp-card-more {
+  color: var(--accent);
+}
+
+.landing-hero .lp-featured-card:hover .lp-featured-arrow {
+  opacity: 1;
+  color: var(--accent);
+}
+
 .landing-projects .lp-featured-card:hover .lp-card-more {
-  color: var(--dark);
+  color: var(--accent);
 }
 
 .landing-projects .lp-featured-card:hover .lp-featured-title {
@@ -657,7 +666,7 @@ a.lp-featured-title:hover {
 
 .landing-projects .lp-featured-card:hover .lp-featured-arrow {
   opacity: 1;
-  color: var(--dark);
+  color: var(--accent);
   transform: translateX(3px);
 }
 
@@ -670,7 +679,7 @@ a.lp-featured-title:hover {
 a.lp-featured-title:focus-visible,
 .lp-card-links a:focus-visible,
 .explore-row:focus-visible {
-  outline: 2px solid color-mix(in oklab, var(--secondary) 50%, transparent);
+  outline: 2px solid color-mix(in oklab, var(--accent) 50%, transparent);
   outline-offset: 2px;
 }
 
@@ -740,7 +749,7 @@ a.lp-featured-title:focus-visible,
   margin-left: auto;
   flex-shrink: 0;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--mono-label-size);
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--gray);
@@ -790,9 +799,9 @@ a.lp-featured-title:focus-visible,
   display: inline-flex;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--mono-micro-size);
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--mono-micro-tracking);
   line-height: 1.3;
   text-transform: uppercase;
   color: var(--gray);
@@ -804,7 +813,7 @@ a.lp-featured-title:focus-visible,
 }
 .lp-card-link-sep {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--mono-micro-size);
   color: color-mix(in oklab, var(--gray) 70%, var(--bg));
   line-height: 1;
   user-select: none;

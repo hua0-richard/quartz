@@ -20,7 +20,7 @@
 
   &:hover {
     cursor: pointer;
-    border-color: var(--secondary);
+    border-color: var(--accent);
   }
 
   &:focus {
@@ -47,7 +47,7 @@ pre {
   display: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  background: color-mix(in oklab, var(--bg) 28%, #161512);
+  background: color-mix(in oklab, var(--bg) 28%, #18160e);
 
   &.active {
     display: inline-block;

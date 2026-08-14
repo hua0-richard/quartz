@@ -8,6 +8,16 @@
 :root {
   --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  // Geist Mono reads a hair large and tight vs Geist sans — keep it a step
+  // smaller, with a little tracking and denser code leading.
+  --mono-inline-size: 0.85em;
+  --mono-inline-tracking: 0.012em;
+  --mono-code-size: 0.8125rem;
+  --mono-code-leading: 1.58;
+  --mono-label-size: 0.6875rem;
+  --mono-label-tracking: 0.1em;
+  --mono-micro-size: 0.65rem;
+  --mono-micro-tracking: 0.055em;
   --ease: cubic-bezier(0, 0, 0.2, 1);
 
   // Spacing scale mirrored from gpu-store section rhythm
@@ -27,10 +37,16 @@
   --space-20: 5rem;
   --space-24: 6rem;
 
-  --bg: #f7f7f4; // parchment canvas (matches theme light)
+  --bg: #f8f6e8; // cream parchment canvas (matches theme light)
   --prose: #26251e; // warm ink body copy
-  --accent: #8c7560; // muted taupe — internal link-pill accent (desaturated copper)
-  --accent-external: #5c6e80; // blued steel — external link-pill accent
+  --accent: #e05418; // warm ember — pops on parchment without going neon
+  --accent-external: var(--accent);
+  --highlight: color-mix(in oklab, var(--accent) 11%, transparent);
+  --textHighlight: color-mix(in oklab, var(--accent) 20%, transparent);
+  --code-chip-bg: color-mix(in oklab, var(--prose) 7%, var(--bg));
+  --code-chip-border: color-mix(in oklab, var(--prose) 12%, transparent);
+  --tag-chip-bg: color-mix(in oklab, var(--prose) 5%, var(--bg));
+  --tag-chip-border: color-mix(in oklab, var(--prose) 10%, transparent);
   --surface: rgba(38, 37, 30, 0.025);
   --border: rgba(38, 37, 30, 0.1);
   --border-hover: rgba(38, 37, 30, 0.18);
@@ -54,14 +70,20 @@
 }
 
 :root[saved-theme="dark"] {
-  --bg: #141413; // soft warm near-black (matches theme light)
+  --bg: #17150f; // warm near-black (matches theme light)
   --prose: #e8e6e3; // warm near-white body copy
-  --accent: #a89580; // muted taupe — internal link-pill accent (desaturated copper)
-  --accent-external: #8fa0b0; // light blued steel — external link-pill accent
-  --surface: rgba(247, 247, 244, 0.03);
-  --border: rgba(247, 247, 244, 0.1);
-  --border-hover: rgba(247, 247, 244, 0.16);
-  --surface-hover: rgba(247, 247, 244, 0.04);
+  --accent: #f06a38; // lifted warm ember — holds on near-black
+  --accent-external: var(--accent);
+  --highlight: color-mix(in oklab, var(--accent) 16%, transparent);
+  --textHighlight: color-mix(in oklab, var(--accent) 24%, transparent);
+  --code-chip-bg: color-mix(in oklab, var(--prose) 10%, var(--bg));
+  --code-chip-border: color-mix(in oklab, var(--prose) 18%, transparent);
+  --tag-chip-bg: color-mix(in oklab, var(--prose) 6%, var(--bg));
+  --tag-chip-border: color-mix(in oklab, var(--prose) 12%, transparent);
+  --surface: rgba(248, 246, 232, 0.03);
+  --border: rgba(248, 246, 232, 0.1);
+  --border-hover: rgba(248, 246, 232, 0.16);
+  --surface-hover: rgba(248, 246, 232, 0.04);
   --card-shine: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.06) 0%,
@@ -120,6 +142,7 @@ pre,
 .font-mono,
 :not(pre) > code {
   font-variant-numeric: tabular-nums;
+  letter-spacing: var(--mono-inline-tracking);
 }
 
 // Weight palette: 400 body / 500 emphasis. **bold** must not climb to 700.
@@ -162,6 +185,11 @@ b {
     font-family: var(--font-sans);
     font-weight: 500;
     text-wrap: balance;
+
+    // Heading permalink (#) is docs chrome — TOC already deep-links.
+    &[id] > a[role="anchor"] {
+      display: none;
+    }
   }
 
   > h1,
@@ -266,15 +294,18 @@ b {
     margin: 1.5em 0;
   }
 
-  // ── Code: ~0.9em of surrounding text ──────────────────────
+  // ── Code: inset chip, same well as wiki-links ──────────────
   :not(pre) > code {
     font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 0.9em;
+    font-size: var(--mono-inline-size);
     font-weight: 400;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.12em 0.35em;
+    letter-spacing: var(--mono-inline-tracking);
+    line-height: 1;
+    background: var(--code-chip-bg);
+    border: 1px solid var(--code-chip-border);
+    border-radius: 3px;
+    padding: 0.16em 0.4em;
+    vertical-align: 0.06em;
   }
 
   pre,
@@ -282,6 +313,7 @@ b {
   .codeblock {
     font-family: var(--font-mono);
     font-weight: 400;
+    letter-spacing: var(--mono-inline-tracking);
   }
 
   pre {
@@ -289,15 +321,16 @@ b {
   }
 
   pre > code {
-    font-size: 0.788rem; // 0.9 × 0.875rem body — beat base 0.85rem
+    font-size: var(--mono-code-size);
+    line-height: var(--mono-code-leading);
   }
 
   // pretty-code figures ship an absolute 0.85rem — keep in step with body
   figure[data-rehype-pretty-code-figure] {
-    line-height: 1.7;
+    line-height: var(--mono-code-leading);
 
     & > pre > code {
-      font-size: 0.788rem;
+      font-size: var(--mono-code-size);
     }
   }
 
@@ -320,17 +353,140 @@ b {
   }
 
   .callout {
+    font-style: normal;
+    color: var(--prose);
+    border-radius: 6px;
+    padding: 0 1rem;
+    margin: 1.5em 0;
+    border-left-width: 1px;
+
     p,
     li {
       font-size: 0.875rem;
       font-weight: 400;
+      font-style: normal;
       line-height: 1.7;
-      color: var(--darkgray);
+      color: var(--prose);
     }
 
     li + li {
       margin-top: 0.45em;
     }
+
+    .callout-title {
+      align-items: center;
+      padding: 0.75rem 0;
+      gap: 0.5rem;
+      --icon-size: 0.875rem;
+      font-style: normal;
+    }
+
+    .callout-title-inner {
+      display: flex;
+      align-items: center;
+      min-height: var(--icon-size);
+      margin: 0;
+    }
+
+    .callout-title-inner,
+    .callout-title-inner > p {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 0;
+      text-transform: none;
+      line-height: 1.7;
+      color: var(--color);
+    }
+
+    .callout-title-inner > p {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.15em;
+      line-height: 1.7;
+    }
+
+    .callout .katex {
+      font-size: 1.21em;
+      line-height: 1.2;
+    }
+
+    .callout-title .katex,
+    .callout-title .katex * {
+      color: inherit;
+      fill: inherit;
+    }
+
+    .callout-icon,
+    .fold-callout-icon {
+      background-color: var(--color);
+      opacity: 1;
+      padding: 0;
+      margin: 0;
+      align-self: center;
+    }
+
+    .callout-content {
+      font-style: normal;
+    }
+  }
+
+  // Original Quartz hues, mixed down so they sit on parchment.
+  .callout[data-callout] {
+    --color: color-mix(in oklab, #448aff 52%, var(--gray));
+    --bg: color-mix(in oklab, #448aff 9%, var(--surface));
+    --border: color-mix(in oklab, #448aff 26%, var(--lightgray));
+  }
+  .callout[data-callout="abstract"] {
+    --color: color-mix(in oklab, #00b0ff 52%, var(--gray));
+    --bg: color-mix(in oklab, #00b0ff 9%, var(--surface));
+    --border: color-mix(in oklab, #00b0ff 26%, var(--lightgray));
+  }
+  .callout[data-callout="info"],
+  .callout[data-callout="todo"] {
+    --color: color-mix(in oklab, #00b8d4 52%, var(--gray));
+    --bg: color-mix(in oklab, #00b8d4 9%, var(--surface));
+    --border: color-mix(in oklab, #00b8d4 26%, var(--lightgray));
+  }
+  .callout[data-callout="tip"] {
+    --color: color-mix(in oklab, #00bfa5 52%, var(--gray));
+    --bg: color-mix(in oklab, #00bfa5 9%, var(--surface));
+    --border: color-mix(in oklab, #00bfa5 26%, var(--lightgray));
+  }
+  .callout[data-callout="success"] {
+    --color: color-mix(in oklab, #09ad7a 52%, var(--gray));
+    --bg: color-mix(in oklab, #09ad7a 9%, var(--surface));
+    --border: color-mix(in oklab, #09ad7a 26%, var(--lightgray));
+  }
+  .callout[data-callout="question"] {
+    --color: color-mix(in oklab, #dba642 52%, var(--gray));
+    --bg: color-mix(in oklab, #dba642 9%, var(--surface));
+    --border: color-mix(in oklab, #dba642 26%, var(--lightgray));
+  }
+  .callout[data-callout="warning"] {
+    --color: color-mix(in oklab, #db8942 52%, var(--gray));
+    --bg: color-mix(in oklab, #db8942 9%, var(--surface));
+    --border: color-mix(in oklab, #db8942 26%, var(--lightgray));
+  }
+  .callout[data-callout="failure"],
+  .callout[data-callout="danger"],
+  .callout[data-callout="bug"] {
+    --color: color-mix(in oklab, #db4242 52%, var(--gray));
+    --bg: color-mix(in oklab, #db4242 9%, var(--surface));
+    --border: color-mix(in oklab, #db4242 26%, var(--lightgray));
+  }
+  .callout[data-callout="example"] {
+    --color: color-mix(in oklab, #7a43b5 52%, var(--gray));
+    --bg: color-mix(in oklab, #7a43b5 9%, var(--surface));
+    --border: color-mix(in oklab, #7a43b5 26%, var(--lightgray));
+  }
+  .callout[data-callout="quote"] {
+    --color: var(--gray);
+    --bg: var(--surface);
+    --border: var(--lightgray);
   }
 
   .footnotes {
@@ -363,50 +519,58 @@ body:not([data-slug="index"]) {
       color: var(--prose);
     }
 
-    // ── Inline internal links: monospace pill with accent reference color ──
+    // ── Inline internal links: chip well, accent ink, same type as prose ──
     :is(p, li, blockquote, td) a.internal:not(:has(> img)):not(.broken) {
-      font-family: var(--font-mono);
-      font-size: 0.9em;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+      font-family: var(--font-sans);
+      font-size: 1em;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      line-height: inherit;
       color: var(--accent);
-      background: color-mix(in oklab, var(--accent) 5%, var(--bg));
-      border: 1px solid color-mix(in oklab, var(--accent) 14%, transparent);
-      border-radius: 4px;
-      padding: 0.1em 0.38em;
+      background: var(--code-chip-bg);
+      border: 1px solid var(--code-chip-border);
+      border-radius: 3px;
+      padding: 0.05em 0.35em;
       vertical-align: baseline;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
       transition:
-        border-color 0.25s var(--ease),
-        color 0.25s var(--ease);
+        border-color 0.2s var(--ease),
+        background-color 0.2s var(--ease),
+        color 0.2s var(--ease);
 
       &:hover {
-        background: color-mix(in oklab, var(--accent) 10%, var(--bg));
-        border-color: color-mix(in oklab, var(--accent) 38%, transparent);
+        background: color-mix(in oklab, var(--accent) 10%, var(--code-chip-bg));
+        border-color: color-mix(in oklab, var(--accent) 32%, var(--code-chip-border));
         color: var(--accent);
       }
     }
 
-    // ── Inline external links: same pill, blued-steel accent, arrow preserved ──
+    // ── Inline external links: same rust pill as internal, arrow preserved ──
     // The .external-icon SVG uses stroke: currentColor in base.scss, so it picks up
-    // var(--accent-external) automatically.
+    // var(--accent) automatically.
     :is(p, li, blockquote, td) a.external:not(:has(> img)) {
-      font-family: var(--font-mono);
-      font-size: 0.9em;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+      font-family: var(--font-sans);
+      font-size: 1em;
+      font-weight: inherit;
+      letter-spacing: inherit;
+      line-height: inherit;
       color: var(--accent-external);
-      background: color-mix(in oklab, var(--accent-external) 5%, var(--bg));
-      border: 1px solid color-mix(in oklab, var(--accent-external) 14%, transparent);
-      border-radius: 4px;
-      padding: 0.1em 0.38em;
+      background: var(--code-chip-bg);
+      border: 1px solid var(--code-chip-border);
+      border-radius: 3px;
+      padding: 0.05em 0.35em;
       vertical-align: baseline;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
       transition:
-        border-color 0.25s var(--ease),
-        color 0.25s var(--ease);
+        border-color 0.2s var(--ease),
+        background-color 0.2s var(--ease),
+        color 0.2s var(--ease);
 
       &:hover {
-        background: color-mix(in oklab, var(--accent-external) 10%, var(--bg));
-        border-color: color-mix(in oklab, var(--accent-external) 38%, transparent);
+        background: color-mix(in oklab, var(--accent-external) 10%, var(--code-chip-bg));
+        border-color: color-mix(in oklab, var(--accent-external) 32%, var(--code-chip-border));
         color: var(--accent-external);
       }
     }
@@ -453,7 +617,7 @@ body:not([data-slug="index"]) {
 
     .callout :is(p, li) a.internal:not(:has(> img)):not(.broken),
     .callout :is(p, li) a.external:not(:has(> img)) {
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
     }
 
     .project-links {
@@ -487,21 +651,37 @@ pre,
 
 :not(pre) > code {
   font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.15em 0.35em;
-  font-size: 0.9em;
+  background: var(--code-chip-bg);
+  border: 1px solid var(--code-chip-border);
+  border-radius: 3px;
+  padding: 0.16em 0.4em;
+  font-size: var(--mono-inline-size);
+  letter-spacing: var(--mono-inline-tracking);
+  line-height: 1;
+}
+
+// ==highlight== marks — same clay orange as wiki-link pills / accent
+.text-highlight {
+  background-color: var(--textHighlight);
+  padding: 0.05em 0.18em;
+  border-radius: 3px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--dark);
 }
 
 // ── Sidebar / TOC / explorer — mono eyebrows (gpu-store cue) ──
 .graph > h3,
 .backlinks > h3 {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--mono-label-size);
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--mono-label-tracking);
   color: color-mix(in oklab, var(--gray) 84%, var(--bg));
   margin: 0 0 var(--space-4);
   line-height: 1rem;
@@ -509,10 +689,10 @@ pre,
 
 .toc button.toc-header h3 {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--mono-label-size);
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--mono-label-tracking);
   color: color-mix(in oklab, var(--gray) 84%, var(--bg));
   margin: 0;
   line-height: 1;
@@ -838,9 +1018,8 @@ body[data-slug="index"] .center .page-header::after {
 // ═══════════════════════════════════════════
 // Thin, full-width strip above everything — rendered in renderPage.tsx as
 // the first child of <body>, before #quartz-root. One muted GitHub phrase:
-// "Currently: Shipping" + boat. "Currently" is brighter (--dark); ": Shipping"
-// and the boat stay muted gray. Underline lives on the words only (not the
-// boat); the <a> still wraps the whole cluster for hit area.
+// "Currently: Building" + arrow. One color, no bright/dim split. Underline
+// is hover-only (landing-name-blog cue).
 // In reader mode the text (.top-bar-text) fades out while the bar and its
 // divider line stay — see the :root[reader-mode="on"] lists in
 // components/styles/readermode.scss.
@@ -867,60 +1046,52 @@ body[data-slug="index"] .center .page-header::after {
 .top-bar-status {
   display: inline-flex;
   align-items: center;
-  column-gap: 0;
+  gap: 0.38em;
   white-space: nowrap;
 }
 
 .top-bar-lead {
   color: inherit;
-  margin-inline-end: 0.32em;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
-  text-decoration-color: color-mix(in oklab, var(--gray) 45%, transparent);
+  text-decoration-color: transparent;
   transition: text-decoration-color 0.2s var(--ease);
 }
 
-.top-bar-label {
-  color: var(--dark);
-}
-
-.top-bar-boat {
+.top-bar-icon {
   display: block;
-  width: 1.28em;
-  height: 0.85em; // 1.28em × 16/24 viewBox — keep hull proportional
+  width: 0.92em;
+  height: 0.92em;
   flex-shrink: 0;
-  // Waves sit in the bottom of the viewBox, so geometric centering
-  // parks the hull a hair high. Nudge down to the text's optical middle.
-  transform: translateY(0.07em);
+  transform: translateY(0.04em);
   color: currentColor;
   fill: none;
   stroke: currentColor;
 }
 
-.top-bar-boat path {
+.top-bar-icon path {
   fill: none;
   stroke: currentColor;
 }
 
-// Whole phrase is one GitHub link. Link color is muted gray so ": Shipping"
-// and the boat (currentColor) match; .top-bar-label overrides to --dark.
-// Nested under .top-bar so hover beats global a[href^="http"]:hover.
+// Whole phrase is one GitHub link. Nested under .top-bar so hover beats
+// global a[href^="http"]:hover.
 .top-bar-link {
   font-weight: 400;
-  color: var(--gray);
+  color: color-mix(in oklab, var(--gray) 86%, var(--bg));
   text-decoration: none;
   transition: color 0.2s var(--ease);
 }
 
 .top-bar .top-bar-link:hover,
 .top-bar .top-bar-link:focus-visible {
-  color: color-mix(in oklab, var(--gray) 32%, var(--darkgray));
+  color: var(--darkgray);
 }
 
 .top-bar .top-bar-link:hover .top-bar-lead,
 .top-bar .top-bar-link:focus-visible .top-bar-lead {
-  text-decoration-color: color-mix(in oklab, var(--gray) 78%, transparent);
+  text-decoration-color: color-mix(in oklab, var(--darkgray) 45%, transparent);
 }
 
 .top-bar-nowrap {
@@ -1015,34 +1186,43 @@ a {
 a.internal {
   text-decoration: none;
   &:hover {
-    color: var(--secondary);
+    color: var(--accent);
   }
 }
 
 a[href^="http"] {
   &:hover {
-    color: var(--secondary);
+    color: var(--accent);
   }
 }
 
 a.tag-link {
   display: inline-block;
   font-family: var(--font-sans);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 0.08rem 0.46rem;
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--gray);
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  background: var(--tag-chip-bg);
+  border: 1px solid var(--tag-chip-border);
+  border-radius: 3px;
+  padding: 0.28em 0.5em;
+  color: var(--accent);
   text-decoration: none;
+  vertical-align: 0;
   transition:
     border-color 0.18s var(--ease),
+    background-color 0.18s var(--ease),
     color 0.18s var(--ease);
+
+  &::before {
+    opacity: 0.55;
+  }
+
   &:hover {
-    border-color: var(--border-hover);
-    color: var(--secondary);
+    background: color-mix(in oklab, var(--accent) 10%, var(--tag-chip-bg));
+    border-color: color-mix(in oklab, var(--accent) 28%, var(--tag-chip-border));
+    color: var(--accent);
   }
 }
 
@@ -1057,7 +1237,7 @@ a.tag-link {
   line-height: 1.4;
   position: relative;
   &:hover {
-    color: var(--secondary);
+    color: var(--accent);
   }
   &::before {
     content: "";
@@ -1067,7 +1247,7 @@ a.tag-link {
     transform: translateY(-50%);
     width: 2px;
     height: 0;
-    background: var(--secondary);
+    background: var(--accent);
     border-radius: 1px;
     opacity: 0;
     transition:
@@ -1076,7 +1256,7 @@ a.tag-link {
   }
 }
 .toc .toc-content a.in-view {
-  color: var(--secondary);
+  color: var(--accent);
   opacity: 1 !important;
   &::before {
     height: 50%;
@@ -1110,6 +1290,12 @@ a.tag-link {
       height: 1px;
       background: var(--border);
       opacity: 0.6;
+      transition: opacity 0.18s var(--ease);
+    }
+
+    &:hover::before,
+    &:hover + li::before {
+      opacity: 0;
     }
 
     & > a {
@@ -1117,7 +1303,9 @@ a.tag-link {
       align-items: center;
       justify-content: space-between;
       gap: 0.6rem;
-      padding: 0.4rem 0.5rem;
+      // Extra right padding keeps the rotated chevron (and its hover
+      // slide) inside the overflow-x clip that `overflow-y: auto` forces.
+      padding: 0.4rem 0.85rem 0.4rem 0.5rem;
       margin: 0 -0.5rem;
       border-radius: 5px;
       font-family: var(--font-sans);
@@ -1125,7 +1313,9 @@ a.tag-link {
       line-height: 1.35;
       color: var(--darkgray);
       text-decoration: none;
-      transition: color 0.18s var(--ease);
+      transition:
+        color 0.18s var(--ease),
+        background-color 0.18s var(--ease);
 
       // Title can wrap; chevron stays put.
       & > :first-child {
@@ -1156,11 +1346,12 @@ a.tag-link {
       }
 
       &:hover {
-        color: var(--dark);
+        color: var(--accent);
+        background: color-mix(in oklab, var(--accent) 9%, transparent);
 
         &::after {
-          border-right-color: var(--secondary);
-          border-top-color: var(--secondary);
+          border-right-color: var(--accent);
+          border-top-color: var(--accent);
           opacity: 1;
           transform: rotate(45deg) translate(2px, -2px);
         }
@@ -1190,7 +1381,7 @@ button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 .folder-container:focus-visible {
-  outline: 2px solid color-mix(in oklab, var(--secondary) 52%, transparent);
+  outline: 2px solid color-mix(in oklab, var(--accent) 52%, transparent);
   outline-offset: 2px;
 }
 
@@ -1303,8 +1494,34 @@ body[data-slug="index"] .recent-notes {
       flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
+      // rtl on the scroller parks the bar on the left; children stay ltr.
+      direction: rtl;
+
+      * {
+        direction: ltr;
+      }
+
+      &::-webkit-scrollbar {
+        display: block;
+        width: 2px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: color-mix(in oklab, var(--gray) 42%, transparent);
+        border-radius: 1px;
+      }
+    }
+
+    // Firefox has no ::-webkit-scrollbar; `thin` is as small as it goes.
+    @supports not selector(::-webkit-scrollbar) {
+      .explorer-panel > .explorer-ul {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in oklab, var(--gray) 42%, transparent) transparent;
+      }
     }
   }
 }
@@ -1500,9 +1717,9 @@ body[data-slug^="Projects/"]:not([data-slug="Projects/index"]) {
     .tech-chips li {
       margin: 0;
       font-family: var(--font-mono);
-      font-size: 0.625rem;
+      font-size: var(--mono-micro-size);
       font-weight: 400;
-      letter-spacing: 0.04em;
+      letter-spacing: var(--mono-micro-tracking);
       line-height: 1.3;
       text-transform: uppercase;
       color: var(--gray);
@@ -1607,9 +1824,9 @@ body[data-slug^="Projects/"]:not([data-slug="Projects/index"]) {
 
     .arch-kicker {
       font-family: var(--font-mono);
-      font-size: 0.625rem;
+      font-size: var(--mono-micro-size);
       font-weight: 400;
-      letter-spacing: 0.08em;
+      letter-spacing: var(--mono-micro-tracking);
       line-height: 1;
       text-transform: uppercase;
       color: var(--gray);

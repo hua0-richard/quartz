@@ -203,7 +203,7 @@ button.mobile-explorer {
   }
 
   &:focus-visible {
-    border-color: color-mix(in oklab, var(--secondary) 45%, transparent);
+    border-color: color-mix(in oklab, var(--accent) 45%, transparent);
   }
 }
 
@@ -232,9 +232,9 @@ button.desktop-explorer {
   & .explorer-shortcut {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: var(--mono-micro-size);
     font-weight: 400;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--mono-micro-tracking);
     line-height: 1;
     color: color-mix(in oklab, var(--gray) 88%, var(--bg));
     background: transparent;
@@ -269,10 +269,10 @@ button.desktop-explorer {
 
   & h2 {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--mono-label-size);
     font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: var(--mono-label-tracking);
     line-height: 1;
     color: color-mix(in oklab, var(--gray) 84%, var(--bg));
     display: inline-block;
@@ -574,7 +574,7 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
       height: 100dvh;
       margin-top: 0;
       overflow: hidden;
-      background: color-mix(in oklab, var(--bg) 32%, #161512);
+      background: color-mix(in oklab, var(--bg) 32%, #18160e);
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
       opacity: 0;
@@ -644,9 +644,9 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
       // (button.desktop-explorer h2) — same weight, tracking, casing and
       // muted colour — but a step smaller, tuned for the modal header.
       font-family: var(--font-mono);
-      font-size: 0.625rem;
+      font-size: var(--mono-micro-size);
       font-weight: 400;
-      letter-spacing: 0.14em;
+      letter-spacing: var(--mono-label-tracking);
       line-height: 1;
       text-transform: uppercase;
       color: color-mix(in oklab, var(--gray) 84%, var(--bg));

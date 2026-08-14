@@ -88,9 +88,9 @@ html.search-active body {
 
     & > .search-shortcut {
       font-family: var(--font-mono);
-      font-size: 0.625rem;
+      font-size: var(--mono-micro-size);
       font-weight: 400;
-      letter-spacing: 0.06em;
+      letter-spacing: var(--mono-micro-tracking);
       color: color-mix(in oklab, var(--gray) 88%, var(--bg));
       background: transparent;
       border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
@@ -264,7 +264,7 @@ html.search-active body {
       }
 
       & .highlight {
-        background: color-mix(in srgb, var(--tertiary) 60%, rgba(255, 255, 255, 0));
+        background: color-mix(in oklab, var(--accent) 22%, transparent);
         border-radius: 3px;
         scroll-margin-top: 2rem;
         padding: 0 2px;
@@ -392,7 +392,7 @@ html.search-active body {
             color: var(--gray);
 
             &.match-tag {
-              color: var(--secondary);
+              color: var(--accent);
               border-color: var(--border-hover);
             }
           }
