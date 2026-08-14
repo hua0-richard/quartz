@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, geometric]
+tags: [Statistics, Distributions, Geometric]
 ---
 
 Counting trials until first success (support $k=1,2,\dots$) with success probability $p \in (0,1)$:

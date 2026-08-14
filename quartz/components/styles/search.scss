@@ -115,8 +115,7 @@ html.search-active body {
 // portaled up to <body> (see search.inline.ts) so it can cover the full page
 // instead of being trapped inside the sidebar's stacking context. Its styles
 // must therefore work regardless of parent.
-// Cursor-quiet: opaque warm dim (not a translucent color filter).
-// Mix canvas into near-black so the page reads as recessed chrome.
+// Dimmed scrim: canvas mixed with transparency so the page stays faintly visible.
 .search-container {
   position: fixed;
   z-index: 999;
@@ -126,7 +125,7 @@ html.search-active body {
   height: 100vh;
   overflow-y: auto;
   display: none;
-  background: color-mix(in oklab, var(--bg) 32%, #161512);
+  background: color-mix(in oklab, var(--bg) 65%, transparent);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 

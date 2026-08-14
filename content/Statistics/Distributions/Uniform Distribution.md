@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, uniform]
+tags: [Statistics, Distributions, Uniform]
 ---
 
 Continuous uniform on $[a,b]$ with $a < b$:

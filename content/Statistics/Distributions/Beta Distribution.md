@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, beta]
+tags: [Statistics, Distributions, Beta]
 ---
 
 For $\alpha>0, \beta>0$ on $x \in [0,1]$:

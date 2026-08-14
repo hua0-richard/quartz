@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, bernoulli]
+tags: [Statistics, Distributions, Bernoulli]
 ---
 
 For $p \in (0,1)$:
