@@ -1,13 +1,13 @@
 ---
 title: Quizlet for Obsidian.md
-description: A retrieval-augmented study workflow for querying Obsidian vaults, citing source notes, and generating flashcards from uploaded markdown.
+description: RAG over Obsidian notes — heading-aware chunking, hybrid retrieval, citations, and flashcards from uploaded markdown.
 eyebrow: Retrieval + Study Tools
 github: https://github.com/hua0-richard/rag-obs
 demo: https://melodious-liger-7621b6.netlify.app
 features:
   - Source-grounded answers with note-level citations
   - Hybrid BM25 plus vector retrieval over pgvector
-  - Flashcard generation with optional study-focus prompts
+  - Flashcard generation from uploaded notes
 tags:
   - projects
   - rag
@@ -15,28 +15,55 @@ tags:
 ---
 
 <div class="project-links">
-  <a class="project-link project-link-primary" href="https://melodious-liger-7621b6.netlify.app" target="_blank" rel="noreferrer">Try now</a>
+  <a class="project-link project-link-primary" href="https://melodious-liger-7621b6.netlify.app" target="_blank" rel="noreferrer">Live demo</a>
   <a class="project-link" href="https://github.com/hua0-richard/rag-obs" target="_blank" rel="noreferrer">GitHub</a>
 </div>
 
-## Overview
+## What it does
 
-`rag-obs` is a retrieval-augmented study tool built around Obsidian markdown notes. The workflow is simple: upload a set of notes, ask a focused question, and generate answers or flashcards grounded in the source material instead of generic model output.
+A study tool for Obsidian vaults. Upload markdown notes, ask a question, and get answers grounded in those notes — with citations back to the source — or generate flashcards from the same material.
 
-## What it does well
+## Architecture
 
-- Returns source-level citations so you can trace an answer back to the exact note section it came from.
-- Generates flashcards from selected notes and can bias retrieval with an optional study-focus prompt.
-- Preserves heading context during chunking, which keeps the retrieved evidence more readable and more useful.
-- Classifies notes into `default`, `code`, and `verbose` embedding profiles at upload time so retrieval behavior can adapt to the note structure.
+React frontend and FastAPI/LangChain backend. Notes are chunked with heading context preserved, then retrieved with hybrid BM25 plus pgvector. Ranked context drives both Q&A and flashcard generation.
 
-## Stack
+<div class="arch">
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="chrome" aria-hidden="true"></span>
+    <span class="arch-kicker">Client</span>
+    <span class="arch-title">Browser</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="react" aria-hidden="true"></span>
+    <span class="arch-kicker">Frontend</span>
+    <span class="arch-title">React</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="fastapi" aria-hidden="true"></span>
+    <span class="arch-kicker">API</span>
+    <span class="arch-title">FastAPI</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
+    <span class="arch-kicker">Retrieval</span>
+    <span class="arch-title">pgvector</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="openrouter" aria-hidden="true"></span>
+    <span class="arch-kicker">LLM</span>
+    <span class="arch-title">OpenRouter</span>
+  </div>
+</div>
 
-- React 19, Vite, and Tailwind CSS on the frontend
-- FastAPI and Python 3.12 on Azure Container Apps
-- PostgreSQL with `pgvector` on Neon for retrieval storage
-- OpenRouter with DeepSeek V3 in production, plus Ollama support for local development
+## Technologies
 
-## Engineering notes
-
-The most interesting part of the project is the retrieval layer. It mixes BM25 keyword search with semantic search over `pgvector`, then uses the ranked context to drive flashcard generation. The app also keeps session creation lightweight by generating a UUID in the browser first and only creating the backing database row lazily on the first upload.
+<ul class="tech-chips">
+  <li>Python</li>
+  <li>FastAPI</li>
+  <li>LangChain</li>
+  <li>React</li>
+  <li>PostgreSQL</li>
+  <li>pgvector</li>
+  <li>Docker</li>
+  <li>Tailscale</li>
+</ul>

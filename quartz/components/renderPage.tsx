@@ -240,19 +240,7 @@ export function renderPage(
             Update this line whenever the current focus changes. */}
         <div class="top-bar">
           <p class="top-bar-text">
-            <span class="top-bar-lead">Currently building &middot;</span> ML-driven
-            compute-resource prediction &middot;{" "}
-            <span class="top-bar-nowrap">
-              <a
-                class="top-bar-link"
-                href="https://www.synopsys.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Synopsys
-              </a>{" "}
-              capstone
-            </span>
+            <span class="top-bar-lead">Building...</span>
           </p>
         </div>
         <div id="quartz-root" class="page">

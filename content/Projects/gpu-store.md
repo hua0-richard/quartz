@@ -1,13 +1,13 @@
 ---
 title: Cloud Billing Layer
-description: A full-stack compute storefront with Stripe Checkout, Redis-backed webhook safety, and the kind of backend concerns that show up in real payment flows.
+description: A GPU compute storefront with Stripe Checkout, verified webhooks, and Redis locking so duplicate events cannot double-charge.
 eyebrow: Payments + Distributed Systems
 github: https://github.com/hua0-richard/gpu-store
 demo: https://gpu-store-web-b1y2.vercel.app
 features:
-  - JWT auth with refresh rotation and multi-session support
-  - Stripe Checkout with verified, webhook-driven payment updates
-  - Redis locks to handle concurrent payment events safely
+  - JWT auth with refresh-token rotation
+  - Stripe Checkout with signature-verified webhooks
+  - Redis locks against duplicate payment events
 tags:
   - projects
   - full-stack
@@ -15,32 +15,63 @@ tags:
 ---
 
 <div class="project-links">
-  <a class="project-link project-link-primary" href="https://gpu-store-web-b1y2.vercel.app" target="_blank" rel="noreferrer">Try now</a>
+  <a class="project-link project-link-primary" href="https://gpu-store-web-b1y2.vercel.app" target="_blank" rel="noreferrer">Live demo</a>
   <a class="project-link" href="https://github.com/hua0-richard/gpu-store" target="_blank" rel="noreferrer">GitHub</a>
 </div>
 
 Demo account: `demo@gpustore.dev` / `Demo1234!`
 
-## Overview
+## What it does
 
-`gpu-store` is a full-stack storefront for compute billing. It looks like a product demo on the surface, but the real value is in the backend flow: authentication, Stripe Checkout, webhook handling, and the concurrency controls needed to keep payment state correct.
+A storefront for GPU compute billing. Users authenticate, add products to a cart, and pay through Stripe Checkout. The backend provisions from verified webhook events rather than the browser redirect, so payment state stays correct even when Stripe retries.
 
-## Key features
+## Architecture
 
-- JWT authentication with refresh-token rotation and support for multiple active sessions.
-- Cart and checkout flow wired into Stripe instead of a mocked payment layer.
-- Webhook-driven payment lifecycle with signature verification and idempotent processing.
-- Redis-backed distributed locking so duplicated or concurrent Stripe events do not corrupt order state.
-- Prisma migrations and CI/CD deployment into a real hosted stack.
+pnpm monorepo: Next.js on Vercel; NestJS, PostgreSQL, and Redis in Docker behind Tailscale Funnel. Stripe webhooks are signature-verified; Redis locks make duplicate deliveries idempotent. Auth is JWT with refresh-token rotation.
 
-## Stack
+<div class="arch">
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="chrome" aria-hidden="true"></span>
+    <span class="arch-kicker">Client</span>
+    <span class="arch-title">Browser</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="nextjs" aria-hidden="true"></span>
+    <span class="arch-kicker">Frontend</span>
+    <span class="arch-title">Next.js</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="nestjs" aria-hidden="true"></span>
+    <span class="arch-kicker">API</span>
+    <span class="arch-title">NestJS</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
+    <span class="arch-kicker">Data</span>
+    <span class="arch-title">PostgreSQL</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="redis" aria-hidden="true"></span>
+    <span class="arch-kicker">Locks</span>
+    <span class="arch-title">Redis</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="stripe" aria-hidden="true"></span>
+    <span class="arch-kicker">Payments</span>
+    <span class="arch-title">Stripe</span>
+  </div>
+</div>
 
-- Next.js and TypeScript on Vercel for the storefront
-- NestJS, Prisma, and TypeScript on Azure Container Apps for the API
-- Neon PostgreSQL for durable state
-- Azure Cache for Redis for locking and short-lived coordination
-- Stripe for billing and GitHub Actions for deployment automation
+## Technologies
 
-## Why this project matters
-
-This project goes beyond CRUD screens. It exercises the parts of backend engineering that usually break first in production systems: auth session management, payment retries, webhook duplication, and consistency across multiple services. The Redis locking around Stripe event handling is the clearest example of that focus.
+<ul class="tech-chips">
+  <li>Next.js</li>
+  <li>NestJS</li>
+  <li>Prisma</li>
+  <li>PostgreSQL</li>
+  <li>Docker</li>
+  <li>Stripe</li>
+  <li>Redis</li>
+  <li>Tailscale</li>
+  <li>JWT</li>
+</ul>

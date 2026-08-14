@@ -460,8 +460,8 @@ body:not([data-slug="index"]) {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.85rem;
-      margin: 0 0 1.35rem;
+      gap: 0.7rem;
+      margin: 0 0 0.55rem;
     }
   }
 }
@@ -1407,6 +1407,201 @@ body[data-slug="index"] .recent-notes {
 
   .search .search-bar {
     font-size: 16px !important;
+  }
+}
+
+// ── Project pages: compact short-form rhythm ──
+// Article h2/p gaps are sized for long notes (~2.75em heading tops).
+// Three-section project pages read as sparse, so tighten only there.
+body[data-slug^="Projects/"]:not([data-slug="Projects/index"]) {
+  #quartz-body .center .page-header {
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.4rem;
+  }
+
+  #quartz-body .center > article {
+    padding-bottom: 1.75rem;
+  }
+
+  .page article {
+    h2 {
+      margin-top: 1.15em;
+      margin-bottom: 0.35em;
+    }
+
+    h3 {
+      margin-top: 1.05em;
+      margin-bottom: 0.3em;
+    }
+
+    h2:first-of-type,
+    h3:first-of-type {
+      margin-top: 0.1em;
+    }
+
+    p {
+      margin: 0 0 0.7em;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 0.7em;
+    }
+
+    li + li {
+      margin-top: 0.28em;
+    }
+
+    .tech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.7em;
+    }
+
+    .tech-chips li {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+      text-transform: uppercase;
+      color: var(--gray);
+      border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
+      border-radius: 4px;
+      padding: 0.22rem 0.48rem;
+    }
+
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(7.25rem, 1fr));
+      margin: 0.55rem 0 1.15rem;
+      border: 1px solid color-mix(in oklab, var(--border) 88%, var(--bg));
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .arch-node {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.2rem;
+      padding: 0.72rem 0.85rem;
+      min-width: 0;
+      box-shadow: 1px 1px 0 0 color-mix(in oklab, var(--border) 88%, var(--bg));
+    }
+
+    .arch-icon {
+      width: 0.92rem;
+      height: 0.92rem;
+      display: block;
+      margin-bottom: 0.28rem;
+      background-color: currentColor;
+      color: var(--gray);
+      -webkit-mask: var(--arch-icon) center / contain no-repeat;
+      mask: var(--arch-icon) center / contain no-repeat;
+    }
+
+    .arch-icon[data-icon="chrome"] {
+      --arch-icon: url("/static/icons/googlechrome.svg");
+    }
+    .arch-icon[data-icon="nextjs"] {
+      --arch-icon: url("/static/icons/nextdotjs.svg");
+    }
+    .arch-icon[data-icon="nestjs"] {
+      --arch-icon: url("/static/icons/nestjs.svg");
+    }
+    .arch-icon[data-icon="postgresql"] {
+      --arch-icon: url("/static/icons/postgresql.svg");
+    }
+    .arch-icon[data-icon="redis"] {
+      --arch-icon: url("/static/icons/redis.svg");
+    }
+    .arch-icon[data-icon="stripe"] {
+      --arch-icon: url("/static/icons/stripe.svg");
+    }
+    .arch-icon[data-icon="react"] {
+      --arch-icon: url("/static/icons/react.svg");
+    }
+    .arch-icon[data-icon="fastapi"] {
+      --arch-icon: url("/static/icons/fastapi.svg");
+    }
+    .arch-icon[data-icon="steam"] {
+      --arch-icon: url("/static/icons/steam.svg");
+    }
+    .arch-icon[data-icon="openai"] {
+      --arch-icon: url("/static/icons/openai.svg");
+    }
+    .arch-icon[data-icon="openrouter"] {
+      --arch-icon: url("/static/icons/openrouter.svg");
+    }
+    .arch-icon[data-icon="huggingface"] {
+      --arch-icon: url("/static/icons/huggingface.svg");
+    }
+    .arch-icon[data-icon="window"] {
+      --arch-icon: url("/static/icons/lucide-app-window.svg");
+    }
+    .arch-icon[data-icon="keyboard"] {
+      --arch-icon: url("/static/icons/lucide-keyboard.svg");
+    }
+    .arch-icon[data-icon="grid"] {
+      --arch-icon: url("/static/icons/lucide-layout-grid.svg");
+    }
+    .arch-icon[data-icon="boxes"] {
+      --arch-icon: url("/static/icons/lucide-boxes.svg");
+    }
+    .arch-icon[data-icon="route"] {
+      --arch-icon: url("/static/icons/lucide-route.svg");
+    }
+
+    .arch-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .arch-title {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
+      color: var(--dark);
+    }
+
+    .arch-hub {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .arch-hub-root {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.78rem 0.85rem;
+      box-shadow: 0 1px 0 0 color-mix(in oklab, var(--border) 88%, var(--bg));
+    }
+
+    .arch-hub-root .arch-icon {
+      margin-bottom: 0;
+    }
+
+    .arch-hub-systems {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(7.25rem, 1fr));
+    }
+
+    .arch-hub-systems .arch-node {
+      box-shadow: 1px 0 0 0 color-mix(in oklab, var(--border) 88%, var(--bg));
+    }
   }
 }
 
