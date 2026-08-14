@@ -9,9 +9,9 @@ features:
   - CLIP image search and Whisper voice input
   - Live Steam pricing via tool-calling
 tags:
-  - projects
-  - ai-agent
-  - search
+  - Projects
+  - Agents
+  - Search
 ---
 
 <div class="project-links">
@@ -25,7 +25,7 @@ A conversational discovery engine for Steam. Ask in natural language, upload a s
 
 ## Architecture
 
-LangChain agent over a four-service backend. Retrieval is hybrid BM25 plus pgvector, fused and reranked. CLIP handles image search; Whisper handles speech. Responses stream to React over SSE; tool-calling hits the Steam API.
+LangChain agent over a four-service backend. Retrieval is hybrid BM25 plus pgvector, fused and reranked. CLIP handles image search; Whisper handles speech. Responses stream to React over SSE. Tool-calling hits the Steam API for live prices and Tavily for web search; the chat model is OpenRouter in production.
 
 <div class="arch">
   <div class="arch-node">
@@ -45,8 +45,13 @@ LangChain agent over a four-service backend. Retrieval is hybrid BM25 plus pgvec
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
-    <span class="arch-kicker">Search</span>
+    <span class="arch-kicker">Database</span>
     <span class="arch-title">pgvector</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="openrouter" aria-hidden="true"></span>
+    <span class="arch-kicker">LLM</span>
+    <span class="arch-title">OpenRouter</span>
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="huggingface" aria-hidden="true"></span>
@@ -60,21 +65,34 @@ LangChain agent over a four-service backend. Retrieval is hybrid BM25 plus pgvec
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="steam" aria-hidden="true"></span>
-    <span class="arch-kicker">Live</span>
+    <span class="arch-kicker">Live data</span>
     <span class="arch-title">Steam API</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="tavily" aria-hidden="true"></span>
+    <span class="arch-kicker">Web search</span>
+    <span class="arch-title">Tavily</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="vercel" aria-hidden="true"></span>
+    <span class="arch-kicker">Host</span>
+    <span class="arch-title">Vercel</span>
   </div>
 </div>
 
 ## Technologies
 
 <ul class="tech-chips">
-  <li>Python</li>
-  <li>FastAPI</li>
   <li>React</li>
-  <li>LangChain</li>
+  <li>FastAPI</li>
   <li>PostgreSQL</li>
   <li>pgvector</li>
-  <li>Docker</li>
+  <li>LangChain</li>
+  <li>OpenRouter</li>
   <li>CLIP</li>
   <li>Whisper</li>
+  <li>Steam API</li>
+  <li>Tavily</li>
+  <li>Vercel</li>
+  <li>Docker</li>
 </ul>

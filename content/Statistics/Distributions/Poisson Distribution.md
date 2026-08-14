@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, poisson]
+tags: [Statistics, Distributions, Poisson]
 ---
 
 For rate $\lambda > 0$ and $k \in \{0,1,2,\dots\}$:

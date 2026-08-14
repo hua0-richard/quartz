@@ -1,4 +1,4 @@
 ---
-tags: [statistics, distributions, t-distribution]
+tags: [Statistics, Distributions, T-distribution]
 ---
 

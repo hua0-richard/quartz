@@ -8,9 +8,9 @@ features:
   - Visitor-pattern collision across rigid, transparent, and character bodies
   - Fixed-timestep game loop with interpolated tile movement
 tags:
-  - projects
-  - systems
-  - game-engine
+  - Projects
+  - Systems
+  - Game engine
 ---
 
 <div class="project-links">
@@ -48,9 +48,9 @@ A `Window` owns the fixed-timestep loop and coordinates four systems: a tile `Le
       <span class="arch-title">Collider</span>
     </div>
     <div class="arch-node">
-      <span class="arch-icon" data-icon="route" aria-hidden="true"></span>
-      <span class="arch-kicker">AI</span>
-      <span class="arch-title">PathFinding</span>
+      <span class="arch-icon" data-icon="raylib" aria-hidden="true"></span>
+      <span class="arch-kicker">Runtime</span>
+      <span class="arch-title">raylib</span>
     </div>
   </div>
 </div>
@@ -60,6 +60,6 @@ A `Window` owns the fixed-timestep loop and coordinates four systems: a tile `Le
 <ul class="tech-chips">
   <li>C++17</li>
   <li>raylib</li>
+  <li>OpenGL</li>
   <li>Makefile</li>
-  <li>Python</li>
 </ul>

@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, normal]
+tags: [Statistics, Distributions, Normal]
 ---
 
 $$

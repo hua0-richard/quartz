@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, gamma]
+tags: [Statistics, Distributions, Gamma]
 ---
 
 With shape $k>0$ and scale $\theta>0$:

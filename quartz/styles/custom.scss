@@ -523,8 +523,7 @@ pre,
 // own stylesheets; custom.scss loads after them in the join order.
 // Display / list titles stay at 400 (Cursor: authority via tracking).
 .page-listing > p,
-li.section-li > .section > .desc > h3,
-.top-bar-link {
+li.section-li > .section > .desc > h3 {
   font-weight: 500;
 }
 
@@ -838,9 +837,10 @@ body[data-slug="index"] .center .page-header::after {
 // TOP STATUS BAR
 // ═══════════════════════════════════════════
 // Thin, full-width strip above everything — rendered in renderPage.tsx as
-// the first child of <body>, before #quartz-root. A muted status line
-// announcing current work; no CTA, since most visitors arrive already
-// holding the resume (the bar's job is reinforcement, not contact).
+// the first child of <body>, before #quartz-root. One muted GitHub phrase:
+// "Currently: Shipping" + boat. "Currently" is brighter (--dark); ": Shipping"
+// and the boat stay muted gray. Underline lives on the words only (not the
+// boat); the <a> still wraps the whole cluster for hit area.
 // In reader mode the text (.top-bar-text) fades out while the bar and its
 // divider line stay — see the :root[reader-mode="on"] lists in
 // components/styles/readermode.scss.
@@ -861,37 +861,68 @@ body[data-slug="index"] .center .page-header::after {
   font-weight: 400;
   letter-spacing: -0.005em;
   line-height: 1.45;
-  color: var(--darkgray);
-}
-
-// "Currently" lead-in. No label treatment — just a muted color step
-// down from the body text, so the line reads as one sentence and the
-// project description (not the word "Currently") carries the emphasis.
-.top-bar-lead {
   color: var(--gray);
 }
 
-// Synopsys partner link — underline is the affordance (no arrow). Base
-// text + hover text colors come from the global link rules; the
-// underline sits muted and firms up on hover.
-.top-bar-link {
-  font-weight: 500;
-  color: var(--darkgray);
+.top-bar-status {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 0;
+  white-space: nowrap;
+}
+
+.top-bar-lead {
+  color: inherit;
+  margin-inline-end: 0.32em;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  text-decoration-color: color-mix(in oklab, var(--darkgray) 35%, transparent);
-  transition:
-    color 0.2s var(--ease),
-    text-decoration-color 0.2s var(--ease);
+  text-underline-offset: 0.22em;
+  text-decoration-color: color-mix(in oklab, var(--gray) 45%, transparent);
+  transition: text-decoration-color 0.2s var(--ease);
 }
 
-.top-bar-link:hover {
-  text-decoration-color: color-mix(in oklab, var(--darkgray) 72%, transparent);
+.top-bar-label {
+  color: var(--dark);
 }
 
-// Keeps the partner phrase ("Synopsys capstone") intact when the bar
-// wraps on narrow screens.
+.top-bar-boat {
+  display: block;
+  width: 1.28em;
+  height: 0.85em; // 1.28em × 16/24 viewBox — keep hull proportional
+  flex-shrink: 0;
+  // Waves sit in the bottom of the viewBox, so geometric centering
+  // parks the hull a hair high. Nudge down to the text's optical middle.
+  transform: translateY(0.07em);
+  color: currentColor;
+  fill: none;
+  stroke: currentColor;
+}
+
+.top-bar-boat path {
+  fill: none;
+  stroke: currentColor;
+}
+
+// Whole phrase is one GitHub link. Link color is muted gray so ": Shipping"
+// and the boat (currentColor) match; .top-bar-label overrides to --dark.
+// Nested under .top-bar so hover beats global a[href^="http"]:hover.
+.top-bar-link {
+  font-weight: 400;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color 0.2s var(--ease);
+}
+
+.top-bar .top-bar-link:hover,
+.top-bar .top-bar-link:focus-visible {
+  color: color-mix(in oklab, var(--gray) 32%, var(--darkgray));
+}
+
+.top-bar .top-bar-link:hover .top-bar-lead,
+.top-bar .top-bar-link:focus-visible .top-bar-lead {
+  text-decoration-color: color-mix(in oklab, var(--gray) 78%, transparent);
+}
+
 .top-bar-nowrap {
   white-space: nowrap;
 }
@@ -906,8 +937,7 @@ body[data-slug="index"] .center .page-header::after {
   }
 }
 
-// ── Phone — on the narrowest screens the line wraps to two rows;
-//    text stays centered. ──────────────────────────────────────
+// ── Phone ────────────────────────────────────────────────────
 @media (max-width: 520px) {
   .top-bar {
     padding: 0.44rem 0.8rem;
@@ -1251,6 +1281,12 @@ body[data-slug="index"] .recent-notes {
       scrollbar-width: thin;
       scrollbar-color: var(--border) transparent;
     }
+
+    // Beat `min-height: 0` above so the collapsed toggle (and ⌘E chip)
+    // isn't clipped by overflow: hidden.
+    .explorer.collapsed {
+      min-height: 1.85rem;
+    }
     .explorer-content {
       display: flex;
       flex: 1 1 auto;
@@ -1540,6 +1576,18 @@ body[data-slug^="Projects/"]:not([data-slug="Projects/index"]) {
     }
     .arch-icon[data-icon="huggingface"] {
       --arch-icon: url("/static/icons/huggingface.svg");
+    }
+    .arch-icon[data-icon="vercel"] {
+      --arch-icon: url("/static/icons/vercel.svg");
+    }
+    .arch-icon[data-icon="netlify"] {
+      --arch-icon: url("/static/icons/netlify.svg");
+    }
+    .arch-icon[data-icon="tavily"] {
+      --arch-icon: url("/static/icons/lucide-search.svg");
+    }
+    .arch-icon[data-icon="raylib"] {
+      --arch-icon: url("/static/icons/lucide-gamepad-2.svg");
     }
     .arch-icon[data-icon="window"] {
       --arch-icon: url("/static/icons/lucide-app-window.svg");

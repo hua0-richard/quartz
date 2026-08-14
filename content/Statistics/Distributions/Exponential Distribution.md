@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, exponential]
+tags: [Statistics, Distributions, Exponential]
 ---
 
 $$

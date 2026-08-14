@@ -240,7 +240,33 @@ export function renderPage(
             Update this line whenever the current focus changes. */}
         <div class="top-bar">
           <p class="top-bar-text">
-            <span class="top-bar-lead">Building...</span>
+            <a
+              class="top-bar-link top-bar-status"
+              href="https://github.com/hua0-richard"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="top-bar-lead">
+                <span class="top-bar-label">Currently</span>: Shipping
+              </span>
+              <svg
+                class="top-bar-boat"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9.5 1.2v8.5" />
+                <path d="M9.7 1.8 16.4 9.2H9.7Z" />
+                <path d="M3.6 9.6h16.6l-2.4 2.5H6Z" />
+                <path d="M1 13.2q3-1.5 6 0t6 0 6 0 4.5 0" />
+                <path d="M1.2 15.1q3.2-1.3 6.4 0t6.4 0 6.2 0" />
+              </svg>
+            </a>
           </p>
         </div>
         <div id="quartz-root" class="page">

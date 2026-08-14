@@ -1,5 +1,5 @@
 ---
-tags: [statistics, maximum-likelihood, exponential]
+tags: [Statistics, Maximum-likelihood, Exponential]
 ---
 
 ### Exponential Distribution Log-Likelihood

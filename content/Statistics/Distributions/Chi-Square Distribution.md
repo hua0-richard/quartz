@@ -1,5 +1,5 @@
 ---
-tags: [statistics, distributions, chi-square]
+tags: [Statistics, Distributions, Chi-square]
 ---
 
 With $\nu > 0$ degrees of freedom:

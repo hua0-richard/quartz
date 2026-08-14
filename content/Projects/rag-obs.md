@@ -9,9 +9,9 @@ features:
   - Hybrid BM25 plus vector retrieval over pgvector
   - Flashcard generation from uploaded notes
 tags:
-  - projects
-  - rag
-  - llm
+  - Projects
+  - RAG
+  - LLM
 ---
 
 <div class="project-links">
@@ -25,7 +25,7 @@ A study tool for Obsidian vaults. Upload markdown notes, ask a question, and get
 
 ## Architecture
 
-React frontend and FastAPI/LangChain backend. Notes are chunked with heading context preserved, then retrieved with hybrid BM25 plus pgvector. Ranked context drives both Q&A and flashcard generation.
+React frontend on Netlify and FastAPI/LangChain backend. Notes are chunked with heading context preserved, then retrieved with hybrid BM25 plus pgvector. Ranked context drives both Q&A and flashcard generation via OpenRouter.
 
 <div class="arch">
   <div class="arch-node">
@@ -45,7 +45,7 @@ React frontend and FastAPI/LangChain backend. Notes are chunked with heading con
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
-    <span class="arch-kicker">Retrieval</span>
+    <span class="arch-kicker">Database</span>
     <span class="arch-title">pgvector</span>
   </div>
   <div class="arch-node">
@@ -53,17 +53,23 @@ React frontend and FastAPI/LangChain backend. Notes are chunked with heading con
     <span class="arch-kicker">LLM</span>
     <span class="arch-title">OpenRouter</span>
   </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="netlify" aria-hidden="true"></span>
+    <span class="arch-kicker">Host</span>
+    <span class="arch-title">Netlify</span>
+  </div>
 </div>
 
 ## Technologies
 
 <ul class="tech-chips">
-  <li>Python</li>
+  <li>React</li>
   <li>FastAPI</li>
   <li>LangChain</li>
-  <li>React</li>
   <li>PostgreSQL</li>
   <li>pgvector</li>
+  <li>OpenRouter</li>
+  <li>Netlify</li>
   <li>Docker</li>
   <li>Tailscale</li>
 </ul>

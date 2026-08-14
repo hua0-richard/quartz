@@ -83,7 +83,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             <span class="landing-sublabel">Featured Projects</span>
             <div class="landing-featured-grid">
               {featuredProjects.map((p) => {
-                const techStack = (p.tags ?? []).filter((t) => t !== "projects").slice(0, 3)
+                const techStack = (p.tags ?? []).filter((t) => t !== "Projects").slice(0, 3)
                 return (
                   <a
                     href={p.demo}
@@ -94,8 +94,8 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                   >
                     <div class="lp-featured-card-top">
                       <span class="lp-featured-title">{p.title ?? "Project"}</span>
-                      <span class="lp-featured-arrow" aria-hidden="true">
-                        ↗
+                      <span class="lp-card-more" aria-hidden="true">
+                        demo <span class="lp-featured-arrow">↗</span>
                       </span>
                     </div>
                     {p.description && <p class="lp-featured-desc">{p.description}</p>}
@@ -165,7 +165,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
           </div>
           <div class="landing-featured-grid landing-project-grid">
             {projects.map((p, idx) => {
-              const cleanTags = (p.tags ?? []).filter((t) => t !== "projects")
+              const cleanTags = (p.tags ?? []).filter((t) => t !== "Projects")
               return (
                 <div
                   class="lp-featured-card lp-card reveal-card"
@@ -625,7 +625,7 @@ a.lp-featured-title:hover {
   z-index: 0;
 }
 
-.landing-projects .lp-card-more {
+.lp-card-more {
   display: inline-flex;
   align-items: baseline;
   gap: 0.28rem;
@@ -640,17 +640,19 @@ a.lp-featured-title:hover {
   color: var(--gray);
 }
 
+.landing-hero .lp-featured-arrow,
 .landing-projects .lp-featured-arrow {
   margin-left: 0;
   opacity: 0.7;
 }
 
-.landing-projects .lp-featured-card:hover .lp-featured-title {
-  color: color-mix(in oklab, var(--dark) 78%, var(--gray));
-}
-
+.landing-hero .lp-featured-card:hover .lp-card-more,
 .landing-projects .lp-featured-card:hover .lp-card-more {
   color: var(--dark);
+}
+
+.landing-projects .lp-featured-card:hover .lp-featured-title {
+  color: color-mix(in oklab, var(--dark) 78%, var(--gray));
 }
 
 .landing-projects .lp-featured-card:hover .lp-featured-arrow {

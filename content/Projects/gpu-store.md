@@ -9,9 +9,9 @@ features:
   - Stripe Checkout with signature-verified webhooks
   - Redis locks against duplicate payment events
 tags:
-  - projects
-  - full-stack
-  - payments
+  - Projects
+  - Full-stack
+  - Payments
 ---
 
 <div class="project-links">
@@ -47,18 +47,23 @@ pnpm monorepo: Next.js on Vercel; NestJS, PostgreSQL, and Redis in Docker behind
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
-    <span class="arch-kicker">Data</span>
+    <span class="arch-kicker">Database</span>
     <span class="arch-title">PostgreSQL</span>
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="redis" aria-hidden="true"></span>
-    <span class="arch-kicker">Locks</span>
+    <span class="arch-kicker">Cache</span>
     <span class="arch-title">Redis</span>
   </div>
   <div class="arch-node">
     <span class="arch-icon" data-icon="stripe" aria-hidden="true"></span>
     <span class="arch-kicker">Payments</span>
     <span class="arch-title">Stripe</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="vercel" aria-hidden="true"></span>
+    <span class="arch-kicker">Host</span>
+    <span class="arch-title">Vercel</span>
   </div>
 </div>
 
@@ -69,9 +74,9 @@ pnpm monorepo: Next.js on Vercel; NestJS, PostgreSQL, and Redis in Docker behind
   <li>NestJS</li>
   <li>Prisma</li>
   <li>PostgreSQL</li>
-  <li>Docker</li>
-  <li>Stripe</li>
   <li>Redis</li>
+  <li>Stripe</li>
+  <li>Vercel</li>
+  <li>Docker</li>
   <li>Tailscale</li>
-  <li>JWT</li>
 </ul>
