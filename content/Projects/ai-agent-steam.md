@@ -1,13 +1,13 @@
 ---
 title: Perplexity for Steam
-description: A conversational game discovery engine with hybrid search, image-based retrieval, and real-time Steam data integration.
+description: A multimodal agent over a ~5K-game Steam catalog — search by text, screenshot, or voice, with live prices in the conversation.
 eyebrow: Multi-modal Agent + Search
 github: https://github.com/hua0-richard/ai-agent-ecomm
 demo: https://ai-agent-ecomm.vercel.app
 features:
-  - Hybrid BM25 plus vector search with cross-encoder reranking
-  - Multi-modal retrieval via CLIP (images) and Whisper (voice)
-  - Live tool-calling for real-time Steam pricing and player counts
+  - Hybrid BM25 plus vector search with reranking
+  - CLIP image search and Whisper voice input
+  - Live Steam pricing via tool-calling
 tags:
   - projects
   - ai-agent
@@ -15,29 +15,66 @@ tags:
 ---
 
 <div class="project-links">
-  <a class="project-link project-link-primary" href="https://ai-agent-ecomm.vercel.app" target="_blank" rel="noreferrer">Try now</a>
+  <a class="project-link project-link-primary" href="https://ai-agent-ecomm.vercel.app" target="_blank" rel="noreferrer">Live demo</a>
   <a class="project-link" href="https://github.com/hua0-richard/ai-agent-ecomm" target="_blank" rel="noreferrer">GitHub</a>
 </div>
 
-## Overview
+## What it does
 
-`ai-agent-ecomm` is a conversational discovery engine built to help gamers navigate the Steam catalog. It moves beyond simple keyword matching, using a multi-modal approach that lets users search via natural language, uploaded screenshots, or voice input.
+A conversational discovery engine for Steam. Ask in natural language, upload a screenshot, or speak a query; the agent retrieves matching games from a ~5K-game catalog and can pull live prices and player counts into the reply.
 
-## What it does well
+## Architecture
 
-- Integrates real-time Steam API data (prices, player counts, discounts) directly into the conversation via LangChain tool-calling.
-- Combines BM25 and vector retrieval with RRF (Reciprocal Rank Fusion) and cross-encoder reranking for highly precise game recommendations.
-- Features a CLIP-powered visual search pipeline that can embed an uploaded image and find visually similar games in the catalog.
-- Uses Server-Sent Events (SSE) and token buffering to ensure product cards and streamed responses sync deterministically in the UI.
+LangChain agent over a four-service backend. Retrieval is hybrid BM25 plus pgvector, fused and reranked. CLIP handles image search; Whisper handles speech. Responses stream to React over SSE; tool-calling hits the Steam API.
 
-## Stack
+<div class="arch">
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="chrome" aria-hidden="true"></span>
+    <span class="arch-kicker">Client</span>
+    <span class="arch-title">Browser</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="react" aria-hidden="true"></span>
+    <span class="arch-kicker">Frontend</span>
+    <span class="arch-title">React</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="fastapi" aria-hidden="true"></span>
+    <span class="arch-kicker">Agent</span>
+    <span class="arch-title">FastAPI</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="postgresql" aria-hidden="true"></span>
+    <span class="arch-kicker">Search</span>
+    <span class="arch-title">pgvector</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="huggingface" aria-hidden="true"></span>
+    <span class="arch-kicker">Vision</span>
+    <span class="arch-title">CLIP</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="openai" aria-hidden="true"></span>
+    <span class="arch-kicker">Voice</span>
+    <span class="arch-title">Whisper</span>
+  </div>
+  <div class="arch-node">
+    <span class="arch-icon" data-icon="steam" aria-hidden="true"></span>
+    <span class="arch-kicker">Live</span>
+    <span class="arch-title">Steam API</span>
+  </div>
+</div>
 
-- React, Vite, and Tailwind CSS on the frontend
-- FastAPI and Python on the backend
-- PostgreSQL with `pgvector` for hybrid and image-based retrieval
-- LangChain for agent orchestration (Ollama/OpenRouter)
-- CLIP for image embeddings and Whisper for speech-to-text
+## Technologies
 
-## Engineering notes
-
-The core challenge was building a deterministic bridge between the agent's reasoning and the UI's product cards. Since the LLM might skip tools or mention games out of order, the backend implements a specialized matching algorithm that validates `app_ids` and reorders UI cards to match the narrative flow of the response. This ensures the visual output always aligns with what the agent is saying.
+<ul class="tech-chips">
+  <li>Python</li>
+  <li>FastAPI</li>
+  <li>React</li>
+  <li>LangChain</li>
+  <li>PostgreSQL</li>
+  <li>pgvector</li>
+  <li>Docker</li>
+  <li>CLIP</li>
+  <li>Whisper</li>
+</ul>

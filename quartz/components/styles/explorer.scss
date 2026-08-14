@@ -65,7 +65,7 @@
   @media all and ($mobile) {
     // Single source of truth for mobile control sizing.
     --explorer-control-size: 1.85rem;
-    --explorer-control-radius: 7px;
+    --explorer-control-radius: 4px;
     --explorer-control-icon-size: 13px;
     // Match the top status strip metrics by breakpoint so modal header
     // controls align consistently with the closed-state hamburger row.
@@ -172,9 +172,9 @@
 // ═══════════════════════════════════════════
 
 button.mobile-explorer {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--explorer-control-radius, 7px);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--explorer-control-radius, 4px);
   width: var(--explorer-control-size, 1.85rem);
   height: var(--explorer-control-size, 1.85rem);
   box-sizing: border-box;
@@ -184,18 +184,19 @@ button.mobile-explorer {
   justify-content: center;
   cursor: pointer;
   padding: 0;
-  color: var(--dark);
-  // Matches the darkmode toggle (its twin icon-square button): same
-  // border + background hover shift, same timing, same press scale.
+  color: color-mix(in oklab, var(--gray) 88%, var(--bg));
   transition:
-    border-color 0.3s var(--ease),
-    background 0.3s var(--ease);
+    border-color 0.18s var(--ease),
+    color 0.18s var(--ease);
 
   &:hover {
-    border-color: var(--border-hover);
-    background: var(--surface-hover);
+    color: var(--darkgray);
+    border-color: color-mix(in oklab, var(--dark) 18%, transparent);
   }
 
+  &:focus-visible {
+    border-color: color-mix(in oklab, var(--secondary) 45%, transparent);
+  }
 }
 
 button.desktop-explorer {
@@ -712,15 +713,13 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
       .lucide-x-mobile {
         width: var(--explorer-control-icon-size, 13px);
         height: var(--explorer-control-icon-size, 13px);
-        stroke: var(--gray);
-        // 0.3s matches the button's border/background transition and the
-        // darkmode toggle's icon, so the icon brightens in sync.
-        transition: stroke 0.3s var(--ease);
+        stroke: currentColor;
+        transition: stroke 0.18s var(--ease);
       }
 
       &:hover .lucide-menu,
       &:hover .lucide-x-mobile {
-        stroke: var(--dark);
+        stroke: currentColor;
       }
 
       // Closed state: hamburger shown, X hidden.

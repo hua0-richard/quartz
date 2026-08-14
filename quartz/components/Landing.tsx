@@ -151,7 +151,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
       {projects.length > 0 && (
         <section class="landing-projects">
           <div class="landing-section-head">
-            <span class="landing-sublabel">Projects</span>
+            <span class="landing-sublabel">All Projects</span>
             <div class="lp-sort">
               <label for="lp-sort-select" class="lp-sort-label">
                 Sort
@@ -175,29 +175,16 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                   data-featured={p.demo ? "1" : "0"}
                   data-order={idx}
                 >
+                  <a
+                    class="lp-card-hit"
+                    href={`/${p.slug}`}
+                    aria-label={`${p.title} — about`}
+                  ></a>
                   <div class="lp-featured-card-top">
-                    <a class="lp-featured-title" href={`/${p.slug}`}>
-                      {p.title}
-                    </a>
-                    {(p.github || p.demo) && (
-                      <div class="lp-card-links">
-                        {p.github && (
-                          <a href={p.github} target="_blank" rel="noreferrer">
-                            GitHub
-                          </a>
-                        )}
-                        {p.github && p.demo && (
-                          <span class="lp-card-link-sep" aria-hidden="true">
-                            ·
-                          </span>
-                        )}
-                        {p.demo && (
-                          <a href={p.demo} target="_blank" rel="noreferrer">
-                            Demo
-                          </a>
-                        )}
-                      </div>
-                    )}
+                    <span class="lp-featured-title">{p.title}</span>
+                    <span class="lp-card-more" aria-hidden="true">
+                      read more <span class="lp-featured-arrow">→</span>
+                    </span>
                   </div>
                   {p.description && <p class="lp-featured-desc">{p.description}</p>}
                   {cleanTags.length > 0 && (
@@ -627,9 +614,55 @@ a.lp-featured-title:hover {
   transform: translate(1px, -1px);
 }
 
+.landing-projects .lp-featured-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.landing-projects .lp-card-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.landing-projects .lp-card-more {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.landing-projects .lp-featured-arrow {
+  margin-left: 0;
+  opacity: 0.7;
+}
+
+.landing-projects .lp-featured-card:hover .lp-featured-title {
+  color: color-mix(in oklab, var(--dark) 78%, var(--gray));
+}
+
+.landing-projects .lp-featured-card:hover .lp-card-more {
+  color: var(--dark);
+}
+
+.landing-projects .lp-featured-card:hover .lp-featured-arrow {
+  opacity: 1;
+  color: var(--dark);
+  transform: translateX(3px);
+}
+
 .landing-name-blog:focus-visible,
 .landing-links a:focus-visible,
 .lp-featured-card:focus-visible,
+.lp-card-hit:focus-visible,
 .lp-filter-pill:focus-visible,
 .lp-sort-select:focus-visible,
 a.lp-featured-title:focus-visible,

@@ -1,9 +1,9 @@
 .darkmode {
   cursor: pointer;
   position: relative;
-  // Ghost icon control — no filled slab; hairline only on hover.
+  // Ghost icon control — hairline always on, like the ⌘K chip.
   background: transparent;
-  border: 1px solid transparent;
+  border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
   border-radius: 4px;
   width: 1.85rem;
   height: 1.85rem;
