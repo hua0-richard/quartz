@@ -1,5 +1,5 @@
 ---
-title: RAG for Obsidian
+title: Quizlet for Obsidian.md
 description: A retrieval-augmented study workflow for querying Obsidian vaults, citing source notes, and generating flashcards from uploaded markdown.
 eyebrow: Retrieval + Study Tools
 github: https://github.com/hua0-richard/rag-obs

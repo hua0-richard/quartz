@@ -1,5 +1,5 @@
 ---
-title: AI Agent for Steam
+title: Perplexity for Steam
 description: A conversational game discovery engine with hybrid search, image-based retrieval, and real-time Steam data integration.
 eyebrow: Multi-modal Agent + Search
 github: https://github.com/hua0-richard/ai-agent-ecomm
