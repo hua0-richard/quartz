@@ -178,6 +178,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   const cssVars = [
     "--secondary",
     "--tertiary",
+    "--accent",
     "--gray",
     "--light",
     "--lightgray",
@@ -197,7 +198,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   const color = (d: NodeData) => {
     const isCurrent = d.id === slug
     if (isCurrent) {
-      return computedStyleMap["--secondary"]
+      return computedStyleMap["--accent"]
     } else if (visited.has(d.id) || d.id.startsWith("tags/")) {
       return computedStyleMap["--tertiary"]
     } else {
@@ -416,7 +417,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       })
 
     if (isTagNode) {
-      gfx.stroke({ width: 2, color: computedStyleMap["--tertiary"] })
+      gfx.stroke({ width: 2, color: computedStyleMap["--accent"] })
     }
 
     nodesContainer.addChild(gfx)

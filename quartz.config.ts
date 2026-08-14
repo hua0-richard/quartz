@@ -24,30 +24,29 @@ const config: QuartzConfig = {
         code: { name: "Geist Mono", weights: [400, 500], includeItalic: false },
       },
       // Cursor-adjacent neutrals: warm parchment canvas + warm ink text.
-      // Keep slate for secondary links (skip Cursor's ember orange — too marketing).
-      // Inline link-pill taupe/steel accents remain in custom.scss (--accent*).
+      // Sole accent: ember dialed toward the canvas — still pops, less neon.
       colors: {
         lightMode: {
-          light: "#F7F7F4", // parchment canvas
+          light: "#F8F6E8", // cream parchment canvas
           lightgray: "rgba(38, 37, 30, 0.1)", // warm hairline (stone)
           gray: "#7A7974", // ash — muted meta
           darkgray: "#26251E", // warm ink body
           dark: "#26251E", // headers ≈ body
-          secondary: "#3C4A57", // muted slate — reads as color, not highlight
-          tertiary: "#5A6B78", // quiet hover step
-          highlight: "rgba(60, 74, 87, 0.06)",
-          textHighlight: "rgba(60, 74, 87, 0.12)",
+          secondary: "#E05418", // warm ember — sole accent
+          tertiary: "#EE6A2C", // lighter ember hover step
+          highlight: "rgba(224, 84, 24, 0.10)",
+          textHighlight: "rgba(224, 84, 24, 0.18)",
         },
         darkMode: {
-          light: "#141413", // soft warm near-black
-          lightgray: "rgba(247, 247, 244, 0.1)", // warm hairline
+          light: "#17150F", // warm near-black
+          lightgray: "rgba(248, 246, 232, 0.1)", // warm hairline
           gray: "#84847E", // driftwood meta
           darkgray: "#E8E6E3", // warm near-white body
-          dark: "#F7F7F4", // parchment headers
-          secondary: "#A8B4C0", // muted slate
-          tertiary: "#8A98A4", // quiet hover step
-          highlight: "rgba(255, 255, 255, 0.04)",
-          textHighlight: "rgba(255, 255, 255, 0.08)",
+          dark: "#F8F6E8", // parchment headers
+          secondary: "#F06A38", // lifted warm ember
+          tertiary: "#FF8354", // lighter ember hover step
+          highlight: "rgba(240, 106, 56, 0.16)",
+          textHighlight: "rgba(240, 106, 56, 0.24)",
         },
       },
     },
