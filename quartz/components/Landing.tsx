@@ -1,5 +1,19 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 
+// 4×3 SVGs from lipis/flag-icons (MIT): https://github.com/lipis/flag-icons
+// Background-image, not <img>, so global article image margins/radius don't apply.
+function EduFlag({ code, country }: { code: "ca" | "se"; country: string }) {
+  return (
+    <div
+      class="edu-flag"
+      data-flag={code}
+      title={country}
+      role="img"
+      aria-label={country}
+    />
+  )
+}
+
 const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentProps) => {
   const isHomePage = fileData.slug === "index"
   if (!isHomePage) return null
@@ -116,8 +130,13 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
         <div class="landing-featured-grid landing-edu-list">
           <div class="lp-featured-card edu-item reveal-card">
             <div class="lp-featured-card-top">
-              <span class="lp-featured-title">University of Waterloo</span>
-              <span class="edu-years">2020–2025</span>
+              <span class="edu-identity">
+                <EduFlag code="ca" country="Canada" />
+                <span class="lp-featured-title">University of Waterloo</span>
+              </span>
+              <span class="edu-meta">
+                <span class="edu-years">2020–2025</span>
+              </span>
             </div>
             <p class="edu-degree">B.CS in Computer Science</p>
             <p class="edu-courses">Algorithms · Operating Systems · AI</p>
@@ -125,8 +144,13 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
 
           <div class="lp-featured-card edu-item reveal-card">
             <div class="lp-featured-card-top">
-              <span class="lp-featured-title">Chalmers University of Technology</span>
-              <span class="edu-years">Jan–May 2025</span>
+              <span class="edu-identity">
+                <EduFlag code="se" country="Sweden" />
+                <span class="lp-featured-title">Chalmers University of Technology</span>
+              </span>
+              <span class="edu-meta">
+                <span class="edu-years">Jan–May 2025</span>
+              </span>
             </div>
             <p class="edu-degree">Exchange term in Computer Science</p>
             <p class="edu-courses">
@@ -136,8 +160,13 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
 
           <div class="lp-featured-card edu-item reveal-card">
             <div class="lp-featured-card-top">
-              <span class="lp-featured-title">University of British Columbia</span>
-              <span class="edu-years">2025–2026</span>
+              <span class="edu-identity">
+                <EduFlag code="ca" country="Canada" />
+                <span class="lp-featured-title">University of British Columbia</span>
+              </span>
+              <span class="edu-meta">
+                <span class="edu-years">2025–2026</span>
+              </span>
             </div>
             <p class="edu-degree">MDS in Data Science</p>
             <p class="edu-courses">
@@ -746,7 +775,7 @@ a.lp-featured-title:focus-visible,
 }
 
 .edu-years {
-  margin-left: auto;
+  margin-left: 0;
   flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: var(--mono-label-size);
@@ -754,6 +783,54 @@ a.lp-featured-title:focus-visible,
   letter-spacing: 0.02em;
   color: var(--gray);
   font-variant-numeric: tabular-nums;
+}
+
+.landing-education .lp-featured-card-top {
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.edu-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.edu-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.edu-flag {
+  display: block;
+  width: 1.05rem;
+  height: 0.7875rem;
+  margin: 0;
+  border-radius: 0;
+  flex-shrink: 0;
+  transform: translateY(1px);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  filter: sepia(0.28) saturate(0.78) hue-rotate(-10deg) brightness(0.9);
+}
+
+.edu-flag[data-flag="ca"] {
+  background-image: url("/static/flags/ca.svg");
+}
+
+.edu-flag[data-flag="se"] {
+  background-image: url("/static/flags/se.svg");
+}
+
+.landing-education .edu-degree,
+.landing-education .edu-courses {
+  padding-left: calc(1.05rem + 0.5rem);
 }
 
 .page .landing .edu-degree,
@@ -897,7 +974,7 @@ a.lp-featured-title:focus-visible,
   .lp-card-links {
     margin-left: 0;
   }
-  .edu-years {
+  .edu-meta {
     margin-left: 0;
   }
 }

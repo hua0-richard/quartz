@@ -733,6 +733,10 @@ body[data-slug="index"] .landing {
     line-height: 1.35 !important;
   }
 
+  .landing-education .lp-featured-card-top {
+    align-items: center !important;
+  }
+
   .lp-featured-tech {
     margin: 0.28rem 0 0 !important;
     font-size: 0.72rem !important;
@@ -1074,6 +1078,12 @@ body[data-slug="index"] .center .page-header::after {
 
 .top-bar-nowrap {
   white-space: nowrap;
+}
+
+// SPA progress — 1px solid dusty ember, same language as the other chrome.
+.navigation-progress {
+  height: 1px;
+  background: color-mix(in oklab, var(--accent) 68%, var(--gray));
 }
 
 // ── Tablet ───────────────────────────────────────────────────
