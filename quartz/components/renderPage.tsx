@@ -258,8 +258,8 @@ export function renderPage(
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
+                <path d="M7 17 17 7" />
+                <path d="M7 7h10v10" />
               </svg>
             </a>
           </p>

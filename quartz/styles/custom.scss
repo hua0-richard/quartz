@@ -352,13 +352,21 @@ b {
     }
   }
 
+  // Cursor-style callouts: one box padding for every type, icon aligned
+  // to the first line, body indented to the title column. Title-only and
+  // title+body used to disagree (title padding vs no content padding).
   .callout {
+    --callout-pad-y: 0.4rem;
+    --callout-pad-x: 0.65rem;
+    --callout-gutter: 0.45rem;
+    --icon-size: 1rem;
+
     font-style: normal;
     color: var(--prose);
-    border-radius: 6px;
-    padding: 0 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: var(--callout-pad-y) var(--callout-pad-x);
     margin: 1.5em 0;
-    border-left-width: 1px;
 
     p,
     li {
@@ -374,17 +382,17 @@ b {
     }
 
     .callout-title {
-      align-items: center;
-      padding: 0.75rem 0;
-      gap: 0.5rem;
-      --icon-size: 0.875rem;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--callout-gutter);
+      padding: 0;
       font-style: normal;
     }
 
     .callout-title-inner {
-      display: flex;
-      align-items: center;
-      min-height: var(--icon-size);
+      display: block;
+      flex: 1 1 auto;
+      min-width: 0;
       margin: 0;
     }
 
@@ -401,12 +409,8 @@ b {
     }
 
     .callout-title-inner > p {
+      display: block;
       margin: 0;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.15em;
-      line-height: 1.7;
     }
 
     .callout .katex {
@@ -422,71 +426,45 @@ b {
 
     .callout-icon,
     .fold-callout-icon {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      flex: 0 0 var(--icon-size);
+      box-sizing: border-box;
       background-color: var(--color);
+      background-size: var(--icon-size) var(--icon-size);
+      mask-size: var(--icon-size) var(--icon-size);
       opacity: 1;
       padding: 0;
-      margin: 0;
-      align-self: center;
+      // Sit on the first text line, not the vertical center of a wrap.
+      margin: calc((0.875rem * 1.7 - var(--icon-size)) / 2) 0 0;
+      align-self: flex-start;
+    }
+
+    .fold-callout-icon {
+      margin-left: auto;
     }
 
     .callout-content {
       font-style: normal;
-    }
-  }
+      margin-top: 0.2rem;
+      padding-left: calc(var(--icon-size) + var(--callout-gutter));
 
-  // Original Quartz hues, mixed down so they sit on parchment.
-  .callout[data-callout] {
-    --color: color-mix(in oklab, #448aff 52%, var(--gray));
-    --bg: color-mix(in oklab, #448aff 9%, var(--surface));
-    --border: color-mix(in oklab, #448aff 26%, var(--lightgray));
-  }
-  .callout[data-callout="abstract"] {
-    --color: color-mix(in oklab, #00b0ff 52%, var(--gray));
-    --bg: color-mix(in oklab, #00b0ff 9%, var(--surface));
-    --border: color-mix(in oklab, #00b0ff 26%, var(--lightgray));
-  }
-  .callout[data-callout="info"],
-  .callout[data-callout="todo"] {
-    --color: color-mix(in oklab, #00b8d4 52%, var(--gray));
-    --bg: color-mix(in oklab, #00b8d4 9%, var(--surface));
-    --border: color-mix(in oklab, #00b8d4 26%, var(--lightgray));
-  }
-  .callout[data-callout="tip"] {
-    --color: color-mix(in oklab, #00bfa5 52%, var(--gray));
-    --bg: color-mix(in oklab, #00bfa5 9%, var(--surface));
-    --border: color-mix(in oklab, #00bfa5 26%, var(--lightgray));
-  }
-  .callout[data-callout="success"] {
-    --color: color-mix(in oklab, #09ad7a 52%, var(--gray));
-    --bg: color-mix(in oklab, #09ad7a 9%, var(--surface));
-    --border: color-mix(in oklab, #09ad7a 26%, var(--lightgray));
-  }
-  .callout[data-callout="question"] {
-    --color: color-mix(in oklab, #dba642 52%, var(--gray));
-    --bg: color-mix(in oklab, #dba642 9%, var(--surface));
-    --border: color-mix(in oklab, #dba642 26%, var(--lightgray));
-  }
-  .callout[data-callout="warning"] {
-    --color: color-mix(in oklab, #db8942 52%, var(--gray));
-    --bg: color-mix(in oklab, #db8942 9%, var(--surface));
-    --border: color-mix(in oklab, #db8942 26%, var(--lightgray));
-  }
-  .callout[data-callout="failure"],
-  .callout[data-callout="danger"],
-  .callout[data-callout="bug"] {
-    --color: color-mix(in oklab, #db4242 52%, var(--gray));
-    --bg: color-mix(in oklab, #db4242 9%, var(--surface));
-    --border: color-mix(in oklab, #db4242 26%, var(--lightgray));
-  }
-  .callout[data-callout="example"] {
-    --color: color-mix(in oklab, #7a43b5 52%, var(--gray));
-    --bg: color-mix(in oklab, #7a43b5 9%, var(--surface));
-    --border: color-mix(in oklab, #7a43b5 26%, var(--lightgray));
-  }
-  .callout[data-callout="quote"] {
-    --color: var(--gray);
-    --bg: var(--surface);
-    --border: var(--lightgray);
+      > :first-child {
+        margin-top: 0;
+      }
+
+      > :last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &.is-collapsed > .callout-content {
+      margin-top: 0;
+
+      > :first-child {
+        margin-top: 0;
+      }
+    }
   }
 
   .footnotes {
@@ -1133,6 +1111,62 @@ body[data-slug="index"] .center .page-header::after {
 // cause click-throughs.
 body.global-graph-open .sidebar > * {
   pointer-events: none;
+}
+
+// ═══════════════════════════════════════════
+// CALLOUT TONES
+// ═══════════════════════════════════════════
+// Keep types multicolor, but drop Quartz's electric Material hexes
+// (#448aff, #00bfa5, …). Dusty warm pigments, mixed into the canvas
+// (--light) and ash (--gray) so they sit on parchment / near-black
+// the way ember does.
+
+.callout[data-callout] {
+  --callout-hue: #5d7fa8; // slate
+  --color: color-mix(in oklab, var(--callout-hue) 74%, var(--gray));
+  --bg: color-mix(in oklab, var(--callout-hue) 16%, var(--light));
+  --border: color-mix(in oklab, var(--callout-hue) 36%, var(--lightgray));
+}
+
+.callout[data-callout="abstract"] {
+  --callout-hue: #4a8a9a; // steel
+}
+
+.callout[data-callout="info"],
+.callout[data-callout="todo"] {
+  --callout-hue: #3d8a8e; // ink-teal
+}
+
+.callout[data-callout="tip"] {
+  --callout-hue: #4e8f5c; // sage
+}
+
+.callout[data-callout="success"] {
+  --callout-hue: #3d8a4e; // moss
+}
+
+.callout[data-callout="question"] {
+  --callout-hue: #d4a33e; // ochre
+}
+
+.callout[data-callout="warning"] {
+  --callout-hue: #d47430; // terracotta — neighbor to ember
+}
+
+.callout[data-callout="failure"],
+.callout[data-callout="danger"],
+.callout[data-callout="bug"] {
+  --callout-hue: #c44838; // brick
+}
+
+.callout[data-callout="example"] {
+  --callout-hue: #8a5688; // plum
+}
+
+.callout[data-callout="quote"] {
+  --color: var(--gray);
+  --bg: color-mix(in oklab, var(--gray) 10%, var(--light));
+  --border: var(--lightgray);
 }
 
 // ═══════════════════════════════════════════
