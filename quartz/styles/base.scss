@@ -672,16 +672,8 @@ iframe.pdf {
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  // Flat monochrome bar — no glow — matching the site's editorial,
-  // shadow-free surfaces. A soft transparent tail keeps a refined
-  // leading edge without the neon look.
-  background: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--secondary) 0%, transparent) 0%,
-    color-mix(in oklab, var(--secondary) 50%, transparent) 60%,
-    var(--secondary) 100%
-  );
+  height: 1px;
+  background: var(--accent, var(--secondary));
   opacity: 0;
   z-index: 9999;
   transform: scaleX(0) translateZ(0);
