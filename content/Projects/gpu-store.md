@@ -1,6 +1,7 @@
 ---
 title: Cloud Billing Layer
 description: A GPU compute storefront with Stripe Checkout, verified webhooks, and Redis locking so duplicate events cannot double-charge.
+blurb: GPU compute storefront with Stripe checkout and webhook billing.
 eyebrow: Payments + Distributed Systems
 github: https://github.com/hua0-richard/gpu-store
 demo: https://gpu-store-web-b1y2.vercel.app

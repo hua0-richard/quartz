@@ -1,6 +1,7 @@
 ---
 title: Quizlet for Obsidian.md
 description: RAG over Obsidian notes — heading-aware chunking, hybrid retrieval, citations, and flashcards from uploaded markdown.
+blurb: Q&A and flashcards over uploaded Obsidian notes.
 eyebrow: Retrieval + Study Tools
 github: https://github.com/hua0-richard/rag-obs
 demo: https://melodious-liger-7621b6.netlify.app

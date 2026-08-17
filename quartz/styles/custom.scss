@@ -714,6 +714,12 @@ body[data-slug="index"] .landing {
     line-height: 1.45 !important;
   }
 
+  .landing-hero .lp-featured-desc {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    overflow: visible !important;
+  }
+
   .landing-education .lp-featured-desc,
   .landing-projects .lp-featured-desc {
     -webkit-line-clamp: 1;

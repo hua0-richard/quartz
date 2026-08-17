@@ -21,6 +21,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
   interface ProjectFrontmatter {
     title?: string
     description?: string
+    blurb?: string
     eyebrow?: string
     github?: string
     demo?: string
@@ -98,6 +99,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
             <div class="landing-featured-grid">
               {featuredProjects.map((p) => {
                 const techStack = (p.tags ?? []).filter((t) => t !== "Projects").slice(0, 3)
+                const featuredCopy = p.blurb ?? p.description
                 return (
                   <a
                     href={p.demo}
@@ -112,7 +114,7 @@ const Landing: QuartzComponent = ({ fileData, allFiles, cfg }: QuartzComponentPr
                         demo <span class="lp-featured-arrow">↗</span>
                       </span>
                     </div>
-                    {p.description && <p class="lp-featured-desc">{p.description}</p>}
+                    {featuredCopy && <p class="lp-featured-desc">{featuredCopy}</p>}
                     {techStack.length > 0 && (
                       <p class="lp-featured-tech">{techStack.join(" · ")}</p>
                     )}
@@ -526,6 +528,13 @@ Landing.css = `
   overflow: hidden;
 }
 
+/* Featured hero rows get their own short blurbs — never clamp them. */
+.page .landing .landing-hero .lp-featured-desc {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
 .page .landing .landing-education .lp-featured-desc,
 .page .landing .landing-projects .lp-featured-desc {
   -webkit-line-clamp: 1;
@@ -614,6 +623,12 @@ a.lp-featured-title:hover {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.landing-hero .lp-featured-desc {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
 }
 
 .lp-featured-tech {

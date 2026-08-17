@@ -1,6 +1,7 @@
 ---
 title: Perplexity for Steam
 description: A multimodal agent over a ~5K-game Steam catalog — search by text, screenshot, or voice, with live prices in the conversation.
+blurb: Search a Steam catalog by text, screenshot, or voice.
 eyebrow: Multi-modal Agent + Search
 github: https://github.com/hua0-richard/ai-agent-ecomm
 demo: https://ai-agent-ecomm.vercel.app
