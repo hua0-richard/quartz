@@ -186,6 +186,10 @@ button.mobile-explorer {
   width: 100%;
   box-sizing: border-box;
 
+  @media all and ($mobile) {
+    display: none;
+  }
+
   & h2 {
     font-family: var(--font-sans);
     font-size: var(--mono-label-size);
