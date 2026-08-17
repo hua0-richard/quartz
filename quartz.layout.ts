@@ -52,6 +52,7 @@ export const defaultContentPageLayout: PageLayout = {
       gap: "0.45rem",
     }),
     Component.Explorer({
+      title: "Site Map",
       folderClickBehavior: "collapse",
     }),
   ],
@@ -106,6 +107,7 @@ export const defaultListPageLayout: PageLayout = {
       gap: "0.45rem",
     }),
     Component.Explorer({
+      title: "Site Map",
       folderClickBehavior: "collapse",
     }),
   ],

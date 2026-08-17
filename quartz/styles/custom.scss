@@ -1507,21 +1507,15 @@ body[data-slug="index"] .recent-notes {
       width: 100%;
       align-items: center;
     }
-    .explorer {
+    > .explorer {
       position: sticky;
       top: 2rem;
       max-height: calc(100vh - 4rem);
       min-height: 0;
       overflow: hidden;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
+      margin-top: 1.15rem;
     }
 
-    // Beat `min-height: 0` above so the collapsed toggle (and ⌘E chip)
-    // isn't clipped by overflow: hidden.
-    .explorer.collapsed {
-      min-height: 1.85rem;
-    }
     .explorer-content {
       display: flex;
       flex: 1 1 auto;
@@ -1538,34 +1532,6 @@ body[data-slug="index"] .recent-notes {
       flex: 1 1 auto;
       min-height: 0;
       overflow-y: auto;
-      // rtl on the scroller parks the bar on the left; children stay ltr.
-      direction: rtl;
-
-      * {
-        direction: ltr;
-      }
-
-      &::-webkit-scrollbar {
-        display: block;
-        width: 2px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: color-mix(in oklab, var(--gray) 42%, transparent);
-        border-radius: 1px;
-      }
-    }
-
-    // Firefox has no ::-webkit-scrollbar; `thin` is as small as it goes.
-    @supports not selector(::-webkit-scrollbar) {
-      .explorer-panel > .explorer-ul {
-        scrollbar-width: thin;
-        scrollbar-color: color-mix(in oklab, var(--gray) 42%, transparent) transparent;
-      }
     }
   }
 }

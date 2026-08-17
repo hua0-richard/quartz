@@ -117,29 +117,9 @@ export default ((userOpts?: Partial<Options>) => {
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
-        <button
-          type="button"
-          class="title-button explorer-toggle desktop-explorer"
-          data-mobile={false}
-          aria-expanded={true}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="10"
-            viewBox="5 8 14 8"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="fold"
-          >
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div class="explorer-title desktop-explorer">
           <h2>{explorerTitle}</h2>
-          <span class="explorer-shortcut" aria-hidden="true">⌘E</span>
-        </button>
+        </div>
         <div
           id={id}
           class="explorer-content"
@@ -166,21 +146,6 @@ export default ((userOpts?: Partial<Options>) => {
         <template id="template-folder">
           <li>
             <div class="folder-container">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="5 8 14 8"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="folder-icon folder-chevron"
-                aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
               <div>
                 <button class="folder-button">
                   <span class="folder-title"></span>
