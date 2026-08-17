@@ -119,6 +119,23 @@ function toggleFolder(evt: MouseEvent) {
   localStorage.setItem("fileTree", stringifiedFileTree)
 }
 
+function createHomeNode(currentSlug: FullSlug): HTMLLIElement {
+  const template = document.getElementById("template-file") as HTMLTemplateElement
+  const clone = template.content.cloneNode(true) as DocumentFragment
+  const li = clone.querySelector("li") as HTMLLIElement
+  const a = li.querySelector("a") as HTMLAnchorElement
+  const titleSpan = a.querySelector(".file-title") as HTMLSpanElement
+  a.href = resolveRelative(currentSlug, "index" as FullSlug)
+  a.dataset.for = "index"
+  titleSpan.textContent = "Home"
+
+  if (currentSlug === "index") {
+    a.classList.add("active")
+  }
+
+  return li
+}
+
 function createFileNode(currentSlug: FullSlug, node: FileTrieNode): HTMLLIElement {
   const template = document.getElementById("template-file") as HTMLTemplateElement
   const clone = template.content.cloneNode(true) as DocumentFragment
@@ -256,6 +273,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       fragment.appendChild(node)
     }
     explorerUl.insertBefore(fragment, explorerUl.firstChild)
+    explorerUl.insertBefore(createHomeNode(currentSlug), explorerUl.firstChild)
 
     // restore explorer scrollTop position if it exists
     const scrollTop = sessionStorage.getItem("explorerScrollTop")
