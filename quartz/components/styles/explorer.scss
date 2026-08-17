@@ -286,13 +286,20 @@ button.mobile-explorer {
 
   // Alias row: `# Home` — comment marker, not a path prefix.
   .explorer-ul > li > a.explorer-home {
+    color: var(--accent);
+
     &::before {
       content: "#\2009";
+      opacity: 1;
+    }
+
+    &:hover {
+      color: var(--accent);
     }
 
     &.active,
     &.active .file-title {
-      color: inherit;
+      color: var(--accent);
       font-weight: 400;
       text-decoration: none;
     }
