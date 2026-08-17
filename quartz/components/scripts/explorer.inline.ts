@@ -127,11 +127,9 @@ function createHomeNode(currentSlug: FullSlug): HTMLLIElement {
   const titleSpan = a.querySelector(".file-title") as HTMLSpanElement
   a.href = resolveRelative(currentSlug, "index" as FullSlug)
   a.dataset.for = "index"
+  a.classList.add("explorer-home")
+  a.setAttribute("aria-label", "Go home")
   titleSpan.textContent = "Home"
-
-  if (currentSlug === "index") {
-    a.classList.add("active")
-  }
 
   return li
 }

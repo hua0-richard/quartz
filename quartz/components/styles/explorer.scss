@@ -284,6 +284,20 @@ button.mobile-explorer {
     pointer-events: none;
   }
 
+  // Alias row: `# Home` — comment marker, not a path prefix.
+  .explorer-ul > li > a.explorer-home {
+    &::before {
+      content: "#\2009";
+    }
+
+    &.active,
+    &.active .file-title {
+      color: inherit;
+      font-weight: 400;
+      text-decoration: none;
+    }
+  }
+
   .folder-outer > ul > li > a {
     padding-left: var(--gutter-dir);
   }
