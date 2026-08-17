@@ -68,7 +68,7 @@
       --top-strip-line: 1.4;
     }
 
-    order: -1;
+    order: 2;
     height: initial;
     overflow: visible;
     flex-shrink: 0;
@@ -81,31 +81,6 @@
     &.collapsed,
     &.modal-open {
       flex: 0 0 var(--explorer-control-size, 1.85rem);
-    }
-
-    // Modal divider — redraws the top bar's bottom border that the
-    // fullscreen modal covers. Drawn on `.explorer` (which never fades or
-    // slides) instead of inside the modal panel, so it does NOT animate in
-    // with the modal — it sits statically at the top bar's edge.
-    // Mixed with `--bg` (not transparent) so the hairline doesn't shimmer
-    // as the fading modal changes the pixels behind it. The real top-bar
-    // border is hidden while the modal is open so the two 1px lines can't
-    // stack into a double flash at mid widths.
-    &::after {
-      content: "";
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: var(--explorer-divider-top, var(--top-strip-height));
-      height: 1px;
-      background: color-mix(in oklab, var(--border) 78%, var(--bg));
-      z-index: 10001;
-      pointer-events: none;
-      display: none;
-    }
-
-    &.modal-open::after {
-      display: block;
     }
   }
 
@@ -448,60 +423,34 @@ button.mobile-explorer {
     // wider, the adjacent search lane visibly "jiggles" when scripts finish.
     flex: 0 0 var(--explorer-control-size, 1.85rem);
 
-    // Enable transitions only after user interaction
+    // Visibility only — never fade this wrapper or the sheet fades while it slides.
     &.modal-ready .explorer-content {
-      transition:
-        opacity 0.24s var(--ease),
-        visibility 0.24s var(--ease);
+      transition: visibility 0.3s;
     }
 
-    // The hidden resting state (opacity/transform) lives on the base
-    // mobile rules below — not here. `.modal-ready` and `.modal-open` are
-    // added in the same frame on the first open, so a resting state gated
-    // behind `.modal-ready` would be set in the same style recalc as the
-    // revealed state, and the transition would never see a start value.
-    // `.modal-ready` therefore only switches the transitions on, once the
-    // user has interacted at least once.
+    &.modal-ready .explorer-content::before {
+      transition: opacity 0.3s var(--ease);
+    }
 
-    // Header chrome rides the single `.explorer-content` fade. Extra
-    // panel/header opacity (and a panel slide) used to stack on that fade
-    // and the static `::after` divider, which read as a double flash on
-    // the mid-width hairline under EXPLORER. The list still enters after.
-
-    // Menu region enters after the modal chrome is up.
-    &.modal-ready .explorer-panel > .explorer-ul {
-      transition:
-        opacity 0.22s var(--ease),
-        transform 0.3s var(--ease);
-      transition-delay: 0.22s;
+    &.modal-ready .explorer-content > .explorer-panel {
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     &.modal-open > .explorer-content {
-      opacity: 1;
       visibility: visible;
       pointer-events: auto;
+      transition: visibility 0s;
     }
 
-    &.modal-open > .explorer-content > .explorer-panel > .explorer-ul {
+    &.modal-open > .explorer-content::before {
       opacity: 1;
-      transform: translateY(0);
     }
 
-    &.modal-open > .explorer-content > .explorer-panel > .explorer-ul > li {
-      opacity: 1;
-      transform: translateY(0);
-      animation: explorer-mobile-item-in 0.32s var(--ease) both;
+    &.modal-open > .explorer-content > .explorer-panel {
+      transform: translate3d(0, 0, 0);
     }
 
-    // Stagger top-level items without over-delaying long lists.
-    @for $i from 1 through 24 {
-      &.modal-open > .explorer-content > .explorer-panel > .explorer-ul > li:nth-child(#{$i}) {
-        animation-delay: calc(0.24s + (#{$i - 1} * 0.022s));
-      }
-    }
-
-    // ── Backdrop ──
-    // Opaque warm dim — Cursor-style recessed chrome, not a light filter.
+    // ── Scrim ──
     .explorer-content {
       box-sizing: border-box;
       z-index: 10000;
@@ -511,32 +460,48 @@ button.mobile-explorer {
       height: 100dvh;
       margin-top: 0;
       overflow: hidden;
-      background: color-mix(in oklab, var(--bg) 32%, #18160e);
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      opacity: 0;
+      background: transparent;
+      opacity: 1;
       visibility: hidden;
       pointer-events: none;
       display: flex;
+      justify-content: flex-start;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: color-mix(in oklab, var(--bg) 58%, transparent);
+        opacity: 0;
+        pointer-events: none;
+      }
     }
 
-    // ── Fullscreen panel ──
-    // No extra opacity/transform: this surface must appear with the
-    // content fade (once) so it doesn't slide or pulse under `::after`.
+    // ── Left sheet ──
+    // Pin to the viewport's left edge. Do not use the hamburger as a
+    // layout origin — it lives on the right of the top bar.
     .explorer-content > .explorer-panel {
-      position: relative;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: auto;
       z-index: 1;
       display: flex;
       flex-direction: column;
-      width: 100%;
+      width: min(22rem, 88vw);
+      max-width: 88vw;
       height: 100%;
-      margin-top: 0;
+      margin: 0;
+      padding-top: 0;
       background: var(--bg);
       border: none;
+      border-right: 1px solid color-mix(in oklab, var(--border) 88%, var(--bg));
       border-radius: 0;
       box-shadow: none;
       overflow: hidden;
       pointer-events: none;
+      transform: translate3d(-100%, 0, 0);
 
       & * {
         pointer-events: none;
@@ -549,53 +514,7 @@ button.mobile-explorer {
     }
 
     .explorer-panel-header {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-      position: relative;
-      // This is a fullscreen fixed overlay, but its header must line up
-      // with the real hamburger/X — which sits below a top bar that wraps
-      // to a variable number of lines on a phone. That distance can't be
-      // computed in CSS, so explorer.inline.ts measures the live trigger
-      // on open and feeds these custom properties (viewport coordinates):
-      //   --explorer-trigger-top / -left / -size  → the hamburger's box
-      // The header's own top edge is at viewport y=0 (the modal is fixed,
-      // inset:0), so those viewport coordinates apply directly here.
-      // Fallbacks only matter if the script hasn't run — the modal can't
-      // be opened without it, so they are never actually used.
-      padding-top: var(--explorer-trigger-top, 2.6rem);
-      padding-right: var(--explorer-modal-inset);
-      padding-bottom: 0.19rem;
-      // Title clears the hamburger/X (its left edge + width) plus a gap.
-      padding-left: calc(
-        var(--explorer-trigger-left, var(--explorer-modal-inset)) +
-          var(--explorer-trigger-size, var(--explorer-control-size)) + 0.75rem
-      );
-      border-bottom: none;
-      // Solid header surface avoids transparency bleed from the modal backdrop/content.
-      background: var(--bg);
-    }
-
-    .explorer-panel-title {
-      // Typography follows the desktop explorer header <h2>
-      // (.explorer-title.desktop-explorer h2) — same weight, tracking, casing and
-      // muted colour — but a step smaller, tuned for the modal header.
-      font-family: var(--font-sans);
-      font-size: var(--mono-micro-size);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      color: color-mix(in oklab, var(--gray) 84%, var(--bg));
-      text-align: left;
-      margin: 0;
-      flex: 0 1 auto;
-      white-space: nowrap;
-      // Centre the label in a box exactly as tall as the measured
-      // hamburger/X. The header's padding-top aligns this box's top edge
-      // with the X's top edge, so the text lands dead centre on the X.
-      display: flex;
-      align-items: center;
-      min-height: var(--explorer-trigger-size, 1.95rem);
+      display: none;
     }
 
     .explorer-panel > .explorer-ul {
@@ -603,43 +522,30 @@ button.mobile-explorer {
       min-height: 0;
       max-height: none;
       overflow-y: auto;
-      // Hidden resting state — revealed by `.modal-open`. See note above.
-      opacity: 0;
-      transform: translateY(8px);
-      // Keep the first row clearly below the header title row.
-      margin-top: 0.55rem;
+      opacity: 1;
+      margin-top: 0;
       box-sizing: border-box;
-      padding: 1rem var(--explorer-modal-inset) calc(1.5rem + env(safe-area-inset-bottom));
-      // Hang the dropdown under the hamburger/X. Right inset follows the
-      // content column so long names cannot run to the panel's right edge.
-      padding-left: var(--explorer-trigger-left, var(--explorer-modal-inset));
+      // Sit just under the "Currently: Building" hairline, not the hamburger.
+      padding: calc(var(--explorer-divider-top, 2.15rem) + 0.55rem) 1rem
+        calc(1.5rem + env(safe-area-inset-bottom));
       overscroll-behavior: contain;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
+      scrollbar-width: none;
       mask-image: none !important;
     }
 
-    // Compact dropdown rows. Global rules set `width: 100%` on folders and
-    // files, which at the mid breakpoint stretched `.folder-container`
-    // (~916px) and hover/focus highlights to the panel's right edge.
-    // Hug the label; cap at the content column. Desktop sidebar is outside
-    // this `$mobile` block and keeps full-width rows.
     .explorer-panel ul {
-      align-items: flex-start;
+      align-items: stretch;
     }
 
     .explorer-panel .folder-container,
     .explorer-panel ul li > a {
-      width: fit-content;
-      max-width: min(100%, #{$contentWidth});
+      width: 100%;
+      max-width: 100%;
     }
 
-    // Global `.folder-container div { min-width: 0 }` lets the title shrink
-    // inside a 100% row. With fit-content rows, keep the label's intrinsic
-    // width so the highlight still hugs the text.
     .explorer-panel .folder-container > div {
-      min-width: min-content;
-      flex-shrink: 0;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
     .mobile-explorer {
@@ -654,62 +560,25 @@ button.mobile-explorer {
         z-index: 0;
       }
 
-      // The hamburger doubles as the modal's close control: it stays in
-      // place and swaps its icon to an X, so the X is guaranteed to match
-      // the hamburger's size and position exactly. The flex-centred button
-      // simply renders whichever icon is currently shown.
-      .lucide-menu,
-      .lucide-x-mobile {
+      // The hamburger stays a hamburger. Tap it (or the scrim) to close.
+      .lucide-menu {
         width: var(--explorer-control-icon-size, 13px);
         height: var(--explorer-control-icon-size, 13px);
         stroke: currentColor;
         transition: stroke 0.18s var(--ease);
       }
 
-      &:hover .lucide-menu,
-      &:hover .lucide-x-mobile {
+      &:hover .lucide-menu {
         stroke: currentColor;
       }
-
-      // Closed state: hamburger shown, X hidden.
-      .lucide-x-mobile {
-        display: none;
-      }
     }
-
-    // Modal open: the hamburger turns into the X. It sits at z-index 10001,
-    // above the modal, so it stays visible and clickable — same button,
-    // same box, swapped icon.
-    &.modal-open .mobile-explorer {
-      .lucide-menu {
-        display: none;
-      }
-
-      .lucide-x-mobile {
-        display: block;
-      }
-    }
-  }
-}
-
-@keyframes explorer-mobile-item-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .explorer {
     @media all and ($mobile) {
-      &.modal-ready .explorer-panel > .explorer-ul,
-      &.modal-ready .explorer-panel > .explorer-ul > li {
-        // `!important` so the per-item stagger keyframe (applied via the
-        // higher-specificity `.modal-open …` selector) is also cancelled.
+      &.modal-ready .explorer-content > .explorer-panel {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
@@ -722,12 +591,6 @@ button.mobile-explorer {
 @media all and ($mobile) {
   .page.explorer-modal-open > #quartz-body > .left.sidebar:has(.explorer.modal-open) {
     z-index: 10002;
-  }
-
-  // Keep the 1px box so `--explorer-divider-top` doesn't jump; only the
-  // paint is swapped to `.explorer::after` so the two hairlines never stack.
-  body:has(.explorer.modal-open) .top-bar {
-    border-bottom-color: transparent;
   }
 
   .mobile-no-scroll,
