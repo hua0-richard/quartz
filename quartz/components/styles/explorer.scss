@@ -265,7 +265,23 @@ button.mobile-explorer {
   }
 
   .explorer-ul > li > a {
-    padding-left: var(--gutter-root);
+    padding-left: 0;
+  }
+
+  .explorer-ul > li > a::before {
+    content: "~/\2009";
+    box-sizing: border-box;
+    flex: 0 0 var(--gutter-root);
+    width: var(--gutter-root);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.4;
+    white-space: pre;
+    opacity: 0.45;
+    color: inherit;
+    pointer-events: none;
   }
 
   .folder-outer > ul > li > a {
