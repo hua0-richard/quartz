@@ -19,10 +19,7 @@ html.search-active body {
   max-width: 14rem;
 
   @media all and ($mobile) {
-    // On mobile the parent flex row controls sizing; search should simply
-    // fill the remaining lane next to darkmode.
     min-width: 0;
-    max-width: none;
     width: 100%;
   }
 

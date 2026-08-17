@@ -1550,9 +1550,13 @@ body[data-slug="index"] .recent-notes {
     & > * + * {
       margin-top: 0;
     }
+    & > .spacer {
+      display: none;
+    }
     & > .explorer {
       align-self: center;
       margin-bottom: 0;
+      margin-left: auto;
     }
     & .darkmode {
       display: flex;
@@ -1560,16 +1564,18 @@ body[data-slug="index"] .recent-notes {
     }
   }
   .sidebar.left > .flex-component {
-    margin-left: auto;
+    margin-left: 0;
     align-items: center;
     flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
 
-    // Search lane grows; darkmode lane stays fixed.
+    // Search can shrink on a narrow phone, but never stretch past the
+    // desktop search cap. Darkmode stays a fixed lane beside it.
     > div:first-child {
-      flex: 1 1 auto !important;
+      flex: 0 1 14rem !important;
       min-width: 0;
+      max-width: 14rem;
     }
 
     > div:last-child {

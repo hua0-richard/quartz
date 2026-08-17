@@ -79,20 +79,11 @@ function toggleExplorer(this: HTMLElement) {
   const isExpanded = !explorerCollapsed
 
   nearestExplorer.classList.add("modal-ready")
-  nearestExplorer.classList.toggle("modal-open", isExpanded)
-  syncExplorerState(nearestExplorer)
-
-  // Stop <html> from being scrollable when mobile explorer is open
   document.documentElement.classList.toggle("mobile-no-scroll", isExpanded)
   setExplorerModalPageState(isExpanded)
-
-  // Pin the modal header to the hamburger AFTER the classes above are
-  // applied. `mobile-no-scroll` removes the document scrollbar; on a
-  // resized desktop window that widens the viewport, which re-wraps the
-  // multi-line top bar and shifts the hamburger. Measuring last captures
-  // its final position. This still runs synchronously before the browser
-  // paints, so the modal's first frame is already aligned.
   if (isExpanded) pinModalHeaderToTrigger(nearestExplorer)
+  nearestExplorer.classList.toggle("modal-open", isExpanded)
+  syncExplorerState(nearestExplorer)
 }
 
 function toggleFolder(evt: MouseEvent) {
@@ -285,6 +276,18 @@ async function setupExplorer(currentSlug: FullSlug) {
     for (const button of explorerButtons) {
       button.addEventListener("click", toggleExplorer)
       window.addCleanup(() => button.removeEventListener("click", toggleExplorer))
+    }
+
+    const explorerContent = explorer.querySelector(".explorer-content") as HTMLElement | null
+    if (explorerContent) {
+      const closeOnBackdrop = (e: MouseEvent) => {
+        if (e.target !== explorerContent) return
+        const mobileToggle = explorer.querySelector(".mobile-explorer") as HTMLElement | null
+        if (!mobileToggle?.checkVisibility()) return
+        mobileToggle.click()
+      }
+      explorerContent.addEventListener("click", closeOnBackdrop)
+      window.addCleanup(() => explorerContent.removeEventListener("click", closeOnBackdrop))
     }
 
     // Set up folder click handlers
