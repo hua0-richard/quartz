@@ -278,7 +278,7 @@ async function setupExplorer(currentSlug: FullSlug) {
       }
     }
 
-    // Set up event handlers
+    // Mobile hamburger still toggles the explorer modal. Desktop is always open.
     const explorerButtons = explorer.getElementsByClassName(
       "explorer-toggle",
     ) as HTMLCollectionOf<HTMLElement>
@@ -286,24 +286,6 @@ async function setupExplorer(currentSlug: FullSlug) {
       button.addEventListener("click", toggleExplorer)
       window.addCleanup(() => button.removeEventListener("click", toggleExplorer))
     }
-
-    // ⌘E / Ctrl+E toggles whichever toggle button is currently visible
-    const explorerShortcutHandler = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== "e" || !(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return
-      const target = e.target as HTMLElement | null
-      const tag = target?.tagName
-      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return
-
-      const toggles = Array.from(explorer.querySelectorAll<HTMLElement>(".explorer-toggle")).filter(
-        (el) => el.checkVisibility(),
-      )
-      if (toggles.length === 0) return
-
-      e.preventDefault()
-      toggles[0].click()
-    }
-    document.addEventListener("keydown", explorerShortcutHandler)
-    window.addCleanup(() => document.removeEventListener("keydown", explorerShortcutHandler))
 
     // Set up folder click handlers
     if (opts.folderClickBehavior === "collapse") {
@@ -400,6 +382,8 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
       // Allow <html> to be scrollable when mobile explorer is collapsed
       document.documentElement.classList.remove("mobile-no-scroll")
       setExplorerModalPageState(false)
+    } else {
+      explorerElement.classList.remove("collapsed", "modal-open")
     }
 
     syncExplorerState(explorerElement)
@@ -412,8 +396,13 @@ window.addEventListener("resize", function () {
   setExplorerModalPageState(false)
   for (const explorer of document.getElementsByClassName("explorer")) {
     const explorerElement = explorer as HTMLElement
+    const mobileExplorer = explorerElement.querySelector(".mobile-explorer") as HTMLElement | null
     explorerElement.classList.remove("modal-open", "modal-ready")
-    explorerElement.classList.add("collapsed")
+    if (mobileExplorer?.checkVisibility()) {
+      explorerElement.classList.add("collapsed")
+    } else {
+      explorerElement.classList.remove("collapsed")
+    }
     syncExplorerState(explorerElement)
   }
 })

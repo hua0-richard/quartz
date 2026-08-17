@@ -29,42 +29,10 @@
   flex-direction: column;
   overflow-y: hidden;
   min-height: 1.2rem;
-  flex: 1 1 auto;
-
-  // Match button.desktop-explorer min-height so the ⌘E chip isn't clipped
-  // by overflow-y: hidden. flex-shrink: 0 so sidebar min-height: 0 can't
-  // squeeze this below the toggle.
-  &.collapsed {
-    flex: 0 0 1.85rem;
-    min-height: 1.85rem;
-
-    & .fold {
-      transform: rotateZ(-90deg);
-    }
-  }
-
-  & .fold,
-  & .fold * {
-    stroke: var(--gray);
-    transition: stroke 0.18s var(--ease);
-  }
-
-  button.desktop-explorer:hover .fold,
-  button.desktop-explorer:hover .fold * {
-    stroke: var(--dark);
-  }
-
-  & .fold {
-    margin-left: 0;
-    width: 9px;
-    height: 9px;
-    flex-shrink: 0;
-    transition:
-      transform 0.25s var(--ease),
-      opacity 0.18s var(--ease),
-      stroke 0.18s var(--ease);
-    opacity: 0.62;
-  }
+  flex: 0 1 auto;
+  --gutter-root: 1.15rem;
+  --gutter-dir: 0.7rem;
+  --tree-step: 0.95rem;
 
   @media all and ($mobile) {
     // Single source of truth for mobile control sizing.
@@ -145,7 +113,7 @@
     display: none;
   }
 
-  button.desktop-explorer {
+  .desktop-explorer {
     display: flex;
   }
 
@@ -154,7 +122,7 @@
       display: flex;
     }
 
-    button.desktop-explorer {
+    .desktop-explorer {
       display: none;
     }
   }
@@ -207,77 +175,26 @@ button.mobile-explorer {
   }
 }
 
-button.desktop-explorer {
+.explorer-title.desktop-explorer {
   background-color: transparent;
-  border: none;
-  border-radius: 0;
   text-align: left;
-  cursor: pointer;
-  // Match search/darkmode control row height so ⌘E stacks under the theme toggle.
   padding: 0;
   margin: 0;
-  min-height: 1.85rem;
   color: var(--dark);
   display: flex;
   align-items: center;
-  gap: 0.4rem;
   width: 100%;
   box-sizing: border-box;
-  transition: color 0.18s var(--ease);
-
-  & .fold {
-    flex-shrink: 0;
-  }
-
-  & .explorer-shortcut {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: var(--mono-micro-size);
-    font-weight: 400;
-    letter-spacing: var(--mono-micro-tracking);
-    line-height: 1;
-    color: color-mix(in oklab, var(--gray) 88%, var(--bg));
-    background: transparent;
-    border: 1px solid color-mix(in oklab, var(--border) 90%, var(--bg));
-    border-radius: 4px;
-    padding: 0.12rem 0.32rem;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: none;
-    font-variant-numeric: tabular-nums;
-    transition:
-      color 0.18s var(--ease),
-      border-color 0.18s var(--ease);
-  }
-
-  &:hover {
-    & h2 {
-      color: var(--dark);
-    }
-
-    & .fold {
-      opacity: 1;
-    }
-
-    & .explorer-shortcut {
-      color: var(--darkgray);
-      border-color: color-mix(in oklab, var(--dark) 22%, transparent);
-    }
-  }
 
   & h2 {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: var(--mono-label-size);
     font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: var(--mono-label-tracking);
-    line-height: 1;
+    letter-spacing: 0.04em;
+    line-height: 1rem;
     color: color-mix(in oklab, var(--gray) 84%, var(--bg));
     display: inline-block;
     margin: 0;
-    transition: color 0.18s var(--ease);
   }
 }
 
@@ -287,8 +204,8 @@ button.desktop-explorer {
 
 @media all and ($desktop) {
   .explorer-ul.overflow.gradient-active {
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 1.5rem), transparent);
   }
 }
 
@@ -300,7 +217,7 @@ button.desktop-explorer {
   list-style: none;
   overflow: hidden;
   overflow-y: auto;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
 
   & ul {
     list-style: none;
@@ -309,49 +226,71 @@ button.desktop-explorer {
     overscroll-behavior: contain;
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0;
 
     & li > a {
-      color: color-mix(in oklab, var(--darkgray) 78%, var(--gray));
+      color: color-mix(in oklab, var(--darkgray) 92%, var(--gray));
       font-family: var(--font-sans);
       font-size: 0.8125rem;
       font-weight: 400;
       letter-spacing: -0.011em;
-      line-height: 1.35;
+      line-height: 1.4;
       pointer-events: all;
       text-decoration: none;
-      display: inline-flex;
+      cursor: pointer;
+      display: flex;
       align-items: center;
+      min-width: 0;
       gap: 0;
-      // Indent files to align with folder titles (past the chevron).
-      padding: 0.34rem 0.4rem 0.34rem 1.15rem;
+      padding: 0.22rem 0;
       margin: 0;
-      border-radius: 0;
       border: none;
       width: 100%;
       box-sizing: border-box;
       background: transparent;
-      transition: color 0.15s var(--ease);
+      transition: color 0.18s var(--ease);
 
       &:hover {
-        color: var(--dark);
-        background: transparent;
+        color: var(--accent);
+      }
+
+      &:hover .file-title,
+      &.active .file-title {
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.18em;
+      }
+
+      &:hover .file-title {
+        text-decoration-color: color-mix(in oklab, var(--accent) 42%, transparent);
       }
 
       &.active {
-        color: var(--dark);
+        color: var(--accent);
         font-weight: 400;
         background: transparent;
         box-shadow: none;
       }
 
       &.active .file-title {
-        text-decoration: underline;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 0.2em;
-        text-decoration-color: color-mix(in oklab, var(--dark) 48%, transparent);
+        text-decoration-color: color-mix(in oklab, var(--accent) 48%, transparent);
+      }
+
+      .file-title {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
+  }
+
+  .explorer-ul > li > a {
+    padding-left: var(--gutter-root);
+  }
+
+  .folder-outer > ul > li > a {
+    padding-left: var(--gutter-dir);
   }
 
   // ── Folder collapse animation ──
@@ -360,7 +299,7 @@ button.desktop-explorer {
     display: grid;
     grid-template-rows: 0fr;
     transition-property: grid-template-rows, visibility;
-    transition-duration: 0.45s;
+    transition-duration: 0.28s;
     transition-timing-function: var(--ease);
   }
 
@@ -372,8 +311,8 @@ button.desktop-explorer {
   .folder-outer > ul {
     overflow: hidden;
     margin-left: 0;
-    padding-left: 0.7rem;
-    margin-top: 0.08rem;
+    padding-left: var(--tree-step);
+    margin-top: 0;
     padding-top: 0;
     border-left: none;
   }
@@ -382,8 +321,6 @@ button.desktop-explorer {
 .explorer.is-refreshing {
   .explorer-content ul li > a,
   .folder-container,
-  .folder-icon,
-  .folder-icon *,
   .folder-title,
   .folder-outer {
     transition: none !important;
@@ -407,97 +344,93 @@ button.desktop-explorer {
 // ═══════════════════════════════════════════
 
 .folder-container {
+  display: flex;
   flex-direction: row;
-  display: inline-flex;
   align-items: center;
   user-select: none;
   cursor: pointer;
-  padding: 0.34rem 0.4rem;
-  border-radius: 5px;
+  padding: 0.08rem 0;
   border: none;
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
-  gap: 0.35rem;
-  transition:
-    color 0.15s var(--ease),
-    background 0.15s var(--ease);
-
-  &:hover {
-    background: color-mix(in oklab, var(--dark) 4%, transparent);
-  }
+  gap: 0;
+  transition: color 0.18s var(--ease);
 
   & div {
     min-width: 0;
+    flex: 0 1 auto;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   & div > a.folder-title,
-  & div > button.folder-button .folder-title {
-    color: color-mix(in oklab, var(--darkgray) 78%, var(--gray));
+  & div > button.folder-button {
+    color: color-mix(in oklab, var(--gray) 88%, var(--bg));
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-weight: 400;
     letter-spacing: -0.011em;
-    line-height: 1.35;
-    display: inline-block;
-    padding: 0;
-    text-decoration: none;
-    transition: color 0.15s var(--ease);
-  }
-
-  & div > button.folder-button .folder-title {
-    pointer-events: none;
-  }
-
-  & div > button.folder-button {
+    line-height: 1.4;
     background-color: transparent;
     border: none;
     text-align: left;
     cursor: pointer;
     padding: 0;
     margin: 0;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    font-family: var(--font-sans);
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-decoration: none;
+    transition: color 0.18s var(--ease);
+  }
+
+  & div > button.folder-button .folder-title {
+    color: inherit;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  & div > a.folder-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & div > button.folder-button::before,
+  & div > a.folder-title::before {
+    content: "/\2009";
+    box-sizing: border-box;
+    flex: 0 0 var(--gutter-dir);
+    width: var(--gutter-dir);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.4;
+    white-space: pre;
+    opacity: 0.45;
+    color: inherit;
+    pointer-events: none;
   }
 
   &:hover div > a.folder-title,
-  &:hover div > button.folder-button .folder-title {
+  &:hover div > button.folder-button {
     color: var(--dark);
   }
 }
 
-.folder-icon,
-.folder-icon * {
-  stroke: var(--gray);
-  transition:
-    stroke 0.15s var(--ease),
-    transform 0.2s var(--ease),
-    opacity 0.15s var(--ease);
-}
-
-.folder-icon {
-  margin-right: 0;
-  cursor: pointer;
-  width: 9px;
-  height: 9px;
-  opacity: 0.42;
-  flex-shrink: 0;
-  // Collapsed: point right (Cursor tree).
-  transform: rotate(-90deg);
-}
-
-li:has(> .folder-outer.open) > .folder-container > .folder-icon {
-  transform: rotate(0deg);
-  opacity: 0.55;
-}
-
-.folder-container:hover > .folder-icon,
-.folder-container:hover > .folder-icon * {
-  stroke: var(--dark);
-}
-
-.folder-container:hover > .folder-icon {
-  opacity: 0.72;
+.explorer-ul > li > .folder-container {
+  & div > button.folder-button::before,
+  & div > a.folder-title::before {
+    content: "~/\2009";
+    flex-basis: var(--gutter-root);
+    width: var(--gutter-root);
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -641,14 +574,13 @@ li:has(> .folder-outer.open) > .folder-container > .folder-icon {
 
     .explorer-panel-title {
       // Typography follows the desktop explorer header <h2>
-      // (button.desktop-explorer h2) — same weight, tracking, casing and
+      // (.explorer-title.desktop-explorer h2) — same weight, tracking, casing and
       // muted colour — but a step smaller, tuned for the modal header.
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-size: var(--mono-micro-size);
       font-weight: 400;
-      letter-spacing: var(--mono-label-tracking);
+      letter-spacing: 0.04em;
       line-height: 1;
-      text-transform: uppercase;
       color: color-mix(in oklab, var(--gray) 84%, var(--bg));
       text-align: left;
       margin: 0;
